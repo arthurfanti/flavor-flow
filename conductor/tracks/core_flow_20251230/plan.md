@@ -1,6 +1,6 @@
 # Plan: Core Recipe Extraction and Shopping List Flow
 
-## Phase 1: Project Scaffolding & PWA Setup
+## Phase 1: Project Scaffolding & PWA Setup [checkpoint: f75e981]
 - [x] Task: Initialize Next.js project with TypeScript and Tailwind CSS (3775798)
 - [x] Task: Configure PWA support (manifest, service workers, icons) (f52565d)
 - [x] Task: Set up Supabase project and client-side repository abstraction (6bbb6be)
