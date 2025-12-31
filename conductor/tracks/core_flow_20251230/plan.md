@@ -4,9 +4,9 @@
 - [x] Task: Initialize Next.js project with TypeScript and Tailwind CSS (3775798)
 - [x] Task: Configure PWA support (manifest, service workers, icons) (f52565d)
 - [x] Task: Set up Supabase project and client-side repository abstraction (6bbb6be)
-- [ ] Task: Conductor - User Manual Verification 'Phase 1: Project Scaffolding & PWA Setup' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 1: Project Scaffolding & PWA Setup' (Protocol in workflow.md) (f75e981)
 
-## Phase 2: Recipe Extraction Service
+## Phase 2: Recipe Extraction Service [checkpoint: fe65f44]
 - [x] Task: Create Repository and Mock Service for Recipe Extraction (0f4ba0f)
     - [x] Sub-task: Write tests for Recipe Repository (0f4ba0f)
     - [x] Sub-task: Implement Recipe Repository with mock data (0f4ba0f)
@@ -16,7 +16,7 @@
 - [x] Task: Build URL Input and Extraction Loading UI (eed9572)
     - [x] Sub-task: Write tests for URL input component (eed9572)
     - [x] Sub-task: Implement URL input with loading state and sophisticated styling (eed9572)
-- [ ] Task: Conductor - User Manual Verification 'Phase 2: Recipe Extraction Service' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 2: Recipe Extraction Service' (Protocol in workflow.md) (fe65f44)
 
 ## Phase 3: Recipe Display and Editing
 - [ ] Task: Build Recipe Preview Component
