@@ -3,7 +3,7 @@
 ## Phase 1: Project Scaffolding & PWA Setup
 - [x] Task: Initialize Next.js project with TypeScript and Tailwind CSS (3775798)
 - [x] Task: Configure PWA support (manifest, service workers, icons) (f52565d)
-- [ ] Task: Set up Supabase project and client-side repository abstraction
+- [x] Task: Set up Supabase project and client-side repository abstraction (6bbb6be)
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: Project Scaffolding & PWA Setup' (Protocol in workflow.md)
 
 ## Phase 2: Recipe Extraction Service
