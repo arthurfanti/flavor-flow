@@ -47,4 +47,26 @@ describe('SupabaseRecipeRepository', () => {
 
     await expect(repo.getRecipes()).rejects.toThrow('Supabase error');
   });
+
+  it('addRecipe should call supabase insert', async () => {
+    const repo = new SupabaseRecipeRepository(mockSupabase);
+    (mockSupabase.from as jest.Mock).mockReturnValue({
+      insert: jest.fn().mockResolvedValue({ error: null }),
+    });
+
+    const newRecipe = { title: 'Test' };
+    await repo.addRecipe(newRecipe);
+    expect(mockSupabase.from).toHaveBeenCalledWith('recipes');
+  });
+
+  it('addRecipe should throw error if supabase fails', async () => {
+    const repo = new SupabaseRecipeRepository(mockSupabase);
+    const mockError = new Error('Supabase error');
+    
+    (mockSupabase.from as jest.Mock).mockReturnValue({
+      insert: jest.fn().mockResolvedValue({ error: mockError }),
+    });
+
+    await expect(repo.addRecipe({ title: 'Test' })).rejects.toThrow('Supabase error');
+  });
 });

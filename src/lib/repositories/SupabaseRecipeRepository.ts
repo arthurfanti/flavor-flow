@@ -11,4 +11,11 @@ export class SupabaseRecipeRepository implements RecipeRepository {
     }
     return data || [];
   }
+
+  async addRecipe(recipe: any): Promise<void> {
+    const { error } = await this.supabase.from('recipes').insert([recipe]);
+    if (error) {
+      throw error;
+    }
+  }
 }
