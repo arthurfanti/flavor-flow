@@ -1,9 +1,18 @@
 import type { Metadata } from "next";
+import ServiceWorkerRegister from "@/components/ServiceWorkerRegister";
 import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Flavor Flow",
   description: "Transform video recipes into a shopping list",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "Flavor Flow",
+  },
+  formatDetection: {
+    telephone: false,
+  },
 };
 
 export default function RootLayout({
@@ -13,7 +22,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <ServiceWorkerRegister />
+        {children}
+      </body>
     </html>
   );
 }

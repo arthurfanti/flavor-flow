@@ -8,7 +8,7 @@
 ## Backend & Infrastructure
 - **BaaS (Backend as a Service):** Supabase (or Firebase) - Provides a fast foundation for authentication, real-time database, and storage. 
     - *Strategic Note:* We will implement a repository pattern in the frontend to abstract database calls, ensuring we can migrate to a custom backend (like Node.js or Python) in the future without a full rewrite.
-- **PWA Support:** `next-pwa` (or equivalent) - To handle service workers, manifest files, and offline caching for shopping lists and pantry data.
+- **PWA Support:** Native Next.js support (Metadata API for Manifest) + Custom Service Worker - To handle installability and offline caching without reliance on outdated third-party packages.
 
 ## External Services
 - **Recipe Extraction API:** Integration with a specialized third-party service (e.g., Spoonacular, Edamam, or a dedicated recipe scraper API) to parse video URLs from YouTube, Instagram, and TikTok and return structured ingredient and instruction data.
