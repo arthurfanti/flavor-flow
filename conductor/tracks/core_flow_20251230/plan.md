@@ -7,9 +7,9 @@
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: Project Scaffolding & PWA Setup' (Protocol in workflow.md)
 
 ## Phase 2: Recipe Extraction Service
-- [ ] Task: Create Repository and Mock Service for Recipe Extraction
-    - [ ] Sub-task: Write tests for Recipe Repository
-    - [ ] Sub-task: Implement Recipe Repository with mock data
+- [x] Task: Create Repository and Mock Service for Recipe Extraction (0f4ba0f)
+    - [x] Sub-task: Write tests for Recipe Repository (0f4ba0f)
+    - [x] Sub-task: Implement Recipe Repository with mock data (0f4ba0f)
 - [ ] Task: Integrate Third-Party Recipe Extraction API
     - [ ] Sub-task: Write integration tests for API service
     - [ ] Sub-task: Implement API service with real provider
