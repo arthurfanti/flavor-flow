@@ -10,9 +10,9 @@
 - [x] Task: Create Repository and Mock Service for Recipe Extraction (0f4ba0f)
     - [x] Sub-task: Write tests for Recipe Repository (0f4ba0f)
     - [x] Sub-task: Implement Recipe Repository with mock data (0f4ba0f)
-- [ ] Task: Integrate Third-Party Recipe Extraction API
-    - [ ] Sub-task: Write integration tests for API service
-    - [ ] Sub-task: Implement API service with real provider
+- [x] Task: Integrate Third-Party Recipe Extraction API (b77b60f)
+    - [x] Sub-task: Write integration tests for API service (b77b60f)
+    - [x] Sub-task: Implement API service with real provider (b77b60f)
 - [ ] Task: Build URL Input and Extraction Loading UI
     - [ ] Sub-task: Write tests for URL input component
     - [ ] Sub-task: Implement URL input with loading state and sophisticated styling
