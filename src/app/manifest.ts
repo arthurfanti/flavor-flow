@@ -12,28 +12,28 @@ export default function manifest(): MetadataRoute.Manifest {
     theme_color: '#ffffff',
     icons: [
       {
-        src: '/icon.svg',
+        src: '/icon-192.png',
         sizes: '192x192',
-        type: 'image/svg+xml',
+        type: 'image/png',
       },
       {
-        src: '/icon.svg',
+        src: '/icon-512.png',
         sizes: '512x512',
-        type: 'image/svg+xml',
+        type: 'image/png',
       },
     ],
     screenshots: [
       {
-        src: '/screenshot-mobile.svg',
+        src: '/screenshot-mobile.png',
         sizes: '1080x1920',
-        type: 'image/svg+xml',
+        type: 'image/png',
         // @ts-ignore - Next.js types might not yet fully support form_factor
         form_factor: 'narrow',
       },
       {
-        src: '/screenshot-desktop.svg',
+        src: '/screenshot-desktop.png',
         sizes: '1920x1080',
-        type: 'image/svg+xml',
+        type: 'image/png',
         // @ts-ignore
         form_factor: 'wide',
       },

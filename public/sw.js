@@ -5,9 +5,10 @@ self.addEventListener('install', (event) => {
     caches.open(CACHE_NAME).then((cache) => {
       return cache.addAll([
         '/',
-        '/icon.svg',
-        '/screenshot-mobile.svg',
-        '/screenshot-desktop.svg',
+        '/icon-192.png',
+        '/icon-512.png',
+        '/screenshot-mobile.png',
+        '/screenshot-desktop.png',
       ]);
     })
   );

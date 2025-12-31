@@ -11,7 +11,7 @@ describe("PWA Manifest", () => {
     const m = manifest();
     expect(m.icons).toBeDefined();
     expect(m.icons?.length).toBeGreaterThan(0);
-    expect(m.icons?.[0].src).toContain('.svg');
+    expect(m.icons?.[0].src).toContain('.png');
   });
 
   it("should have correct display and start_url", () => {
