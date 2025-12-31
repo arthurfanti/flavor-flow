@@ -5,8 +5,9 @@ self.addEventListener('install', (event) => {
     caches.open(CACHE_NAME).then((cache) => {
       return cache.addAll([
         '/',
-        '/icon-192x192.png',
-        '/icon-512x512.png',
+        '/icon.svg',
+        '/screenshot-mobile.svg',
+        '/screenshot-desktop.svg',
       ]);
     })
   );
