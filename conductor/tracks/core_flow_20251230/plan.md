@@ -13,9 +13,9 @@
 - [x] Task: Integrate Third-Party Recipe Extraction API (b77b60f)
     - [x] Sub-task: Write integration tests for API service (b77b60f)
     - [x] Sub-task: Implement API service with real provider (b77b60f)
-- [ ] Task: Build URL Input and Extraction Loading UI
-    - [ ] Sub-task: Write tests for URL input component
-    - [ ] Sub-task: Implement URL input with loading state and sophisticated styling
+- [x] Task: Build URL Input and Extraction Loading UI (eed9572)
+    - [x] Sub-task: Write tests for URL input component (eed9572)
+    - [x] Sub-task: Implement URL input with loading state and sophisticated styling (eed9572)
 - [ ] Task: Conductor - User Manual Verification 'Phase 2: Recipe Extraction Service' (Protocol in workflow.md)
 
 ## Phase 3: Recipe Display and Editing
