@@ -19,9 +19,9 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 2: Recipe Extraction Service' (Protocol in workflow.md) (fe65f44)
 
 ## Phase 3: Recipe Display and Editing
-- [ ] Task: Build Recipe Preview Component
-    - [ ] Sub-task: Write tests for Recipe Preview (serif headings, list layout)
-    - [ ] Sub-task: Implement Recipe Preview UI
+- [x] Task: Build Recipe Preview Component (bbc747e)
+    - [x] Sub-task: Write tests for Recipe Preview (serif headings, list layout) (bbc747e)
+    - [x] Sub-task: Implement Recipe Preview UI (bbc747e)
 - [ ] Task: Implement Recipe Edit Functionality
     - [ ] Sub-task: Write tests for editing ingredients and steps
     - [ ] Sub-task: Implement edit forms and state persistence
