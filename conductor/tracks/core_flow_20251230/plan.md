@@ -31,9 +31,9 @@
 - [x] Task: Implement Shopping List Store with Offline Persistence (a2e2e47)
     - [x] Sub-task: Write tests for shopping list repository (add/toggle/remove) (a2e2e47)
     - [x] Sub-task: Implement Supabase sync with local caching/optimistic updates (a2e2e47)
-- [ ] Task: Build Shopping List UI
-    - [ ] Sub-task: Write tests for shopping list view and "bought" toggle
-    - [ ] Sub-task: Implement shopping list UI (mobile-first, clean design)
+- [x] Task: Build Shopping List UI (df87a2b)
+    - [x] Sub-task: Write tests for shopping list view and "bought" toggle (df87a2b)
+    - [x] Sub-task: Implement shopping list UI (mobile-first, clean design) (df87a2b)
 - [ ] Task: Connect Recipe Preview to Shopping List
     - [ ] Sub-task: Write tests for "Add ingredients to list" flow
     - [ ] Sub-task: Implement "Add to list" buttons and logic
