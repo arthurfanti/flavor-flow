@@ -28,9 +28,9 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 3: Recipe Display and Editing' (Protocol in workflow.md) (c79939d)
 
 ## Phase 4: Shopping List & Offline Sync
-- [ ] Task: Implement Shopping List Store with Offline Persistence
-    - [ ] Sub-task: Write tests for shopping list repository (add/toggle/remove)
-    - [ ] Sub-task: Implement Supabase sync with local caching/optimistic updates
+- [x] Task: Implement Shopping List Store with Offline Persistence (a2e2e47)
+    - [x] Sub-task: Write tests for shopping list repository (add/toggle/remove) (a2e2e47)
+    - [x] Sub-task: Implement Supabase sync with local caching/optimistic updates (a2e2e47)
 - [ ] Task: Build Shopping List UI
     - [ ] Sub-task: Write tests for shopping list view and "bought" toggle
     - [ ] Sub-task: Implement shopping list UI (mobile-first, clean design)
