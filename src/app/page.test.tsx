@@ -22,5 +22,6 @@ describe("Home", () => {
   it("does not render RecipePreview initially", () => {
     render(<Home />);
     expect(screen.queryByText(/Ingredients/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/Edit Recipe/i)).not.toBeInTheDocument();
   });
 });

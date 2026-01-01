@@ -3,15 +3,16 @@
 import { useState } from 'react';
 import UrlInput from '@/components/UrlInput';
 import RecipePreview from '@/components/RecipePreview';
+import RecipeEditor from '@/components/RecipeEditor';
 import { MockRecipeRepository } from '@/lib/repositories/MockRecipeRepository';
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const [recipe, setRecipe] = useState<any | null>(null);
+  const [isEditing, setIsEditing] = useState(false);
 
   const handleExtract = async (url: string) => {
     setIsLoading(true);
-    // TODO: Integrate with SpoonacularExtractor in next step, using MockRepo for UI demo
     setTimeout(async () => {
       const repo = new MockRecipeRepository();
       const recipes = await repo.getRecipes();
@@ -23,6 +24,11 @@ export default function Home() {
     }, 1500);
   };
 
+  const handleSave = (updatedRecipe: any) => {
+    setRecipe(updatedRecipe);
+    setIsEditing(false);
+  };
+
   return (
     <main className="flex min-h-screen flex-col items-center px-4 pt-20 pb-10 bg-[#FAFAFA]">
       <header className="text-center mb-12">
@@ -32,18 +38,40 @@ export default function Home() {
         </p>
       </header>
 
-      <div className="w-full max-w-2xl bg-white rounded-3xl shadow-xl shadow-gray-200/50 p-6 md:p-8">
-        <h2 className="text-xl font-semibold text-gray-800 mb-6 px-4">Start your recipe</h2>
-        <UrlInput onExtract={handleExtract} isLoading={isLoading} />
-        
-        <div className="mt-8 px-4 py-6 border-t border-gray-100">
-          <p className="text-sm text-gray-400 text-center italic">
-            Paste a link from YouTube, Instagram, or TikTok to begin.
-          </p>
+      {!recipe && (
+        <div className="w-full max-w-2xl bg-white rounded-3xl shadow-xl shadow-gray-200/50 p-6 md:p-8">
+          <h2 className="text-xl font-semibold text-gray-800 mb-6 px-4">Start your recipe</h2>
+          <UrlInput onExtract={handleExtract} isLoading={isLoading} />
+          
+          <div className="mt-8 px-4 py-6 border-t border-gray-100">
+            <p className="text-sm text-gray-400 text-center italic">
+              Paste a link from YouTube, Instagram, or TikTok to begin.
+            </p>
+          </div>
         </div>
-      </div>
+      )}
 
-      <RecipePreview recipe={recipe} />
+      {recipe && !isEditing && (
+        <div className="w-full max-w-2xl">
+           <RecipePreview recipe={recipe} />
+           <div className="mt-4 flex justify-center">
+             <button 
+               onClick={() => setIsEditing(true)}
+               className="text-gray-600 hover:text-gray-900 font-medium underline"
+             >
+               Edit Recipe
+             </button>
+           </div>
+        </div>
+      )}
+
+      {recipe && isEditing && (
+        <RecipeEditor 
+          recipe={recipe} 
+          onSave={handleSave} 
+          onCancel={() => setIsEditing(false)} 
+        />
+      )}
     </main>
   );
 }
