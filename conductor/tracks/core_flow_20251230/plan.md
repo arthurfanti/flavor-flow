@@ -34,9 +34,9 @@
 - [x] Task: Build Shopping List UI (df87a2b)
     - [x] Sub-task: Write tests for shopping list view and "bought" toggle (df87a2b)
     - [x] Sub-task: Implement shopping list UI (mobile-first, clean design) (df87a2b)
-- [ ] Task: Connect Recipe Preview to Shopping List
-    - [ ] Sub-task: Write tests for "Add ingredients to list" flow
-    - [ ] Sub-task: Implement "Add to list" buttons and logic
+- [x] Task: Connect Recipe Preview to Shopping List (056a24f)
+    - [x] Sub-task: Write tests for "Add ingredients to list" flow (056a24f)
+    - [x] Sub-task: Implement "Add to list" buttons and logic (056a24f)
 - [ ] Task: Conductor - User Manual Verification 'Phase 4: Shopping List & Offline Sync' (Protocol in workflow.md)
 
 ## Phase 5: Final Polish & PWA Verification
