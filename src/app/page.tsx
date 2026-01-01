@@ -1,15 +1,34 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import UrlInput from '@/components/UrlInput';
 import RecipePreview from '@/components/RecipePreview';
 import RecipeEditor from '@/components/RecipeEditor';
+import ShoppingList from '@/components/ShoppingList';
 import { MockRecipeRepository } from '@/lib/repositories/MockRecipeRepository';
+import { SupabaseShoppingListRepository } from '@/lib/repositories/SupabaseShoppingListRepository';
+import { createSupabaseClient } from '@/lib/supabase/client';
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const [recipe, setRecipe] = useState<any | null>(null);
   const [isEditing, setIsEditing] = useState(false);
+  const [shoppingListItems, setShoppingListItems] = useState<any[]>([]);
+
+  const supabase = useMemo(() => createSupabaseClient(), []);
+  const shoppingListRepo = useMemo(() => new SupabaseShoppingListRepository(supabase), [supabase]);
+
+  useEffect(() => {
+    const fetchItems = async () => {
+      try {
+        const items = await shoppingListRepo.getItems();
+        setShoppingListItems(items);
+      } catch (error) {
+        console.error('Failed to fetch shopping list:', error);
+      }
+    };
+    fetchItems();
+  }, [shoppingListRepo]);
 
   const handleExtract = async (url: string) => {
     setIsLoading(true);
@@ -27,6 +46,44 @@ export default function Home() {
   const handleSave = (updatedRecipe: any) => {
     setRecipe(updatedRecipe);
     setIsEditing(false);
+  };
+
+  const handleAddToList = async (ingredients: string[]) => {
+    try {
+      for (const ingredient of ingredients) {
+        await shoppingListRepo.addItem({ name: ingredient, bought: false });
+      }
+      const updatedItems = await shoppingListRepo.getItems();
+      setShoppingListItems(updatedItems);
+      alert('Added to shopping list!');
+    } catch (error) {
+      console.error('Failed to add to shopping list:', error);
+    }
+  };
+
+  const handleToggleItem = async (id: number, bought: boolean) => {
+    try {
+      // Optimistic update
+      setShoppingListItems(items => items.map(item => item.id === id ? { ...item, bought } : item));
+      await shoppingListRepo.toggleItem(id, bought);
+    } catch (error) {
+      console.error('Failed to toggle item:', error);
+      // Revert on error
+      const items = await shoppingListRepo.getItems();
+      setShoppingListItems(items);
+    }
+  };
+
+  const handleRemoveItem = async (id: number) => {
+    try {
+      // Optimistic update
+      setShoppingListItems(items => items.filter(item => item.id !== id));
+      await shoppingListRepo.removeItem(id);
+    } catch (error) {
+      console.error('Failed to remove item:', error);
+      const items = await shoppingListRepo.getItems();
+      setShoppingListItems(items);
+    }
   };
 
   return (
@@ -53,7 +110,7 @@ export default function Home() {
 
       {recipe && !isEditing && (
         <div className="w-full max-w-2xl">
-           <RecipePreview recipe={recipe} />
+           <RecipePreview recipe={recipe} onAddToList={handleAddToList} />
            <div className="mt-4 flex justify-center">
              <button 
                onClick={() => setIsEditing(true)}
@@ -72,6 +129,12 @@ export default function Home() {
           onCancel={() => setIsEditing(false)} 
         />
       )}
+
+      <ShoppingList 
+        items={shoppingListItems} 
+        onToggle={handleToggleItem} 
+        onRemove={handleRemoveItem} 
+      />
     </main>
   );
 }
