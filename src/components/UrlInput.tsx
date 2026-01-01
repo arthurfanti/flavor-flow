@@ -22,7 +22,7 @@ export default function UrlInput({ onExtract, isLoading }: UrlInputProps) {
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <div className="relative">
           <input
-            type="url"
+            type="text"
             placeholder="Paste video URL (YouTube, Instagram, TikTok)"
             className="w-full p-4 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-yellow-400 bg-white shadow-sm transition-all"
             value={url}
