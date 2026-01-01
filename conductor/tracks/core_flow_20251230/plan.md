@@ -22,9 +22,9 @@
 - [x] Task: Build Recipe Preview Component (bbc747e)
     - [x] Sub-task: Write tests for Recipe Preview (serif headings, list layout) (bbc747e)
     - [x] Sub-task: Implement Recipe Preview UI (bbc747e)
-- [ ] Task: Implement Recipe Edit Functionality
-    - [ ] Sub-task: Write tests for editing ingredients and steps
-    - [ ] Sub-task: Implement edit forms and state persistence
+- [x] Task: Implement Recipe Edit Functionality (0c5c668)
+    - [x] Sub-task: Write tests for editing ingredients and steps (0c5c668)
+    - [x] Sub-task: Implement edit forms and state persistence (0c5c668)
 - [ ] Task: Conductor - User Manual Verification 'Phase 3: Recipe Display and Editing' (Protocol in workflow.md)
 
 ## Phase 4: Shopping List & Offline Sync
