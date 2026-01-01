@@ -18,4 +18,9 @@ describe("Home", () => {
     render(<Home />);
     expect(screen.getByPlaceholderText(/Paste video URL/i)).toBeInTheDocument();
   });
+
+  it("does not render RecipePreview initially", () => {
+    render(<Home />);
+    expect(screen.queryByText(/Ingredients/i)).not.toBeInTheDocument();
+  });
 });

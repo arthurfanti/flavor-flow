@@ -2,17 +2,24 @@
 
 import { useState } from 'react';
 import UrlInput from '@/components/UrlInput';
+import RecipePreview from '@/components/RecipePreview';
+import { MockRecipeRepository } from '@/lib/repositories/MockRecipeRepository';
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
+  const [recipe, setRecipe] = useState<any | null>(null);
 
   const handleExtract = async (url: string) => {
     setIsLoading(true);
-    console.log('Extracting from:', url);
-    // TODO: Integrate with SpoonacularExtractor and Repository in Phase 3
-    setTimeout(() => {
+    // TODO: Integrate with SpoonacularExtractor in next step, using MockRepo for UI demo
+    setTimeout(async () => {
+      const repo = new MockRecipeRepository();
+      const recipes = await repo.getRecipes();
+      setRecipe({
+        ...recipes[0],
+        sourceUrl: url
+      });
       setIsLoading(false);
-      alert('Extraction started for: ' + url + '\n(Integration coming in next phase)');
     }, 1500);
   };
 
@@ -35,6 +42,8 @@ export default function Home() {
           </p>
         </div>
       </div>
+
+      <RecipePreview recipe={recipe} />
     </main>
   );
 }
