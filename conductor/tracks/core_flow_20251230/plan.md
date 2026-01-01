@@ -18,14 +18,14 @@
     - [x] Sub-task: Implement URL input with loading state and sophisticated styling (eed9572)
 - [x] Task: Conductor - User Manual Verification 'Phase 2: Recipe Extraction Service' (Protocol in workflow.md) (fe65f44)
 
-## Phase 3: Recipe Display and Editing
+## Phase 3: Recipe Display and Editing [checkpoint: c79939d]
 - [x] Task: Build Recipe Preview Component (bbc747e)
     - [x] Sub-task: Write tests for Recipe Preview (serif headings, list layout) (bbc747e)
     - [x] Sub-task: Implement Recipe Preview UI (bbc747e)
 - [x] Task: Implement Recipe Edit Functionality (0c5c668)
     - [x] Sub-task: Write tests for editing ingredients and steps (0c5c668)
     - [x] Sub-task: Implement edit forms and state persistence (0c5c668)
-- [ ] Task: Conductor - User Manual Verification 'Phase 3: Recipe Display and Editing' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 3: Recipe Display and Editing' (Protocol in workflow.md) (c79939d)
 
 ## Phase 4: Shopping List & Offline Sync
 - [ ] Task: Implement Shopping List Store with Offline Persistence
