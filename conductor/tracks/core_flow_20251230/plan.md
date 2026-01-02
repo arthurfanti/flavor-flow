@@ -39,7 +39,8 @@
     - [x] Sub-task: Implement "Add to list" buttons and logic (056a24f)
 - [x] Task: Conductor - User Manual Verification 'Phase 4: Shopping List & Offline Sync' (Protocol in workflow.md) (ff7c3e9)
 
-## Phase 5: Final Polish & PWA Verification
 - [x] Task: Final UI/UX Polish (colors, typography, transitions) (b146eec)
-- [ ] Task: Verify PWA Installation and Offline functionality on mobile
-- [ ] Task: Conductor - User Manual Verification 'Phase 5: Final Polish & PWA Verification' (Protocol in workflow.md)
+- [x] Task: Verify PWA Installation and Offline functionality on mobile (bf2f187)
+- [x] Task: Conductor - User Manual Verification 'Phase 5: Final Polish & PWA Verification' (Protocol in workflow.md) (bf2f187)
+
+## Phase 5: Final Polish & PWA Verification [checkpoint: bf2f187]
