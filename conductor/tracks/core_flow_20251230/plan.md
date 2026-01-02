@@ -27,7 +27,7 @@
     - [x] Sub-task: Implement edit forms and state persistence (0c5c668)
 - [x] Task: Conductor - User Manual Verification 'Phase 3: Recipe Display and Editing' (Protocol in workflow.md) (c79939d)
 
-## Phase 4: Shopping List & Offline Sync
+## Phase 4: Shopping List & Offline Sync [checkpoint: ff7c3e9]
 - [x] Task: Implement Shopping List Store with Offline Persistence (a2e2e47)
     - [x] Sub-task: Write tests for shopping list repository (add/toggle/remove) (a2e2e47)
     - [x] Sub-task: Implement Supabase sync with local caching/optimistic updates (a2e2e47)
@@ -37,7 +37,7 @@
 - [x] Task: Connect Recipe Preview to Shopping List (056a24f)
     - [x] Sub-task: Write tests for "Add ingredients to list" flow (056a24f)
     - [x] Sub-task: Implement "Add to list" buttons and logic (056a24f)
-- [ ] Task: Conductor - User Manual Verification 'Phase 4: Shopping List & Offline Sync' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 4: Shopping List & Offline Sync' (Protocol in workflow.md) (ff7c3e9)
 
 ## Phase 5: Final Polish & PWA Verification
 - [ ] Task: Final UI/UX Polish (colors, typography, transitions)
