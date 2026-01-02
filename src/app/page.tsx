@@ -7,6 +7,7 @@ import RecipeEditor from '@/components/RecipeEditor';
 import ShoppingList from '@/components/ShoppingList';
 import { MockRecipeRepository } from '@/lib/repositories/MockRecipeRepository';
 import { SupabaseShoppingListRepository } from '@/lib/repositories/SupabaseShoppingListRepository';
+import { MockShoppingListRepository } from '@/lib/repositories/MockShoppingListRepository';
 import { createSupabaseClient } from '@/lib/supabase/client';
 
 export default function Home() {
@@ -15,8 +16,15 @@ export default function Home() {
   const [isEditing, setIsEditing] = useState(false);
   const [shoppingListItems, setShoppingListItems] = useState<any[]>([]);
 
-  const supabase = useMemo(() => createSupabaseClient(), []);
-  const shoppingListRepo = useMemo(() => new SupabaseShoppingListRepository(supabase), [supabase]);
+  const shoppingListRepo = useMemo(() => {
+    try {
+      const supabase = createSupabaseClient();
+      return new SupabaseShoppingListRepository(supabase);
+    } catch (e) {
+      console.warn('Supabase not configured, using mock repository');
+      return new MockShoppingListRepository();
+    }
+  }, []);
 
   useEffect(() => {
     const fetchItems = async () => {
