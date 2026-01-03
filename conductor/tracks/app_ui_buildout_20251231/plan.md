@@ -19,9 +19,9 @@
 - [x] Task: Build Pantry Inventory View (1ec839f)
     - [x] Sub-task: Write tests for PantryList component (categorization, low-stock filter) (1ec839f)
     - [x] Sub-task: Implement PantryList UI with staggered reveals and editorial headings (1ec839f)
-- [ ] Task: Implement Pantry Item Management UI
-    - [ ] Sub-task: Write tests for Add/Edit item forms
-    - [ ] Sub-task: Implement modal or slide-over forms for item creation/updates
+- [x] Task: Implement Pantry Item Management UI (908357f)
+    - [x] Sub-task: Write tests for Add/Edit item forms (908357f)
+    - [x] Sub-task: Implement modal or slide-over forms for item creation/updates (908357f)
 - [ ] Task: Conductor - User Manual Verification 'Phase 2: Digital Pantry Module' (Protocol in workflow.md)
 
 ## Phase 3: Meal Planner Module
