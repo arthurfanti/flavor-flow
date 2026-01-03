@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import ServiceWorkerRegister from "@/components/ServiceWorkerRegister";
+import MainLayout from "@/components/MainLayout";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -24,7 +25,7 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <ServiceWorkerRegister />
-        {children}
+        <MainLayout>{children}</MainLayout>
       </body>
     </html>
   );

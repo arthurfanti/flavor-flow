@@ -1,4 +1,5 @@
 import React from 'react';
+import TabBar from './TabBar';
 
 interface MainLayoutProps {
   children: React.ReactNode;
@@ -24,6 +25,8 @@ export default function MainLayout({ children }: MainLayoutProps) {
       <main className="flex-grow w-full max-w-2xl mx-auto px-4 py-8 pb-24">
         {children}
       </main>
+
+      <TabBar />
     </div>
   );
 }
