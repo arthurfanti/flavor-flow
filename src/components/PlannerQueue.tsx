@@ -22,11 +22,11 @@ export default function PlannerQueue({ recipes, onRemove }: PlannerQueueProps) {
       {recipes.map((recipe, idx) => (
         <div 
           key={recipe.id}
-          className="animate-fade-in group relative bg-white rounded-3xl border border-gray-100 shadow-[0_4px_20px_rgba(0,0,0,0.02)] overflow-hidden hover:shadow-xl transition-all duration-500"
+          className="animate-fade-in group relative bg-white rounded-3xl border border-gray-100 shadow-[0_4px_20px_rgba(0,0,0,0.02)] overflow-hidden hover:shadow-xl transition-all duration-500 sm:h-40"
           style={{ animationDelay: `${idx * 100}ms` }}
         >
           <div className="flex flex-col sm:flex-row h-full">
-            <div className="w-full sm:w-48 h-40 sm:h-auto overflow-hidden bg-gray-100">
+            <div className="w-full sm:w-48 h-40 sm:h-full overflow-hidden bg-gray-100">
               {recipe.image_url ? (
                 <img 
                   src={recipe.image_url} 
@@ -45,14 +45,14 @@ export default function PlannerQueue({ recipes, onRemove }: PlannerQueueProps) {
               )}
             </div>
             
-            <div className="flex-grow p-6 flex flex-col justify-center">
+            <div className="flex-grow p-6 flex flex-col justify-center overflow-hidden">
               <span className="text-[10px] font-sans font-bold uppercase tracking-[0.2em] text-brand-yellow-dark mb-2 block">Planned Meal</span>
-              <h3 className="text-2xl font-serif font-bold text-gray-900 leading-tight">
+              <h3 className="text-2xl font-serif font-bold text-gray-900 leading-tight line-clamp-2">
                 {recipe.title}
               </h3>
             </div>
 
-            <div className="p-4 flex items-center justify-end sm:border-l border-gray-50">
+            <div className="p-4 flex items-center justify-end sm:border-l border-gray-50 h-16 sm:h-full">
               <button
                 onClick={() => onRemove(recipe.id!)}
                 className="w-12 h-12 rounded-2xl text-gray-300 hover:text-red-500 hover:bg-red-50 flex items-center justify-center transition-all active:scale-90"

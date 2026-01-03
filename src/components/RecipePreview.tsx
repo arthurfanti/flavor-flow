@@ -10,21 +10,30 @@ interface Recipe {
 interface RecipePreviewProps {
   recipe: Recipe | null;
   onAddToList: (ingredients: string[]) => void;
+  onAddToPlanner: (title: string) => void;
 }
 
-export default function RecipePreview({ recipe, onAddToList }: RecipePreviewProps) {
+export default function RecipePreview({ recipe, onAddToList, onAddToPlanner }: RecipePreviewProps) {
   if (!recipe) return null;
 
   return (
     <div className="w-full max-w-2xl bg-white rounded-3xl shadow-xl shadow-gray-200/50 p-6 md:p-8 mt-8 animate-fade-in">
-      <div className="flex justify-between items-start mb-6">
+      <div className="flex flex-col sm:flex-row justify-between items-start gap-4 mb-8">
         <h2 className="text-3xl font-serif font-bold text-gray-900">{recipe.title}</h2>
-        <button
-          onClick={() => onAddToList(recipe.ingredients)}
-          className="bg-yellow-400 text-black px-4 py-2 rounded-lg font-semibold hover:bg-yellow-500 shadow-sm transition-all active:scale-95 text-sm"
-        >
-          Add to Shopping List
-        </button>
+        <div className="flex gap-2 w-full sm:w-auto">
+          <button
+            onClick={() => onAddToList(recipe.ingredients)}
+            className="flex-1 sm:flex-none bg-brand-yellow text-black px-4 py-3 rounded-xl font-bold uppercase tracking-widest text-[10px] hover:bg-brand-yellow-dark shadow-lg shadow-brand-yellow/10 transition-all active:scale-95"
+          >
+            Add to List
+          </button>
+          <button
+            onClick={() => onAddToPlanner(recipe.title)}
+            className="flex-1 sm:flex-none bg-white text-gray-400 border border-gray-100 px-4 py-3 rounded-xl font-bold uppercase tracking-widest text-[10px] hover:text-gray-600 hover:bg-gray-50 transition-all active:scale-95"
+          >
+            Add to Planner
+          </button>
+        </div>
       </div>
       
       <div className="mb-8">

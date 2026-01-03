@@ -30,16 +30,26 @@ describe('RecipePreview', () => {
 
   it('calls onAddToList when button is clicked', () => {
     const onAddToList = jest.fn();
-    render(<RecipePreview recipe={mockRecipe} onAddToList={onAddToList} />);
+    render(<RecipePreview recipe={mockRecipe} onAddToList={onAddToList} onAddToPlanner={jest.fn()} />);
     
-    const button = screen.getByRole('button', { name: /Add to Shopping List/i });
+    const button = screen.getByRole('button', { name: /Add to List/i });
     fireEvent.click(button);
     
     expect(onAddToList).toHaveBeenCalledWith(mockRecipe.ingredients);
   });
 
+  it('calls onAddToPlanner when button is clicked', () => {
+    const onAddToPlanner = jest.fn();
+    render(<RecipePreview recipe={mockRecipe} onAddToList={jest.fn()} onAddToPlanner={onAddToPlanner} />);
+    
+    const button = screen.getByRole('button', { name: /Add to Planner/i });
+    fireEvent.click(button);
+    
+    expect(onAddToPlanner).toHaveBeenCalledWith(mockRecipe.title);
+  });
+
   it('renders nothing if no recipe is provided', () => {
-    const { container } = render(<RecipePreview recipe={null} onAddToList={jest.fn()} />);
+    const { container } = render(<RecipePreview recipe={null} onAddToList={jest.fn()} onAddToPlanner={jest.fn()} />);
     expect(container).toBeEmptyDOMElement();
   });
 });

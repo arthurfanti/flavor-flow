@@ -8,13 +8,14 @@ import ShoppingList from '@/components/ShoppingList';
 import { MockRecipeRepository } from '@/lib/repositories/MockRecipeRepository';
 import { SupabaseShoppingListRepository } from '@/lib/repositories/SupabaseShoppingListRepository';
 import { MockShoppingListRepository } from '@/lib/repositories/MockShoppingListRepository';
+import { SupabasePlannerRepository } from '@/lib/repositories/SupabasePlannerRepository';
+import { MockPlannerRepository } from '@/lib/repositories/MockPlannerRepository';
 import { createSupabaseClient } from '@/lib/supabase/client';
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const [recipe, setRecipe] = useState<any | null>(null);
   const [isEditing, setIsEditing] = useState(false);
-  const [shoppingListItems, setShoppingListItems] = useState<any[]>([]);
 
   const shoppingListRepo = useMemo(() => {
     try {
@@ -26,21 +27,15 @@ export default function Home() {
     }
   }, []);
 
-  useEffect(() => {
-    const fetchItems = async () => {
-      try {
-        const items = await shoppingListRepo.getItems();
-        setShoppingListItems(items);
-        localStorage.setItem('shoppingList', JSON.stringify(items));
-      } catch (error) {
-        console.error('Failed to fetch shopping list:', error);
-        // Fallback to local storage if fetch fails (e.g. offline)
-        const cached = localStorage.getItem('shoppingList');
-        if (cached) setShoppingListItems(JSON.parse(cached));
-      }
-    };
-    fetchItems();
-  }, [shoppingListRepo]);
+  const plannerRepo = useMemo(() => {
+    try {
+      const supabase = createSupabaseClient();
+      return new SupabasePlannerRepository(supabase);
+    } catch (e) {
+      console.warn('Supabase not configured, using mock repository');
+      return new MockPlannerRepository();
+    }
+  }, []);
 
   const handleExtract = async (url: string) => {
     setIsLoading(true);
@@ -49,7 +44,8 @@ export default function Home() {
       const recipes = await repo.getRecipes();
       setRecipe({
         ...recipes[0],
-        sourceUrl: url
+        sourceUrl: url,
+        image_url: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&q=80&w=1000'
       });
       setIsLoading(false);
     }, 1500);
@@ -65,53 +61,35 @@ export default function Home() {
       for (const ingredient of ingredients) {
         await shoppingListRepo.addItem({ name: ingredient, bought: false });
       }
-      const updatedItems = await shoppingListRepo.getItems();
-      setShoppingListItems(updatedItems);
-      localStorage.setItem('shoppingList', JSON.stringify(updatedItems));
       alert('Added to shopping list!');
     } catch (error) {
       console.error('Failed to add to shopping list:', error);
     }
   };
 
-  const handleToggleItem = async (id: number, bought: boolean) => {
+  const handleAddToPlanner = async (title: string) => {
     try {
-      // Optimistic update
-      const newItems = shoppingListItems.map(item => item.id === id ? { ...item, bought } : item);
-      setShoppingListItems(newItems);
-      localStorage.setItem('shoppingList', JSON.stringify(newItems));
-      await shoppingListRepo.toggleItem(id, bought);
+      await plannerRepo.addToQueue({ 
+        title, 
+        source_url: recipe?.sourceUrl || '',
+        image_url: recipe?.image_url 
+      });
+      alert('Added to planner!');
     } catch (error) {
-      console.error('Failed to toggle item:', error);
-      // Revert on error
-      const items = await shoppingListRepo.getItems();
-      setShoppingListItems(items);
-      localStorage.setItem('shoppingList', JSON.stringify(items));
-    }
-  };
-
-  const handleRemoveItem = async (id: number) => {
-    try {
-      // Optimistic update
-      const newItems = shoppingListItems.filter(item => item.id !== id);
-      setShoppingListItems(newItems);
-      localStorage.setItem('shoppingList', JSON.stringify(newItems));
-      await shoppingListRepo.removeItem(id);
-    } catch (error) {
-      console.error('Failed to remove item:', error);
-      const items = await shoppingListRepo.getItems();
-      setShoppingListItems(items);
-      localStorage.setItem('shoppingList', JSON.stringify(items));
+      console.error('Failed to add to planner:', error);
     }
   };
 
   return (
-    <div className="flex flex-col items-center w-full animate-fade-in">
-      <div className="w-full h-56 rounded-[2rem] overflow-hidden mb-10 shadow-lg relative group">
+    <div className="flex flex-col items-center w-full animate-fade-in text-gray-900">
+      <div className="w-full h-56 rounded-[2rem] overflow-hidden mb-10 shadow-lg relative group bg-gradient-to-br from-brand-yellow/20 to-orange-100">
         <img 
-          src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&q=80&w=1000" 
-          alt="Fresh ingredients"
-          className="w-full h-full object-cover grayscale-[10%] group-hover:grayscale-0 group-hover:scale-105 transition-all duration-1000 ease-out"
+          src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&q=80&w=1000" 
+          alt="Fresh food"
+          className="w-full h-full object-cover group-hover:scale-105 transition-all duration-1000 ease-out"
+          onError={(e) => {
+            (e.target as HTMLImageElement).style.display = 'none';
+          }}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
         <div className="absolute bottom-8 left-8">
@@ -144,7 +122,11 @@ export default function Home() {
 
       {recipe && !isEditing && (
         <div className="w-full max-w-2xl">
-           <RecipePreview recipe={recipe} onAddToList={handleAddToList} />
+           <RecipePreview 
+             recipe={recipe} 
+             onAddToList={handleAddToList} 
+             onAddToPlanner={handleAddToPlanner}
+           />
            <div className="mt-4 flex justify-center">
              <button 
                onClick={() => setIsEditing(true)}
@@ -163,12 +145,6 @@ export default function Home() {
           onCancel={() => setIsEditing(false)} 
         />
       )}
-
-      <ShoppingList 
-        items={shoppingListItems} 
-        onToggle={handleToggleItem} 
-        onRemove={handleRemoveItem} 
-      />
     </div>
   );
 }
