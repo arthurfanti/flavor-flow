@@ -16,9 +16,9 @@
     - [x] Sub-task: Define PantryItem interface and category types (90b6d8c)
     - [x] Sub-task: Implement SupabasePantryRepository with CRUD operations (90b6d8c)
     - [x] Sub-task: Write unit tests for repository methods (90b6d8c)
-- [ ] Task: Build Pantry Inventory View
-    - [ ] Sub-task: Write tests for PantryList component (categorization, low-stock filter)
-    - [ ] Sub-task: Implement PantryList UI with staggered reveals and editorial headings
+- [x] Task: Build Pantry Inventory View (1ec839f)
+    - [x] Sub-task: Write tests for PantryList component (categorization, low-stock filter) (1ec839f)
+    - [x] Sub-task: Implement PantryList UI with staggered reveals and editorial headings (1ec839f)
 - [ ] Task: Implement Pantry Item Management UI
     - [ ] Sub-task: Write tests for Add/Edit item forms
     - [ ] Sub-task: Implement modal or slide-over forms for item creation/updates
