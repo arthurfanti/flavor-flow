@@ -38,8 +38,8 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 3: Meal Planner Module' (Protocol in workflow.md) (931ebeb)
 
 ## Phase 4: Integration & Visual Refinement
-- [ ] Task: Implement Global Staggered Reveals and Transitions
-    - [ ] Sub-task: Add framer-motion (or CSS transitions) for smooth page switching
+- [x] Task: Implement Global Staggered Reveals and Transitions (bbfc65e)
+    - [x] Sub-task: Add framer-motion (or CSS transitions) for smooth page switching (bbfc65e)
 - [ ] Task: Final Quality Pass on Typography and Spacing
     - [ ] Sub-task: Audit all views against "Editorial Elegance" and "Adult Aesthetic" guidelines
 - [ ] Task: Conductor - User Manual Verification 'Phase 4: Integration & Visual Refinement' (Protocol in workflow.md)
