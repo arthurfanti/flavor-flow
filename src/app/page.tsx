@@ -31,8 +31,12 @@ export default function Home() {
       try {
         const items = await shoppingListRepo.getItems();
         setShoppingListItems(items);
+        localStorage.setItem('shoppingList', JSON.stringify(items));
       } catch (error) {
         console.error('Failed to fetch shopping list:', error);
+        // Fallback to local storage if fetch fails (e.g. offline)
+        const cached = localStorage.getItem('shoppingList');
+        if (cached) setShoppingListItems(JSON.parse(cached));
       }
     };
     fetchItems();
@@ -63,6 +67,7 @@ export default function Home() {
       }
       const updatedItems = await shoppingListRepo.getItems();
       setShoppingListItems(updatedItems);
+      localStorage.setItem('shoppingList', JSON.stringify(updatedItems));
       alert('Added to shopping list!');
     } catch (error) {
       console.error('Failed to add to shopping list:', error);
@@ -72,30 +77,36 @@ export default function Home() {
   const handleToggleItem = async (id: number, bought: boolean) => {
     try {
       // Optimistic update
-      setShoppingListItems(items => items.map(item => item.id === id ? { ...item, bought } : item));
+      const newItems = shoppingListItems.map(item => item.id === id ? { ...item, bought } : item);
+      setShoppingListItems(newItems);
+      localStorage.setItem('shoppingList', JSON.stringify(newItems));
       await shoppingListRepo.toggleItem(id, bought);
     } catch (error) {
       console.error('Failed to toggle item:', error);
       // Revert on error
       const items = await shoppingListRepo.getItems();
       setShoppingListItems(items);
+      localStorage.setItem('shoppingList', JSON.stringify(items));
     }
   };
 
   const handleRemoveItem = async (id: number) => {
     try {
       // Optimistic update
-      setShoppingListItems(items => items.filter(item => item.id !== id));
+      const newItems = shoppingListItems.filter(item => item.id !== id);
+      setShoppingListItems(newItems);
+      localStorage.setItem('shoppingList', JSON.stringify(newItems));
       await shoppingListRepo.removeItem(id);
     } catch (error) {
       console.error('Failed to remove item:', error);
       const items = await shoppingListRepo.getItems();
       setShoppingListItems(items);
+      localStorage.setItem('shoppingList', JSON.stringify(items));
     }
   };
 
   return (
-    <main className="flex min-h-screen flex-col items-center px-4 pt-20 pb-10 bg-[#FAFAFA]">
+    <div className="flex flex-col items-center w-full animate-fade-in">
       <header className="text-center mb-12">
         <h1 className="text-5xl font-serif font-bold text-gray-900 mb-4">Flavor Flow</h1>
         <p className="text-lg text-gray-600 max-w-md mx-auto">
@@ -143,6 +154,6 @@ export default function Home() {
         onToggle={handleToggleItem} 
         onRemove={handleRemoveItem} 
       />
-    </main>
+    </div>
   );
 }
