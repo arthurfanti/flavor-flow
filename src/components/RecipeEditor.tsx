@@ -33,57 +33,66 @@ export default function RecipeEditor({ recipe, onSave, onCancel }: RecipeEditorP
   };
 
   return (
-    <div className="w-full max-w-2xl bg-white rounded-3xl shadow-xl shadow-gray-200/50 p-6 md:p-8 mt-8">
-      <h2 className="text-2xl font-bold mb-4">Edit Recipe</h2>
+    <div className="w-full max-w-2xl bg-white rounded-[2rem] shadow-xl shadow-gray-200/50 p-8 md:p-10 mt-8 animate-fade-in">
+      <header className="mb-10">
+        <span className="text-brand-yellow font-sans font-bold uppercase tracking-[0.2em] text-[10px] mb-2 block">Editing Mode</span>
+        <h2 className="text-4xl font-serif font-bold text-gray-900 tracking-tight">Edit Recipe</h2>
+      </header>
       
-      <div className="mb-4">
-        <label className="block text-sm font-medium text-gray-700">Title</label>
-        <input
-          type="text"
-          value={editedRecipe.title}
-          onChange={handleTitleChange}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-yellow-400 focus:ring focus:ring-yellow-400 focus:ring-opacity-50 p-2 border"
-        />
-      </div>
-
-      <div className="mb-4">
-        <label className="block text-sm font-medium text-gray-700">Ingredients</label>
-        {editedRecipe.ingredients.map((ingredient, index) => (
+      <div className="space-y-8">
+        <div>
+          <label className="block text-sm font-sans font-bold uppercase tracking-widest text-gray-400 mb-3">Title</label>
           <input
-            key={index}
             type="text"
-            value={ingredient}
-            onChange={(e) => handleIngredientChange(index, e.target.value)}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-yellow-400 focus:ring focus:ring-yellow-400 focus:ring-opacity-50 p-2 border mb-2"
+            value={editedRecipe.title}
+            onChange={handleTitleChange}
+            className="w-full p-5 rounded-2xl border border-gray-100 focus:outline-none focus:ring-4 focus:ring-brand-yellow/20 bg-white shadow-sm transition-all text-xl font-medium text-gray-700"
           />
-        ))}
+        </div>
+
+        <div>
+          <label className="block text-sm font-sans font-bold uppercase tracking-widest text-gray-400 mb-3">Ingredients</label>
+          <div className="space-y-3">
+            {editedRecipe.ingredients.map((ingredient, index) => (
+              <input
+                key={index}
+                type="text"
+                value={ingredient}
+                onChange={(e) => handleIngredientChange(index, e.target.value)}
+                className="w-full p-4 rounded-xl border border-gray-100 focus:outline-none focus:ring-4 focus:ring-brand-yellow/10 bg-gray-50/50 transition-all text-gray-700"
+              />
+            ))}
+          </div>
+        </div>
+
+        <div>
+          <label className="block text-sm font-sans font-bold uppercase tracking-widest text-gray-400 mb-3">Instructions</label>
+          <div className="space-y-3">
+            {editedRecipe.instructions.map((step, index) => (
+              <textarea
+                key={index}
+                value={step}
+                onChange={(e) => handleInstructionChange(index, e.target.value)}
+                className="w-full p-4 rounded-xl border border-gray-100 focus:outline-none focus:ring-4 focus:ring-brand-yellow/10 bg-gray-50/50 transition-all text-gray-700 leading-relaxed"
+                rows={2}
+              />
+            ))}
+          </div>
+        </div>
       </div>
 
-      <div className="mb-6">
-        <label className="block text-sm font-medium text-gray-700">Instructions</label>
-        {editedRecipe.instructions.map((step, index) => (
-          <textarea
-            key={index}
-            value={step}
-            onChange={(e) => handleInstructionChange(index, e.target.value)}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-yellow-400 focus:ring focus:ring-yellow-400 focus:ring-opacity-50 p-2 border mb-2"
-            rows={2}
-          />
-        ))}
-      </div>
-
-      <div className="flex justify-end gap-3">
+      <div className="flex gap-4 pt-10 border-t border-gray-50 mt-10">
         <button
           onClick={onCancel}
-          className="px-4 py-2 rounded-lg text-gray-600 hover:bg-gray-100 font-medium"
+          className="flex-1 p-5 rounded-2xl font-bold uppercase tracking-widest text-xs text-gray-400 bg-white border border-gray-100 hover:bg-gray-50 transition-all"
         >
-          Cancel
+          Discard Changes
         </button>
         <button
           onClick={() => onSave(editedRecipe)}
-          className="px-4 py-2 rounded-lg bg-yellow-400 text-black hover:bg-yellow-500 font-semibold shadow-sm"
+          className="flex-1 p-5 rounded-2xl font-bold uppercase tracking-widest text-xs bg-brand-yellow text-black hover:bg-brand-yellow-dark shadow-lg shadow-brand-yellow/10 transition-all active:scale-95"
         >
-          Save
+          Save Recipe
         </button>
       </div>
     </div>

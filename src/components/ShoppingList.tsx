@@ -28,18 +28,21 @@ export default function ShoppingList({ items, onToggle, onRemove }: ShoppingList
 
   return (
     <div className="w-full max-w-2xl bg-white rounded-3xl shadow-xl shadow-gray-200/50 p-6 md:p-8 mt-8">
-      <h2 className="text-2xl font-bold text-gray-900 mb-6">Shopping List</h2>
-      <ul className="divide-y divide-gray-100">
+      <span className="text-[10px] font-sans font-bold uppercase tracking-[0.2em] text-brand-yellow-dark mb-2 block px-1">Inventory</span>
+      <h2 className="text-3xl font-serif font-bold text-gray-900 mb-8 px-1">Shopping List</h2>
+      <ul className="divide-y divide-gray-50">
         {items.map((item) => (
-          <li key={item.id} className="py-4 flex items-center justify-between group">
-            <div className="flex items-center gap-4">
-              <input
-                type="checkbox"
-                checked={item.bought}
-                onChange={(e) => onToggle(item.id!, e.target.checked)}
-                className="w-6 h-6 rounded-lg border-gray-300 text-yellow-400 focus:ring-yellow-400 cursor-pointer"
-              />
-              <span className={`text-lg transition-all ${item.bought ? 'text-gray-400 line-through' : 'text-gray-700'}`}>
+          <li key={item.id} className="py-5 flex items-center justify-between group px-1">
+            <div className="flex items-center gap-5">
+              <div className="relative flex items-center">
+                <input
+                  type="checkbox"
+                  checked={item.bought}
+                  onChange={(e) => onToggle(item.id!, e.target.checked)}
+                  className="peer w-6 h-6 rounded-lg border-2 border-gray-100 text-brand-yellow focus:ring-brand-yellow cursor-pointer transition-all checked:border-brand-yellow"
+                />
+              </div>
+              <span className={`text-lg font-medium transition-all duration-500 ${item.bought ? 'text-gray-300 line-through' : 'text-gray-700'}`}>
                 {item.name}
               </span>
             </div>
