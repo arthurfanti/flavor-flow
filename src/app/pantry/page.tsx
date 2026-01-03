@@ -5,11 +5,13 @@ import { createSupabaseClient } from '@/lib/supabase/client';
 import { SupabasePantryRepository } from '@/lib/repositories/SupabasePantryRepository';
 import { MockPantryRepository } from '@/lib/repositories/MockPantryRepository';
 import PantryList from '@/components/PantryList';
+import PantryItemForm from '@/components/PantryItemForm';
 import { PantryItem } from '@/lib/repositories/PantryRepository';
 
 export default function PantryPage() {
   const [items, setItems] = useState<PantryItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isAdding, setIsAdding] = useState(false);
 
   const pantryRepo = useMemo(() => {
     try {
@@ -21,22 +23,34 @@ export default function PantryPage() {
     }
   }, []);
 
+  const refreshItems = async () => {
+    setIsLoading(true);
+    try {
+      const data = await pantryRepo.getItems();
+      setItems(data);
+    } catch (error) {
+      console.error('Failed to fetch pantry items:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchItems = async () => {
-      try {
-        const data = await pantryRepo.getItems();
-        setItems(data);
-      } catch (error) {
-        console.error('Failed to fetch pantry items:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    fetchItems();
+    refreshItems();
   }, [pantryRepo]);
 
+  const handleSaveItem = async (data: Partial<PantryItem>) => {
+    try {
+      await pantryRepo.addItem(data);
+      await refreshItems();
+      setIsAdding(false);
+    } catch (error) {
+      console.error('Failed to save pantry item:', error);
+    }
+  };
+
   return (
-    <div className="flex flex-col w-full animate-fade-in">
+    <div className="flex flex-col w-full animate-fade-in pb-20">
       <div className="w-full h-48 rounded-[2rem] overflow-hidden mb-10 shadow-lg relative bg-brand-yellow/5">
         <img 
           src="https://images.unsplash.com/photo-1584473457406-62302ce999e2?auto=format&fit=crop&q=80&w=1000" 
@@ -52,26 +66,42 @@ export default function PantryPage() {
         </div>
       </div>
 
-      <header className="mb-10 flex items-center justify-between">
-        <div>
-          <p className="text-gray-500 font-medium italic">
-            Keep track of your kitchen staples.
-          </p>
-        </div>
-        {/* Placeholder for Add Item Action */}
-        <button className="w-12 h-12 rounded-2xl bg-brand-yellow text-black flex items-center justify-center shadow-lg shadow-brand-yellow/20 hover:scale-105 active:scale-95 transition-all">
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-          </svg>
-        </button>
-      </header>
+      {!isAdding && (
+        <>
+          <header className="mb-10 flex items-center justify-between px-2">
+            <div>
+              <p className="text-gray-500 font-medium italic">
+                Keep track of your kitchen staples.
+              </p>
+            </div>
+            <button 
+              onClick={() => setIsAdding(true)}
+              className="w-14 h-14 rounded-2xl bg-brand-yellow text-black flex items-center justify-center shadow-lg shadow-brand-yellow/20 hover:scale-105 active:scale-95 transition-all"
+            >
+              <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+              </svg>
+            </button>
+          </header>
 
-      {isLoading ? (
-        <div className="w-full py-20 flex justify-center">
-          <div className="animate-spin h-8 w-8 border-4 border-brand-yellow border-t-transparent rounded-full" />
+          {isLoading ? (
+            <div className="w-full py-20 flex justify-center">
+              <div className="animate-spin h-8 w-8 border-4 border-brand-yellow border-t-transparent rounded-full" />
+            </div>
+          ) : (
+            <PantryList items={items} />
+          )}
+        </>
+      )}
+
+      {isAdding && (
+        <div className="w-full max-w-lg mx-auto py-4">
+          <header className="mb-10 text-center">
+            <h2 className="text-3xl font-serif font-bold text-gray-900 mb-2">Add New Item</h2>
+            <p className="text-gray-400 italic">Expand your kitchen inventory</p>
+          </header>
+          <PantryItemForm onSave={handleSaveItem} onCancel={() => setIsAdding(false)} />
         </div>
-      ) : (
-        <PantryList items={items} />
       )}
     </div>
   );
