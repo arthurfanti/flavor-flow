@@ -29,9 +29,9 @@
     - [x] Sub-task: Define PlannedRecipe interface (eea6684)
     - [x] Sub-task: Implement SupabasePlannerRepository (queue management) (eea6684)
     - [x] Sub-task: Write unit tests for repository methods (eea6684)
-- [ ] Task: Build Meal Planner Queue View
-    - [ ] Sub-task: Write tests for PlannerQueue component (reordering logic, recipe display)
-    - [ ] Sub-task: Implement PlannerQueue UI with reorderable list items and appetizing imagery
+- [x] Task: Build Meal Planner Queue View (0fd84a3)
+    - [x] Sub-task: Write tests for PlannerQueue component (reordering logic, recipe display) (0fd84a3)
+    - [x] Sub-task: Implement PlannerQueue UI with reorderable list items and appetizing imagery (0fd84a3)
 - [ ] Task: Connect Home Page to Planner
     - [ ] Sub-task: Add "Add to Planner" action to RecipePreview component
     - [ ] Sub-task: Implement logic to move extracted recipes into the planner queue
