@@ -11,7 +11,7 @@
     - [x] Sub-task: Update root layout to wrap all pages in MainLayout (08dda8e)
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Main Application Shell & Navigation' (Protocol in workflow.md) (8333e45)
 
-## Phase 2: Digital Pantry Module
+## Phase 2: Digital Pantry Module [checkpoint: 2176a93]
 - [x] Task: Create Pantry Repository and Domain Types (90b6d8c)
     - [x] Sub-task: Define PantryItem interface and category types (90b6d8c)
     - [x] Sub-task: Implement SupabasePantryRepository with CRUD operations (90b6d8c)
@@ -22,7 +22,7 @@
 - [x] Task: Implement Pantry Item Management UI (908357f)
     - [x] Sub-task: Write tests for Add/Edit item forms (908357f)
     - [x] Sub-task: Implement modal or slide-over forms for item creation/updates (908357f)
-- [ ] Task: Conductor - User Manual Verification 'Phase 2: Digital Pantry Module' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 2: Digital Pantry Module' (Protocol in workflow.md) (2176a93)
 
 ## Phase 3: Meal Planner Module
 - [ ] Task: Create Planner Repository and Domain Types
