@@ -24,7 +24,7 @@
     - [x] Sub-task: Implement modal or slide-over forms for item creation/updates (908357f)
 - [x] Task: Conductor - User Manual Verification 'Phase 2: Digital Pantry Module' (Protocol in workflow.md) (2176a93)
 
-## Phase 3: Meal Planner Module
+## Phase 3: Meal Planner Module [checkpoint: 931ebeb]
 - [x] Task: Create Planner Repository and Domain Types (eea6684)
     - [x] Sub-task: Define PlannedRecipe interface (eea6684)
     - [x] Sub-task: Implement SupabasePlannerRepository (queue management) (eea6684)
@@ -37,9 +37,9 @@
     - [x] Sub-task: Implement logic to move extracted recipes into the planner queue (931ebeb)
 - [x] Task: Conductor - User Manual Verification 'Phase 3: Meal Planner Module' (Protocol in workflow.md) (931ebeb)
 
-## Phase 4: Integration & Visual Refinement
+## Phase 4: Integration & Visual Refinement [checkpoint: 37602da]
 - [x] Task: Implement Global Staggered Reveals and Transitions (bbfc65e)
     - [x] Sub-task: Add framer-motion (or CSS transitions) for smooth page switching (bbfc65e)
 - [x] Task: Final Quality Pass on Typography and Spacing (6f67d03)
     - [x] Sub-task: Audit all views against "Editorial Elegance" and "Adult Aesthetic" guidelines (6f67d03)
-- [ ] Task: Conductor - User Manual Verification 'Phase 4: Integration & Visual Refinement' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 4: Integration & Visual Refinement' (Protocol in workflow.md) (37602da)
