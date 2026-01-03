@@ -7,8 +7,8 @@
 - [x] Task: Implement Bottom Tab Bar for Mobile (57bba59)
     - [x] Sub-task: Write tests for TabBar (active states, navigation links) (57bba59)
     - [x] Sub-task: Implement TabBar with clear icons and serif labels (57bba59)
-- [ ] Task: Integrate App Shell into Next.js App Router
-    - [ ] Sub-task: Update root layout to wrap all pages in MainLayout
+- [x] Task: Integrate App Shell into Next.js App Router (08dda8e)
+    - [x] Sub-task: Update root layout to wrap all pages in MainLayout (08dda8e)
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: Main Application Shell & Navigation' (Protocol in workflow.md)
 
 ## Phase 2: Digital Pantry Module
