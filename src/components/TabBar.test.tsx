@@ -23,7 +23,7 @@ describe('TabBar', () => {
     render(<TabBar />);
     
     const plannerLink = screen.getByText(/Planner/i).closest('a');
-    expect(plannerLink).toHaveClass('text-yellow-500'); // Assuming active color is yellow-500
+    expect(plannerLink).toHaveClass('text-brand-yellow-dark'); 
   });
 
   it('is fixed to the bottom of the screen', () => {

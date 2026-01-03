@@ -7,10 +7,10 @@ interface MainLayoutProps {
 
 export default function MainLayout({ children }: MainLayoutProps) {
   return (
-    <div className="min-h-screen flex flex-col bg-[#FAFAFA]">
-      <header className="w-full py-6 px-4 bg-white border-b border-gray-100 shadow-sm sticky top-0 z-10">
+    <div className="min-h-screen flex flex-col bg-app-bg text-gray-900">
+      <header className="w-full py-6 px-6 bg-white/90 backdrop-blur-xl border-b border-ui-border shadow-[0_1px_3px_rgba(0,0,0,0.02)] sticky top-0 z-50">
         <div className="max-w-2xl mx-auto flex items-center justify-between">
-          <h1 className="text-3xl font-serif font-bold text-gray-900 tracking-tight">
+          <h1 className="text-3xl font-bold tracking-tight text-gray-900">
             Flavor Flow
           </h1>
           {/* Future slot for user profile/settings */}

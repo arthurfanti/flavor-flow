@@ -9,14 +9,23 @@ interface Recipe {
 
 interface RecipePreviewProps {
   recipe: Recipe | null;
+  onAddToList: (ingredients: string[]) => void;
 }
 
-export default function RecipePreview({ recipe }: RecipePreviewProps) {
+export default function RecipePreview({ recipe, onAddToList }: RecipePreviewProps) {
   if (!recipe) return null;
 
   return (
     <div className="w-full max-w-2xl bg-white rounded-3xl shadow-xl shadow-gray-200/50 p-6 md:p-8 mt-8 animate-fade-in">
-      <h2 className="text-3xl font-serif font-bold text-gray-900 mb-6">{recipe.title}</h2>
+      <div className="flex justify-between items-start mb-6">
+        <h2 className="text-3xl font-serif font-bold text-gray-900">{recipe.title}</h2>
+        <button
+          onClick={() => onAddToList(recipe.ingredients)}
+          className="bg-yellow-400 text-black px-4 py-2 rounded-lg font-semibold hover:bg-yellow-500 shadow-sm transition-all active:scale-95 text-sm"
+        >
+          Add to Shopping List
+        </button>
+      </div>
       
       <div className="mb-8">
         <h3 className="text-lg font-semibold text-gray-700 mb-3 uppercase tracking-wider">Ingredients</h3>

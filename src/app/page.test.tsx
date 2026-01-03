@@ -22,13 +22,13 @@ jest.mock("../lib/repositories/SupabaseShoppingListRepository", () => ({
 describe("Home", () => {
   it("renders the heading", () => {
     render(<Home />);
-    const heading = screen.getByRole('heading', { name: /Flavor Flow/i, level: 1 });
+    const heading = screen.getByRole('heading', { name: /Discover/i, level: 1 });
     expect(heading).toBeInTheDocument();
   });
 
   it("renders the description", () => {
     render(<Home />);
-    const description = screen.getByText(/Turn your favorite cooking videos/i);
+    const description = screen.getByText(/Transform your cooking inspiration/i);
     expect(description).toBeInTheDocument();
   });
 

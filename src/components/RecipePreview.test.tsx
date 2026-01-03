@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import RecipePreview from './RecipePreview';
 
 const mockRecipe = {
@@ -23,13 +23,23 @@ describe('RecipePreview', () => {
   });
 
   it('renders instructions list', () => {
-    render(<RecipePreview recipe={mockRecipe} />);
+    render(<RecipePreview recipe={mockRecipe} onAddToList={jest.fn()} />);
     expect(screen.getByText('Mix ingredients')).toBeInTheDocument();
     expect(screen.getByText('Bake at 350F')).toBeInTheDocument();
   });
 
+  it('calls onAddToList when button is clicked', () => {
+    const onAddToList = jest.fn();
+    render(<RecipePreview recipe={mockRecipe} onAddToList={onAddToList} />);
+    
+    const button = screen.getByRole('button', { name: /Add to Shopping List/i });
+    fireEvent.click(button);
+    
+    expect(onAddToList).toHaveBeenCalledWith(mockRecipe.ingredients);
+  });
+
   it('renders nothing if no recipe is provided', () => {
-    const { container } = render(<RecipePreview recipe={null} />);
+    const { container } = render(<RecipePreview recipe={null} onAddToList={jest.fn()} />);
     expect(container).toBeEmptyDOMElement();
   });
 });

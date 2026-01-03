@@ -4,9 +4,7 @@ import path from 'path';
 describe('Global CSS', () => {
   it('contains tailwind directives', () => {
     const css = fs.readFileSync(path.join(__dirname, 'globals.css'), 'utf8');
-    expect(css).toContain('@tailwind base');
-    expect(css).toContain('@tailwind components');
-    expect(css).toContain('@tailwind utilities');
+    expect(css).toContain('@import "tailwindcss"');
   });
 
   it('defines fade-in animation', () => {

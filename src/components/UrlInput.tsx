@@ -18,13 +18,13 @@ export default function UrlInput({ onExtract, isLoading }: UrlInputProps) {
   };
 
   return (
-    <div className="w-full max-w-2xl mx-auto p-4">
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-        <div className="relative">
+    <div className="w-full max-w-2xl mx-auto p-0">
+      <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+        <div className="relative group">
           <input
             type="text"
-            placeholder="Paste video URL (YouTube, Instagram, TikTok)"
-            className="w-full p-4 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-yellow-400 bg-white shadow-sm transition-all"
+            placeholder="Paste video URL (YouTube, Instagram...)"
+            className="w-full p-5 rounded-2xl border border-gray-100 focus:outline-none focus:ring-4 focus:ring-brand-yellow/20 bg-white shadow-[0_4px_20px_rgba(0,0,0,0.03)] group-hover:shadow-md transition-all font-sans text-gray-700"
             value={url}
             onChange={(e) => setUrl(e.target.value)}
             disabled={isLoading}
@@ -34,10 +34,10 @@ export default function UrlInput({ onExtract, isLoading }: UrlInputProps) {
         <button
           type="submit"
           disabled={isLoading || !url.trim()}
-          className={`w-full p-4 rounded-xl font-semibold transition-all ${
+          className={`w-full p-5 rounded-2xl font-bold uppercase tracking-widest text-xs transition-all ${
             isLoading || !url.trim()
-              ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-              : 'bg-yellow-400 text-black hover:bg-yellow-500 active:scale-[0.98] shadow-md'
+              ? 'bg-gray-50 text-gray-300 cursor-not-allowed'
+              : 'bg-brand-yellow text-black hover:bg-brand-yellow-dark active:scale-[0.98] shadow-lg shadow-brand-yellow/10'
           }`}
         >
           {isLoading ? (

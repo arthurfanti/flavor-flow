@@ -47,15 +47,15 @@ export default function TabBar() {
   const pathname = usePathname();
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 px-4 py-2 pb-6 flex justify-around items-center z-[100] shadow-[0_-4px_10px_rgba(0,0,0,0.05)]">
+    <nav className="fixed bottom-0 left-0 right-0 bg-white/80 backdrop-blur-md border-t border-gray-100 px-4 py-2 pb-6 flex justify-around items-center z-[100] shadow-[0_-4px_12px_rgba(0,0,0,0.03)]">
       {navItems.map((item) => {
         const isActive = pathname === item.href;
         return (
           <Link
             key={item.name}
             href={item.href}
-            className={`flex flex-col items-center gap-1 p-2 transition-colors ${
-              isActive ? 'text-yellow-500' : 'text-gray-400 hover:text-gray-600'
+            className={`flex flex-col items-center gap-1 p-2 transition-all active:scale-90 ${
+              isActive ? 'text-brand-yellow-dark' : 'text-gray-400 hover:text-gray-600'
             }`}
           >
             {item.icon}

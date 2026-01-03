@@ -107,11 +107,26 @@ export default function Home() {
 
   return (
     <div className="flex flex-col items-center w-full animate-fade-in">
-      <header className="text-center mb-12">
-        <h1 className="text-5xl font-serif font-bold text-gray-900 mb-4">Flavor Flow</h1>
-        <p className="text-lg text-gray-600 max-w-md mx-auto">
-          Turn your favorite cooking videos into organized shopping lists in seconds.
+      <div className="w-full h-56 rounded-[2rem] overflow-hidden mb-10 shadow-lg relative group">
+        <img 
+          src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&q=80&w=1000" 
+          alt="Fresh ingredients"
+          className="w-full h-full object-cover grayscale-[10%] group-hover:grayscale-0 group-hover:scale-105 transition-all duration-1000 ease-out"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+        <div className="absolute bottom-8 left-8">
+          <span className="text-brand-yellow font-sans font-bold uppercase tracking-[0.2em] text-[10px] mb-2 block">Premium Kitchen</span>
+          <h1 className="text-4xl font-bold text-white tracking-tight">
+            Discover
+          </h1>
+        </div>
+      </div>
+
+      <header className="text-center mb-12 max-w-lg">
+        <p className="text-2xl text-gray-800 font-medium leading-relaxed">
+          Transform your cooking inspiration into actionable lists.
         </p>
+        <div className="w-12 h-1 bg-brand-yellow mx-auto mt-6 rounded-full" />
       </header>
 
       {!recipe && (

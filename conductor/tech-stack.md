@@ -11,7 +11,7 @@
 - **PWA Support:** Native Next.js support (Metadata API for Manifest) + Custom Service Worker - To handle installability and offline caching without reliance on outdated third-party packages.
 
 ## External Services
-- **Recipe Extraction API:** Integration with a specialized third-party service (e.g., Spoonacular, Edamam, or a dedicated recipe scraper API) to parse video URLs from YouTube, Instagram, and TikTok and return structured ingredient and instruction data.
+- **Recipe Extraction API:** Spoonacular API - Used to parse video URLs from YouTube, Instagram, and TikTok and return structured ingredient and instruction data.
 
 ## Development & Deployment
 - **Language:** TypeScript - For type safety and better developer experience across the stack.
