@@ -25,10 +25,10 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 2: Digital Pantry Module' (Protocol in workflow.md) (2176a93)
 
 ## Phase 3: Meal Planner Module
-- [ ] Task: Create Planner Repository and Domain Types
-    - [ ] Sub-task: Define PlannedRecipe interface
-    - [ ] Sub-task: Implement SupabasePlannerRepository (queue management)
-    - [ ] Sub-task: Write unit tests for repository methods
+- [x] Task: Create Planner Repository and Domain Types (eea6684)
+    - [x] Sub-task: Define PlannedRecipe interface (eea6684)
+    - [x] Sub-task: Implement SupabasePlannerRepository (queue management) (eea6684)
+    - [x] Sub-task: Write unit tests for repository methods (eea6684)
 - [ ] Task: Build Meal Planner Queue View
     - [ ] Sub-task: Write tests for PlannerQueue component (reordering logic, recipe display)
     - [ ] Sub-task: Implement PlannerQueue UI with reorderable list items and appetizing imagery
