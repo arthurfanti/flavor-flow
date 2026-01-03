@@ -32,10 +32,10 @@
 - [x] Task: Build Meal Planner Queue View (0fd84a3)
     - [x] Sub-task: Write tests for PlannerQueue component (reordering logic, recipe display) (0fd84a3)
     - [x] Sub-task: Implement PlannerQueue UI with reorderable list items and appetizing imagery (0fd84a3)
-- [ ] Task: Connect Home Page to Planner
-    - [ ] Sub-task: Add "Add to Planner" action to RecipePreview component
-    - [ ] Sub-task: Implement logic to move extracted recipes into the planner queue
-- [ ] Task: Conductor - User Manual Verification 'Phase 3: Meal Planner Module' (Protocol in workflow.md)
+- [x] Task: Connect Home Page to Planner (931ebeb)
+    - [x] Sub-task: Add "Add to Planner" action to RecipePreview component (931ebeb)
+    - [x] Sub-task: Implement logic to move extracted recipes into the planner queue (931ebeb)
+- [x] Task: Conductor - User Manual Verification 'Phase 3: Meal Planner Module' (Protocol in workflow.md) (931ebeb)
 
 ## Phase 4: Integration & Visual Refinement
 - [ ] Task: Implement Global Staggered Reveals and Transitions
