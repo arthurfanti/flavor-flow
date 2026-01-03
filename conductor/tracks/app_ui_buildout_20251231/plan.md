@@ -12,10 +12,10 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Main Application Shell & Navigation' (Protocol in workflow.md) (8333e45)
 
 ## Phase 2: Digital Pantry Module
-- [ ] Task: Create Pantry Repository and Domain Types
-    - [ ] Sub-task: Define PantryItem interface and category types
-    - [ ] Sub-task: Implement SupabasePantryRepository with CRUD operations
-    - [ ] Sub-task: Write unit tests for repository methods
+- [x] Task: Create Pantry Repository and Domain Types (90b6d8c)
+    - [x] Sub-task: Define PantryItem interface and category types (90b6d8c)
+    - [x] Sub-task: Implement SupabasePantryRepository with CRUD operations (90b6d8c)
+    - [x] Sub-task: Write unit tests for repository methods (90b6d8c)
 - [ ] Task: Build Pantry Inventory View
     - [ ] Sub-task: Write tests for PantryList component (categorization, low-stock filter)
     - [ ] Sub-task: Implement PantryList UI with staggered reveals and editorial headings
