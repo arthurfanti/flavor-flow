@@ -23,7 +23,7 @@
     - [x] Sub-task: Automatically push missing ingredients to the `ShoppingListRepository`
 - [x] Task: Implement UX Feedback for Automated Sync d998e6e
     - [x] Sub-task: Add notification/alert detail showing "X items added, Y found in pantry"
-- [ ] Task: Conductor - User Manual Verification 'Phase 2: Intelligent Matching Logic' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 2: Intelligent Matching Logic' (Protocol in workflow.md) [checkpoint: 422769b]
 
 ## Phase 3: Final Integration and Quality Pass
 - [ ] Task: Verify End-to-End Workflow
