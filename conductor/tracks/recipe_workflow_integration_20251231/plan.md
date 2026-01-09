@@ -30,4 +30,4 @@
     - [x] Sub-task: Test flow: Extract -> Save -> Plan -> Shop (Offline and Online)
 - [x] Task: Refine Visual Density of Recipe List af78af2
     - [x] Sub-task: Final audit of the compact list UI against "Adult Aesthetic" guidelines
-- [ ] Task: Conductor - User Manual Verification 'Phase 3: Final Integration and Quality Pass' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 3: Final Integration and Quality Pass' (Protocol in workflow.md) [checkpoint: 79af134]
