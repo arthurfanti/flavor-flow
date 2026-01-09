@@ -28,8 +28,11 @@ export default function PantryPage() {
     try {
       const data = await pantryRepo.getItems();
       setItems(data);
+      localStorage.setItem('pantryItems', JSON.stringify(data));
     } catch (error) {
       console.error('Failed to fetch pantry items:', error);
+      const cached = localStorage.getItem('pantryItems');
+      if (cached) setItems(JSON.parse(cached));
     } finally {
       setIsLoading(false);
     }
@@ -49,15 +52,36 @@ export default function PantryPage() {
     }
   };
 
+  const handleDeleteItem = async (id: number) => {
+    try {
+      await pantryRepo.removeItem(id);
+      await refreshItems();
+    } catch (error) {
+      console.error('Failed to delete pantry item:', error);
+    }
+  };
+
+  const handleToggleLowStock = async (id: number, current: boolean) => {
+    try {
+      await pantryRepo.updateItem(id, { is_low_stock: !current });
+      await refreshItems();
+    } catch (error) {
+      console.error('Failed to update pantry item:', error);
+    }
+  };
+
   return (
-    <div className="flex flex-col w-full animate-fade-in pb-20">
-      <div className="w-full h-48 rounded-[2rem] overflow-hidden mb-10 shadow-lg relative bg-brand-yellow/5">
+    <div className="flex flex-col w-full animate-fade-in pb-20 text-gray-900">
+      <div className="w-full h-56 rounded-[2rem] overflow-hidden mb-10 shadow-lg relative group bg-gradient-to-br from-brand-yellow/20 to-orange-100">
         <img 
-          src="https://images.unsplash.com/photo-1584473457406-62302ce999e2?auto=format&fit=crop&q=80&w=1000" 
+          src="https://images.unsplash.com/photo-1580927942266-81d0519eb7be?auto=format&fit=crop&q=80&w=1000" 
           alt="Kitchen pantry"
-          className="w-full h-full object-cover grayscale-[10%]"
+          className="w-full h-full object-cover group-hover:scale-105 transition-all duration-1000 ease-out"
+          onError={(e) => {
+            (e.target as HTMLImageElement).style.display = 'none';
+          }}
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
         <div className="absolute bottom-8 left-8">
           <span className="text-brand-yellow font-sans font-bold uppercase tracking-[0.2em] text-[10px] mb-2 block">Inventory</span>
           <h1 className="text-4xl font-bold text-white tracking-tight">
@@ -89,7 +113,11 @@ export default function PantryPage() {
               <div className="animate-spin h-8 w-8 border-4 border-brand-yellow border-t-transparent rounded-full" />
             </div>
           ) : (
-            <PantryList items={items} />
+            <PantryList 
+              items={items} 
+              onDelete={handleDeleteItem}
+              onToggleLowStock={handleToggleLowStock}
+            />
           )}
         </>
       )}
