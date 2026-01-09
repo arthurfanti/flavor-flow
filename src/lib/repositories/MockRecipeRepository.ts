@@ -21,4 +21,11 @@ export class MockRecipeRepository implements RecipeRepository {
   async getAll(): Promise<any[]> {
     return [...MockRecipeRepository.recipes].sort((a, b) => a.title.localeCompare(b.title));
   }
+
+  static clearForTests() {
+    MockRecipeRepository.recipes = [
+      { id: 1, title: 'Mock Recipe 1', ingredients: ['Ingredient A'], instructions: ['Step 1'] },
+      { id: 2, title: 'Mock Recipe 2', ingredients: ['Ingredient B'], instructions: ['Step 1'] },
+    ];
+  }
 }

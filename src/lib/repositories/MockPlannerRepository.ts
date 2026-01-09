@@ -47,4 +47,25 @@ export class MockPlannerRepository implements PlannerRepository {
       return newOrder !== -1 ? { ...recipe, order: newOrder } : recipe;
     });
   }
+
+  static clearForTests() {
+    MockPlannerRepository.queue = [
+      { 
+        id: 1, 
+        title: 'Creamy Lemon Pasta', 
+        source_url: 'https://example.com/pasta', 
+        image_url: 'https://images.unsplash.com/photo-1473093226795-af9932fe5856?auto=format&fit=crop&q=80&w=1000',
+        planned_at: new Date().toISOString(),
+        order: 0 
+      },
+      { 
+        id: 2, 
+        title: 'Roasted Salmon', 
+        source_url: 'https://example.com/salmon', 
+        image_url: 'https://images.unsplash.com/photo-1467003909585-2f8a72700288?auto=format&fit=crop&q=80&w=1000',
+        planned_at: new Date().toISOString(),
+        order: 1 
+      },
+    ];
+  }
 }

@@ -31,4 +31,12 @@ export class MockPantryRepository implements PantryRepository {
   async removeItem(id: number): Promise<void> {
     MockPantryRepository.items = MockPantryRepository.items.filter(i => i.id !== id);
   }
+
+  static clearForTests() {
+    MockPantryRepository.items = [
+      { id: 1, name: 'Olive Oil', category: 'Pantry Staples', is_low_stock: false },
+      { id: 2, name: 'Garlic', category: 'Produce', is_low_stock: true },
+      { id: 3, name: 'Cumin', category: 'Spices', is_low_stock: false },
+    ];
+  }
 }

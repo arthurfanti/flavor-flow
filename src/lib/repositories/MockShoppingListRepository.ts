@@ -30,4 +30,11 @@ export class MockShoppingListRepository implements ShoppingListRepository {
   async removeItem(id: number): Promise<void> {
     MockShoppingListRepository.items = MockShoppingListRepository.items.filter((i) => i.id !== id);
   }
+
+  static clearForTests() {
+    MockShoppingListRepository.items = [
+      { id: 1, name: 'Mock Apple', bought: false },
+      { id: 2, name: 'Mock Banana', bought: true },
+    ];
+  }
 }
