@@ -1,7 +1,7 @@
 import { PlannerRepository, PlannedRecipe } from './PlannerRepository';
 
 export class MockPlannerRepository implements PlannerRepository {
-  private queue: PlannedRecipe[] = [
+  private static queue: PlannedRecipe[] = [
     { 
       id: 1, 
       title: 'Creamy Lemon Pasta', 
@@ -21,11 +21,11 @@ export class MockPlannerRepository implements PlannerRepository {
   ];
 
   async getQueue(): Promise<PlannedRecipe[]> {
-    return [...this.queue].sort((a, b) => a.order - b.order);
+    return [...MockPlannerRepository.queue].sort((a, b) => a.order - b.order);
   }
 
   async addToQueue(recipe: Partial<PlannedRecipe>): Promise<void> {
-    const nextOrder = this.queue.length > 0 ? Math.max(...this.queue.map(r => r.order)) + 1 : 0;
+    const nextOrder = MockPlannerRepository.queue.length > 0 ? Math.max(...MockPlannerRepository.queue.map(r => r.order)) + 1 : 0;
     const newRecipe: PlannedRecipe = {
       id: Date.now(),
       title: recipe.title || 'Unknown Recipe',
@@ -34,15 +34,15 @@ export class MockPlannerRepository implements PlannerRepository {
       planned_at: new Date().toISOString(),
       order: nextOrder,
     };
-    this.queue.push(newRecipe);
+    MockPlannerRepository.queue.push(newRecipe);
   }
 
   async removeFromQueue(id: number): Promise<void> {
-    this.queue = this.queue.filter(r => r.id !== id);
+    MockPlannerRepository.queue = MockPlannerRepository.queue.filter(r => r.id !== id);
   }
 
   async reorderQueue(orderedIds: number[]): Promise<void> {
-    this.queue = this.queue.map(recipe => {
+    MockPlannerRepository.queue = MockPlannerRepository.queue.map(recipe => {
       const newOrder = orderedIds.indexOf(recipe.id!);
       return newOrder !== -1 ? { ...recipe, order: newOrder } : recipe;
     });
