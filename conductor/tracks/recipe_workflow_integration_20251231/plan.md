@@ -11,7 +11,7 @@
 - [x] Task: Update Home Page Dashboard 4ddad24
     - [x] Sub-task: Replace the single preview with a "Recent Extractions" section (Last 3)
     - [x] Sub-task: Ensure the high-end visual style (Thumbnails + Serif Titles) is maintained
-- [ ] Task: Conductor - User Manual Verification 'Phase 1: Recipe Persistence and Repository Expansion' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 1: Recipe Persistence and Repository Expansion' (Protocol in workflow.md) [checkpoint: 9dfb55c]
 
 ## Phase 2: Intelligent Matching Logic
 - [ ] Task: Implement Intelligent Matching Service
