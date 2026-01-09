@@ -8,9 +8,9 @@
 - [x] Task: Build the Full Recipe List View 4ddad24
     - [x] Sub-task: Create `/recipes` page with a compact, refined list layout
     - [x] Sub-task: Implement navigation from Home to the new Recipes page
-- [ ] Task: Update Home Page Dashboard
-    - [ ] Sub-task: Replace the single preview with a "Recent Extractions" section (Last 3)
-    - [ ] Sub-task: Ensure the high-end visual style (Thumbnails + Serif Titles) is maintained
+- [x] Task: Update Home Page Dashboard 4ddad24
+    - [x] Sub-task: Replace the single preview with a "Recent Extractions" section (Last 3)
+    - [x] Sub-task: Ensure the high-end visual style (Thumbnails + Serif Titles) is maintained
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: Recipe Persistence and Repository Expansion' (Protocol in workflow.md)
 
 ## Phase 2: Intelligent Matching Logic
