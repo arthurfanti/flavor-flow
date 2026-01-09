@@ -17,12 +17,12 @@
 - [x] Task: Implement Intelligent Matching Service c76b9e4
     - [x] Sub-task: Create `IngredientMatcher` utility with fuzzy matching logic (case-insensitive, simple pluralization)
     - [x] Sub-task: Write unit tests for various matching scenarios (e.g., "Butter" vs "butter", "Eggs" vs "Egg")
-- [ ] Task: Connect Planner to Shopping List with Pantry Awareness
-    - [ ] Sub-task: Modify `handleAddToPlanner` to fetch current Pantry inventory
-    - [ ] Sub-task: Implement logic to filter ingredients against the Pantry using the `IngredientMatcher`
-    - [ ] Sub-task: Automatically push missing ingredients to the `ShoppingListRepository`
-- [ ] Task: Implement UX Feedback for Automated Sync
-    - [ ] Sub-task: Add notification/alert detail showing "X items added, Y found in pantry"
+- [x] Task: Connect Planner to Shopping List with Pantry Awareness d998e6e
+    - [x] Sub-task: Modify `handleAddToPlanner` to fetch current Pantry inventory
+    - [x] Sub-task: Implement logic to filter ingredients against the Pantry using the `IngredientMatcher`
+    - [x] Sub-task: Automatically push missing ingredients to the `ShoppingListRepository`
+- [x] Task: Implement UX Feedback for Automated Sync d998e6e
+    - [x] Sub-task: Add notification/alert detail showing "X items added, Y found in pantry"
 - [ ] Task: Conductor - User Manual Verification 'Phase 2: Intelligent Matching Logic' (Protocol in workflow.md)
 
 ## Phase 3: Final Integration and Quality Pass
