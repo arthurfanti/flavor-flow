@@ -14,9 +14,9 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Recipe Persistence and Repository Expansion' (Protocol in workflow.md) [checkpoint: 9dfb55c]
 
 ## Phase 2: Intelligent Matching Logic
-- [ ] Task: Implement Intelligent Matching Service
-    - [ ] Sub-task: Create `IngredientMatcher` utility with fuzzy matching logic (case-insensitive, simple pluralization)
-    - [ ] Sub-task: Write unit tests for various matching scenarios (e.g., "Butter" vs "butter", "Eggs" vs "Egg")
+- [x] Task: Implement Intelligent Matching Service c76b9e4
+    - [x] Sub-task: Create `IngredientMatcher` utility with fuzzy matching logic (case-insensitive, simple pluralization)
+    - [x] Sub-task: Write unit tests for various matching scenarios (e.g., "Butter" vs "butter", "Eggs" vs "Egg")
 - [ ] Task: Connect Planner to Shopping List with Pantry Awareness
     - [ ] Sub-task: Modify `handleAddToPlanner` to fetch current Pantry inventory
     - [ ] Sub-task: Implement logic to filter ingredients against the Pantry using the `IngredientMatcher`
