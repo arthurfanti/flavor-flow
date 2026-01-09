@@ -5,9 +5,9 @@
     - [x] Sub-task: Update `RecipeRepository` interface with `getLatest(count: number)` and `getAll()`
     - [x] Sub-task: Implement new methods in `SupabaseRecipeRepository` and `MockRecipeRepository`
     - [x] Sub-task: Update `handleExtract` in Home page to persist the extracted recipe
-- [ ] Task: Build the Full Recipe List View
-    - [ ] Sub-task: Create `/recipes` page with a compact, refined list layout
-    - [ ] Sub-task: Implement navigation from Home to the new Recipes page
+- [x] Task: Build the Full Recipe List View 4ddad24
+    - [x] Sub-task: Create `/recipes` page with a compact, refined list layout
+    - [x] Sub-task: Implement navigation from Home to the new Recipes page
 - [ ] Task: Update Home Page Dashboard
     - [ ] Sub-task: Replace the single preview with a "Recent Extractions" section (Last 3)
     - [ ] Sub-task: Ensure the high-end visual style (Thumbnails + Serif Titles) is maintained
