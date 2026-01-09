@@ -62,6 +62,11 @@ describe("Home", () => {
     render(<Home />);
     expect(await screen.findByText(/Recent Extractions/i)).toBeInTheDocument();
     expect(screen.getByText('Recent Recipe')).toBeInTheDocument();
+    
+    // Verify View All link
+    const viewAllLink = screen.getByRole('link', { name: /View All/i });
+    expect(viewAllLink).toBeInTheDocument();
+    expect(viewAllLink).toHaveAttribute('href', '/recipes');
   });
 
   it("calls addRecipe and refreshes list on successful extraction", async () => {
