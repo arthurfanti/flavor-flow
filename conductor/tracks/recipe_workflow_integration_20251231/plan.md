@@ -26,8 +26,8 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 2: Intelligent Matching Logic' (Protocol in workflow.md) [checkpoint: 422769b]
 
 ## Phase 3: Final Integration and Quality Pass
-- [ ] Task: Verify End-to-End Workflow
-    - [ ] Sub-task: Test flow: Extract -> Save -> Plan -> Shop (Offline and Online)
+- [x] Task: Verify End-to-End Workflow 9691a34
+    - [x] Sub-task: Test flow: Extract -> Save -> Plan -> Shop (Offline and Online)
 - [ ] Task: Refine Visual Density of Recipe List
     - [ ] Sub-task: Final audit of the compact list UI against "Adult Aesthetic" guidelines
 - [ ] Task: Conductor - User Manual Verification 'Phase 3: Final Integration and Quality Pass' (Protocol in workflow.md)
