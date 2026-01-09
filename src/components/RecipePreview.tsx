@@ -10,7 +10,7 @@ interface Recipe {
 interface RecipePreviewProps {
   recipe: Recipe | null;
   onAddToList: (ingredients: string[]) => void;
-  onAddToPlanner: (title: string) => void;
+  onAddToPlanner: (recipe: Recipe) => void;
 }
 
 export default function RecipePreview({ recipe, onAddToList, onAddToPlanner }: RecipePreviewProps) {
@@ -28,7 +28,7 @@ export default function RecipePreview({ recipe, onAddToList, onAddToPlanner }: R
             Add to List
           </button>
           <button
-            onClick={() => onAddToPlanner(recipe.title)}
+            onClick={() => onAddToPlanner(recipe)}
             className="flex-1 sm:flex-none bg-white text-gray-400 border border-gray-100 px-4 py-3 rounded-xl font-bold uppercase tracking-widest text-[10px] hover:text-gray-600 hover:bg-gray-50 transition-all active:scale-95"
           >
             Add to Planner

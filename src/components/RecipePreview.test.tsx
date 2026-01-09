@@ -45,7 +45,7 @@ describe('RecipePreview', () => {
     const button = screen.getByRole('button', { name: /Add to Planner/i });
     fireEvent.click(button);
     
-    expect(onAddToPlanner).toHaveBeenCalledWith(mockRecipe.title);
+    expect(onAddToPlanner).toHaveBeenCalledWith(mockRecipe);
   });
 
   it('renders nothing if no recipe is provided', () => {
