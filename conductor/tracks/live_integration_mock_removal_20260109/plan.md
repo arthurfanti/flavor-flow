@@ -15,7 +15,7 @@
 - [x] Task: Remove Mock Fallbacks a819c09
     - [x] Sub-task: Update `Home`, `PantryPage`, `ShoppingListPage`, and `PlannerPage` to remove the `try-catch` mock fallback logic
     - [x] Sub-task: Ensure the application fails gracefully with a clear error message if keys are missing
-- [ ] Task: Conductor - User Manual Verification 'Phase 2: Live Repository Integration & Mock Removal' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 2: Live Repository Integration & Mock Removal' (Protocol in workflow.md) [checkpoint: 68bddc8]
 
 ## Phase 3: Spoonacular Search & Extraction Verification
 - [ ] Task: Live Search Integration
