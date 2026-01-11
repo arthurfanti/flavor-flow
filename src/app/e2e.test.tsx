@@ -8,26 +8,56 @@ import { MockShoppingListRepository } from "../lib/repositories/MockShoppingList
 import { MockPlannerRepository } from "../lib/repositories/MockPlannerRepository";
 import { MockPantryRepository } from "../lib/repositories/MockPantryRepository";
 
-// Mock Supabase
+// Swap Supabase Repos with Mock Repos for E2E testing logic
+jest.mock("../lib/repositories/SupabaseRecipeRepository", () => ({
+  SupabaseRecipeRepository: jest.requireActual("../lib/repositories/MockRecipeRepository").MockRecipeRepository
+}));
+jest.mock("../lib/repositories/SupabaseShoppingListRepository", () => ({
+  SupabaseShoppingListRepository: jest.requireActual("../lib/repositories/MockShoppingListRepository").MockShoppingListRepository
+}));
+jest.mock("../lib/repositories/SupabasePlannerRepository", () => ({
+  SupabasePlannerRepository: jest.requireActual("../lib/repositories/MockPlannerRepository").MockPlannerRepository
+}));
+jest.mock("../lib/repositories/SupabasePantryRepository", () => ({
+  SupabasePantryRepository: jest.requireActual("../lib/repositories/MockPantryRepository").MockPantryRepository
+}));
+
+// Mock Supabase Client to succeed
 jest.mock("../lib/supabase/client", () => ({
-  createSupabaseClient: jest.fn(() => {
-    throw new Error("Supabase not configured");
-  }),
+  createSupabaseClient: jest.fn(() => ({})),
 }));
 
 // Mock window.alert
 window.alert = jest.fn();
 
+// Mock global fetch for Spoonacular
+global.fetch = jest.fn(() =>
+  Promise.resolve({
+    ok: true,
+    json: () => Promise.resolve({
+      title: 'Mock Recipe 1',
+      extendedIngredients: [{ original: 'Ingredient A' }],
+      instructions: 'Step 1'
+    }),
+  })
+) as jest.Mock;
+
 describe("End-to-End Workflow", () => {
+  const originalEnv = process.env;
+
   beforeEach(() => {
     MockRecipeRepository.clearForTests();
     MockShoppingListRepository.clearForTests();
     MockPlannerRepository.clearForTests();
     MockPantryRepository.clearForTests();
     jest.clearAllMocks();
+    process.env = { ...originalEnv, NEXT_PUBLIC_SPOONACULAR_API_KEY: 'valid-api-key' };
   });
 
-  afterEach(cleanup);
+  afterEach(() => {
+    cleanup();
+    process.env = originalEnv;
+  });
 
   it("should complete the full flow: Extract -> Save -> Plan -> Shop", async () => {
     // 1. Home Page: Extract a recipe
