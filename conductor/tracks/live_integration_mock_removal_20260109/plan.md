@@ -9,9 +9,9 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Database Schema & Supabase Configuration' (Protocol in workflow.md) [checkpoint: 9932384]
 
 ## Phase 2: Live Repository Integration & Mock Removal
-- [ ] Task: Verify and Fix Supabase Repositories
-    - [ ] Sub-task: Run unit tests for `SupabaseRecipeRepository`, `SupabasePantryRepository`, `SupabaseShoppingListRepository`, and `SupabasePlannerRepository`
-    - [ ] Sub-task: Address any failing tests or mismatches between current schema and live Supabase behavior
+- [x] Task: Verify and Fix Supabase Repositories b18ea50
+    - [x] Sub-task: Run unit tests for `SupabaseRecipeRepository`, `SupabasePantryRepository`, `SupabaseShoppingListRepository`, and `SupabasePlannerRepository`
+    - [x] Sub-task: Address any failing tests or mismatches between current schema and live Supabase behavior
 - [ ] Task: Remove Mock Fallbacks
     - [ ] Sub-task: Update `Home`, `PantryPage`, `ShoppingListPage`, and `PlannerPage` to remove the `try-catch` mock fallback logic
     - [ ] Sub-task: Ensure the application fails gracefully with a clear error message if keys are missing
