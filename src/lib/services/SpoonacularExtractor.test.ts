@@ -48,4 +48,31 @@ describe('SpoonacularExtractor', () => {
     expect(result.ingredients).toEqual([]);
     expect(result.instructions).toEqual([]);
   });
+
+  it('should search for recipes', async () => {
+    const mockSearchResults = {
+      results: [
+        {
+          title: 'Pizza',
+          extendedIngredients: [{ original: 'Cheese' }],
+          analyzedInstructions: [{ steps: [{ step: 'Bake' }] }],
+          sourceUrl: 'http://pizza.com',
+          image: 'pizza.jpg',
+        }
+      ]
+    };
+
+    (global.fetch as jest.Mock).mockResolvedValue({
+      ok: true,
+      json: jest.fn().mockResolvedValue(mockSearchResults),
+    });
+
+    const extractor = new SpoonacularExtractor('test-key');
+    const results = await extractor.searchRecipes('Pizza');
+    
+    expect(results.length).toBe(1);
+    expect(results[0].title).toBe('Pizza');
+    expect(results[0].image_url).toBe('pizza.jpg');
+    expect(global.fetch).toHaveBeenCalledWith(expect.stringContaining('complexSearch'));
+  });
 });
