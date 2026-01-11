@@ -21,8 +21,8 @@
 - [x] Task: Live Search Integration 62a9794
     - [x] Sub-task: Verify search logic using the real Spoonacular API
     - [x] Sub-task: Ensure results can be saved directly to the Supabase `recipes` table
-- [ ] Task: Live Extraction Pass
-    - [ ] Sub-task: Verify that extraction from YouTube/Instagram URLs works with the live API
+- [x] Task: Live Extraction Pass 62a9794
+    - [x] Sub-task: Verify that extraction from YouTube/Instagram URLs works with the live API
 - [ ] Task: Conductor - User Manual Verification 'Phase 3: Spoonacular Search & Extraction Verification' (Protocol in workflow.md)
 
 ## Phase 4: Final End-to-End Integration Pass
