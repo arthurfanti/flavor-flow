@@ -4,8 +4,8 @@
 - [x] Task: Create SQL Migration Script 603b64a
     - [x] Sub-task: Define tables for `recipes`, `pantry`, `shopping_list`, and `planned_recipes`
     - [x] Sub-task: Include basic RLS policies for local development/testing
-- [ ] Task: Environment Variable Audit
-    - [ ] Sub-task: Ensure `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, and `NEXT_PUBLIC_SPOONACULAR_API_KEY` are correctly mapped in the app
+- [x] Task: Environment Variable Audit 1ad701e
+    - [x] Sub-task: Ensure `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, and `NEXT_PUBLIC_SPOONACULAR_API_KEY` are correctly mapped in the app
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: Database Schema & Supabase Configuration' (Protocol in workflow.md)
 
 ## Phase 2: Live Repository Integration & Mock Removal
