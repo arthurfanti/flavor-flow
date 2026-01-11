@@ -3,7 +3,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { createSupabaseClient } from '@/lib/supabase/client';
 import { SupabasePantryRepository } from '@/lib/repositories/SupabasePantryRepository';
-import { MockPantryRepository } from '@/lib/repositories/MockPantryRepository';
 import PantryList from '@/components/PantryList';
 import PantryItemForm from '@/components/PantryItemForm';
 import { PantryItem } from '@/lib/repositories/PantryRepository';
@@ -12,18 +11,20 @@ export default function PantryPage() {
   const [items, setItems] = useState<PantryItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isAdding, setIsAdding] = useState(false);
+  const [configError, setConfigError] = useState<string | null>(null);
 
   const pantryRepo = useMemo(() => {
     try {
       const supabase = createSupabaseClient();
       return new SupabasePantryRepository(supabase);
-    } catch (e) {
-      console.warn('Supabase not configured, using mock repository');
-      return new MockPantryRepository();
+    } catch (e: any) {
+      setConfigError(e.message);
+      return null;
     }
   }, []);
 
   const refreshItems = async () => {
+    if (!pantryRepo) return;
     setIsLoading(true);
     try {
       const data = await pantryRepo.getItems();
@@ -43,6 +44,7 @@ export default function PantryPage() {
   }, [pantryRepo]);
 
   const handleSaveItem = async (data: Partial<PantryItem>) => {
+    if (!pantryRepo) return;
     try {
       await pantryRepo.addItem(data);
       await refreshItems();
@@ -53,6 +55,7 @@ export default function PantryPage() {
   };
 
   const handleDeleteItem = async (id: number) => {
+    if (!pantryRepo) return;
     try {
       await pantryRepo.removeItem(id);
       await refreshItems();
@@ -62,6 +65,7 @@ export default function PantryPage() {
   };
 
   const handleToggleLowStock = async (id: number, current: boolean) => {
+    if (!pantryRepo) return;
     try {
       await pantryRepo.updateItem(id, { is_low_stock: !current });
       await refreshItems();
@@ -69,6 +73,16 @@ export default function PantryPage() {
       console.error('Failed to update pantry item:', error);
     }
   };
+
+  if (configError) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen p-4 text-center">
+        <h1 className="text-2xl font-bold text-red-600 mb-4">Configuration Error</h1>
+        <p className="text-gray-700">{configError}</p>
+        <p className="text-sm text-gray-500 mt-4">Please check your environment variables.</p>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col w-full animate-fade-in pb-20 text-gray-900">

@@ -7,14 +7,10 @@ import RecipePreview from '@/components/RecipePreview';
 import RecipeEditor from '@/components/RecipeEditor';
 import ShoppingList from '@/components/ShoppingList';
 import RecipeListItem from '@/components/RecipeListItem';
-import { MockRecipeRepository } from '@/lib/repositories/MockRecipeRepository';
 import { SupabaseRecipeRepository } from '@/lib/repositories/SupabaseRecipeRepository';
 import { SupabaseShoppingListRepository } from '@/lib/repositories/SupabaseShoppingListRepository';
-import { MockShoppingListRepository } from '@/lib/repositories/MockShoppingListRepository';
 import { SupabasePlannerRepository } from '@/lib/repositories/SupabasePlannerRepository';
-import { MockPlannerRepository } from '@/lib/repositories/MockPlannerRepository';
 import { SupabasePantryRepository } from '@/lib/repositories/SupabasePantryRepository';
-import { MockPantryRepository } from '@/lib/repositories/MockPantryRepository';
 import { createSupabaseClient } from '@/lib/supabase/client';
 import { SpoonacularExtractor } from '@/lib/services/SpoonacularExtractor';
 import { IngredientMatcher } from '@/lib/services/IngredientMatcher';
@@ -24,84 +20,52 @@ export default function Home() {
   const [recipe, setRecipe] = useState<any | null>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [recentRecipes, setRecentRecipes] = useState<any[]>([]);
+  const [configError, setConfigError] = useState<string | null>(null);
 
-  const recipeRepo = useMemo(() => {
+  const repos = useMemo(() => {
     try {
       const supabase = createSupabaseClient();
-      return new SupabaseRecipeRepository(supabase);
-    } catch (e) {
-      console.warn('Supabase not configured, using mock repository for recipes');
-      return new MockRecipeRepository();
-    }
-  }, []);
-
-  const shoppingListRepo = useMemo(() => {
-    try {
-      const supabase = createSupabaseClient();
-      return new SupabaseShoppingListRepository(supabase);
-    } catch (e) {
-      console.warn('Supabase not configured, using mock repository');
-      return new MockShoppingListRepository();
-    }
-  }, []);
-
-  const plannerRepo = useMemo(() => {
-    try {
-      const supabase = createSupabaseClient();
-      return new SupabasePlannerRepository(supabase);
-    } catch (e) {
-      console.warn('Supabase not configured, using mock repository');
-      return new MockPlannerRepository();
-    }
-  }, []);
-
-  const pantryRepo = useMemo(() => {
-    try {
-      const supabase = createSupabaseClient();
-      return new SupabasePantryRepository(supabase);
-    } catch (e) {
-      console.warn('Supabase not configured, using mock repository');
-      return new MockPantryRepository();
+      return {
+        recipe: new SupabaseRecipeRepository(supabase),
+        shoppingList: new SupabaseShoppingListRepository(supabase),
+        planner: new SupabasePlannerRepository(supabase),
+        pantry: new SupabasePantryRepository(supabase),
+      };
+    } catch (e: any) {
+      setConfigError(e.message);
+      return null;
     }
   }, []);
 
   const refreshRecent = useCallback(async () => {
+    if (!repos) return;
     try {
-      const latest = await recipeRepo.getLatest(3);
+      const latest = await repos.recipe.getLatest(3);
       setRecentRecipes(latest);
     } catch (error) {
       console.error('Failed to fetch recent recipes:', error);
     }
-  }, [recipeRepo]);
+  }, [repos]);
 
   useEffect(() => {
     refreshRecent();
   }, [refreshRecent]);
 
   const handleExtract = async (url: string) => {
+    if (!repos) return;
     setIsLoading(true);
     try {
       const apiKey = process.env.NEXT_PUBLIC_SPOONACULAR_API_KEY;
-      const isMockMode = !apiKey || apiKey === '' || apiKey.includes('your-spoonacular-key');
-      
-      let extracted;
-      if (isMockMode) {
-        console.log('Flavor Flow: No valid API key found. Using mock extraction.');
-        const mockRepo = new MockRecipeRepository();
-        const mockRecipes = await mockRepo.getRecipes();
-        extracted = {
-          ...mockRecipes[0],
-          sourceUrl: url,
-          image_url: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&q=80&w=1000'
-        };
-      } else {
-        console.log('Flavor Flow: Calling Spoonacular API...');
-        const extractor = new SpoonacularExtractor(apiKey);
-        extracted = await extractor.extractFromUrl(url);
+      if (!apiKey || apiKey === '' || apiKey.includes('your-spoonacular-key')) {
+        throw new Error('Spoonacular API key is missing or invalid.');
       }
+      
+      console.log('Flavor Flow: Calling Spoonacular API...');
+      const extractor = new SpoonacularExtractor(apiKey);
+      const extracted = await extractor.extractFromUrl(url);
 
-      console.log('Flavor Flow: Recipe extracted, saving to repository:', recipeRepo.constructor.name);
-      await recipeRepo.addRecipe(extracted);
+      console.log('Flavor Flow: Recipe extracted, saving to repository:', repos.recipe.constructor.name);
+      await repos.recipe.addRecipe(extracted);
       setRecipe(extracted);
       await refreshRecent();
     } catch (error: any) {
@@ -122,9 +86,10 @@ export default function Home() {
   };
 
   const handleAddToList = async (ingredients: string[]) => {
+    if (!repos) return;
     try {
       for (const ingredient of ingredients) {
-        await shoppingListRepo.addItem({ name: ingredient, bought: false });
+        await repos.shoppingList.addItem({ name: ingredient, bought: false });
       }
       alert('Added to shopping list!');
     } catch (error) {
@@ -133,16 +98,17 @@ export default function Home() {
   };
 
   const handleAddToPlanner = async (targetRecipe: any) => {
+    if (!repos) return;
     try {
       // 1. Add to Planner Queue
-      await plannerRepo.addToQueue({ 
+      await repos.planner.addToQueue({ 
         title: targetRecipe.title, 
         source_url: targetRecipe.sourceUrl || '',
         image_url: targetRecipe.image_url 
       });
 
       // 2. Intelligent Shopping List Sync (Pantry Awareness)
-      const pantryItems = await pantryRepo.getItems();
+      const pantryItems = await repos.pantry.getItems();
       const matcher = new IngredientMatcher();
       
       const missingIngredients = targetRecipe.ingredients.filter((ing: string) => {
@@ -154,7 +120,7 @@ export default function Home() {
 
       // 3. Push missing to shopping list
       for (const ingredient of missingIngredients) {
-        await shoppingListRepo.addItem({ name: ingredient, bought: false });
+        await repos.shoppingList.addItem({ name: ingredient, bought: false });
       }
 
       alert(
@@ -167,6 +133,16 @@ export default function Home() {
       alert('Failed to add to planner. Please try again.');
     }
   };
+
+  if (configError) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen p-4 text-center">
+        <h1 className="text-2xl font-bold text-red-600 mb-4">Configuration Error</h1>
+        <p className="text-gray-700">{configError}</p>
+        <p className="text-sm text-gray-500 mt-4">Please check your environment variables.</p>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col items-center w-full animate-fade-in text-gray-900">

@@ -3,24 +3,25 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { createSupabaseClient } from '@/lib/supabase/client';
 import { SupabaseShoppingListRepository } from '@/lib/repositories/SupabaseShoppingListRepository';
-import { MockShoppingListRepository } from '@/lib/repositories/MockShoppingListRepository';
 import ShoppingList from '@/components/ShoppingList';
 
 export default function ShoppingListPage() {
   const [items, setItems] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [configError, setConfigError] = useState<string | null>(null);
 
   const shoppingListRepo = useMemo(() => {
     try {
       const supabase = createSupabaseClient();
       return new SupabaseShoppingListRepository(supabase);
-    } catch (e) {
-      console.warn('Supabase not configured, using mock repository');
-      return new MockShoppingListRepository();
+    } catch (e: any) {
+      setConfigError(e.message);
+      return null;
     }
   }, []);
 
   const refreshItems = async () => {
+    if (!shoppingListRepo) return;
     setIsLoading(true);
     try {
       const data = await shoppingListRepo.getItems();
@@ -40,6 +41,7 @@ export default function ShoppingListPage() {
   }, [shoppingListRepo]);
 
   const handleToggleItem = async (id: number, bought: boolean) => {
+    if (!shoppingListRepo) return;
     try {
       // Optimistic update
       const newItems = items.map(item => item.id === id ? { ...item, bought } : item);
@@ -53,6 +55,7 @@ export default function ShoppingListPage() {
   };
 
   const handleRemoveItem = async (id: number) => {
+    if (!shoppingListRepo) return;
     try {
       // Optimistic update
       const newItems = items.filter(item => item.id !== id);
@@ -64,6 +67,16 @@ export default function ShoppingListPage() {
       await refreshItems();
     }
   };
+
+  if (configError) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen p-4 text-center">
+        <h1 className="text-2xl font-bold text-red-600 mb-4">Configuration Error</h1>
+        <p className="text-gray-700">{configError}</p>
+        <p className="text-sm text-gray-500 mt-4">Please check your environment variables.</p>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col w-full animate-fade-in pb-20 text-gray-900">

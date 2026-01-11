@@ -3,25 +3,26 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { createSupabaseClient } from '@/lib/supabase/client';
 import { SupabasePlannerRepository } from '@/lib/repositories/SupabasePlannerRepository';
-import { MockPlannerRepository } from '@/lib/repositories/MockPlannerRepository';
 import PlannerQueue from '@/components/PlannerQueue';
 import { PlannedRecipe } from '@/lib/repositories/PlannerRepository';
 
 export default function PlannerPage() {
   const [recipes, setRecipes] = useState<PlannedRecipe[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [configError, setConfigError] = useState<string | null>(null);
 
   const plannerRepo = useMemo(() => {
     try {
       const supabase = createSupabaseClient();
       return new SupabasePlannerRepository(supabase);
-    } catch (e) {
-      console.warn('Supabase not configured, using mock repository');
-      return new MockPlannerRepository();
+    } catch (e: any) {
+      setConfigError(e.message);
+      return null;
     }
   }, []);
 
   const refreshQueue = async () => {
+    if (!plannerRepo) return;
     setIsLoading(true);
     try {
       const data = await plannerRepo.getQueue();
@@ -41,6 +42,7 @@ export default function PlannerPage() {
   }, [plannerRepo]);
 
   const handleRemove = async (id: number) => {
+    if (!plannerRepo) return;
     try {
       // Optimistic update
       setRecipes(prev => prev.filter(r => r.id !== id));
@@ -50,6 +52,16 @@ export default function PlannerPage() {
       await refreshQueue();
     }
   };
+
+  if (configError) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen p-4 text-center">
+        <h1 className="text-2xl font-bold text-red-600 mb-4">Configuration Error</h1>
+        <p className="text-gray-700">{configError}</p>
+        <p className="text-sm text-gray-500 mt-4">Please check your environment variables.</p>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col w-full animate-fade-in pb-20 text-gray-900">
