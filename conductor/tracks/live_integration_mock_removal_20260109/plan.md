@@ -26,7 +26,7 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 3: Spoonacular Search & Extraction Verification' (Protocol in workflow.md) [checkpoint: bc798d1]
 
 ## Phase 4: Final End-to-End Integration Pass
-- [ ] Task: End-to-End Test Suite Execution
-    - [ ] Sub-task: Run the comprehensive E2E test against the live (test) environment
-    - [ ] Sub-task: Verify manual flow: Extract -> Save -> Plan -> Shop
+- [x] Task: End-to-End Test Suite Execution 2b72d1b
+    - [x] Sub-task: Run the comprehensive E2E test against the live (test) environment
+    - [x] Sub-task: Verify manual flow: Extract -> Save -> Plan -> Shop
 - [ ] Task: Conductor - User Manual Verification 'Phase 4: Final End-to-End Integration Pass' (Protocol in workflow.md)
