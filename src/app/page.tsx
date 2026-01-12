@@ -132,7 +132,7 @@ export default function Home() {
       // 1. Add to Planner Queue
       await repos.planner.addToQueue({ 
         title: targetRecipe.title, 
-        source_url: targetRecipe.sourceUrl || '',
+        source_url: targetRecipe.source_url || targetRecipe.sourceUrl || '',
         image_url: targetRecipe.image_url 
       });
 
