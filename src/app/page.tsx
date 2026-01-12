@@ -63,13 +63,16 @@ export default function Home() {
       console.log('Flavor Flow: Calling Spoonacular API...');
       const extractor = new SpoonacularExtractor(apiKey);
       const extracted = await extractor.extractFromUrl(url);
+      console.log('Flavor Flow: Extraction successful:', extracted.title);
 
-      console.log('Flavor Flow: Recipe extracted, saving to repository:', repos.recipe.constructor.name);
+      console.log('Flavor Flow: Saving to Supabase...');
       await repos.recipe.addRecipe(extracted);
+      console.log('Flavor Flow: Save successful.');
+      
       setRecipe(extracted);
       await refreshRecent();
     } catch (error: any) {
-      console.error('Flavor Flow Error: Extraction or Save failed', error);
+      console.error('Flavor Flow Error Object:', JSON.stringify(error, Object.getOwnPropertyNames(error)));
       // More user-friendly error message
       const msg = error.message === 'Failed to fetch' 
         ? 'Network error: Could not reach the server. Please check your internet connection or Supabase settings.'
