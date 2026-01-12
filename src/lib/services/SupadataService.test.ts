@@ -10,15 +10,20 @@ describe('SupadataService', () => {
   });
 
   it('should fetch transcript successfully from YouTube URL', async () => {
-    const mockTranscript = 'This is a test transcript of a recipe.';
+    const mockResponse = {
+      content: [
+        { text: 'First part.' },
+        { text: 'Second part.' }
+      ]
+    };
     (global.fetch as jest.Mock).mockResolvedValue({
       ok: true,
-      json: () => Promise.resolve({ content: mockTranscript }),
+      json: () => Promise.resolve(mockResponse),
     });
 
     const transcript = await service.fetchTranscript('https://youtube.com/watch?v=test');
     
-    expect(transcript).toBe(mockTranscript);
+    expect(transcript).toBe('First part. Second part.');
     expect(global.fetch).toHaveBeenCalledWith(
       expect.stringContaining('supadata.ai'),
       expect.objectContaining({

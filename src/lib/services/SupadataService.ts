@@ -15,6 +15,12 @@ export class SupadataService {
     }
 
     const data = await response.json();
+    
+    // Handle array of content objects
+    if (Array.isArray(data.content)) {
+      return data.content.map((item: any) => item.text).join(' ');
+    }
+    
     return data.content || '';
   }
 
