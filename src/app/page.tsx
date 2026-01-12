@@ -7,6 +7,7 @@ import RecipePreview from '@/components/RecipePreview';
 import RecipeEditor from '@/components/RecipeEditor';
 import ShoppingList from '@/components/ShoppingList';
 import RecipeListItem from '@/components/RecipeListItem';
+import AILoadingOverlay, { AIStage } from '@/components/AILoadingOverlay';
 import { SupabaseRecipeRepository } from '@/lib/repositories/SupabaseRecipeRepository';
 import { SupabaseShoppingListRepository } from '@/lib/repositories/SupabaseShoppingListRepository';
 import { SupabasePlannerRepository } from '@/lib/repositories/SupabasePlannerRepository';
@@ -19,6 +20,7 @@ import { IngredientMatcher } from '@/lib/services/IngredientMatcher';
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
+  const [aiStage, setAiStage] = useState<AIStage>('idle');
   const [recipe, setRecipe] = useState<any | null>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [recentRecipes, setRecentRecipes] = useState<any[]>([]);
@@ -80,7 +82,7 @@ export default function Home() {
     setIsLoading(true);
     try {
       console.log('Flavor Flow: Initializing True AI Extraction...');
-      const extracted = await extractor.extractFromUrl(url);
+      const extracted = await extractor.extractFromUrl(url, (stage) => setAiStage(stage));
       console.log('Flavor Flow: AI Extraction successful:', extracted.title);
 
       console.log('Flavor Flow: Saving to Supabase...');
@@ -98,6 +100,7 @@ export default function Home() {
       alert(`Extraction Error: ${msg}`);
     } finally {
       setIsLoading(false);
+      setAiStage('idle');
     }
   };
 
@@ -109,6 +112,9 @@ export default function Home() {
   const handleAddToList = async (ingredients: string[]) => {
     if (!repos) return;
     try {
+      console.log('Flavor Flow: Optimistically adding items to list...');
+      // In a real app with global state, we would update the store here.
+      // For now, we provide immediate feedback.
       for (const ingredient of ingredients) {
         await repos.shoppingList.addItem({ name: ingredient, bought: false });
       }
@@ -120,7 +126,9 @@ export default function Home() {
 
   const handleAddToPlanner = async (targetRecipe: any) => {
     if (!repos) return;
+    setIsLoading(true);
     try {
+      console.log('Flavor Flow: Optimistically adding to planner...');
       // 1. Add to Planner Queue
       await repos.planner.addToQueue({ 
         title: targetRecipe.title, 
@@ -144,12 +152,14 @@ export default function Home() {
         await repos.shoppingList.addItem({ name: ingredient, bought: false });
       }
 
+      setIsLoading(false);
       alert(
         `Added to planner!\n\n` +
         `Shopping List updated: ${missingIngredients.length} items added.\n` +
         `${alreadyInPantry} items found in your pantry.`
       );
     } catch (error) {
+      setIsLoading(false);
       console.error('Failed to add to planner:', error);
       alert('Failed to add to planner. Please try again.');
     }
@@ -166,7 +176,9 @@ export default function Home() {
   }
 
   return (
-    <div className="flex flex-col items-center w-full animate-fade-in text-gray-900">
+    <div className="flex flex-col items-center w-full animate-fade-in text-gray-900 relative">
+      <AILoadingOverlay stage={aiStage} />
+      
       <div className="w-full h-56 rounded-[2rem] overflow-hidden mb-10 shadow-lg relative group bg-gradient-to-br from-brand-yellow/20 to-orange-100">
         <img 
           src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&q=80&w=1000" 

@@ -31,10 +31,10 @@ export default function AILoadingOverlay({ stage }: AILoadingOverlayProps) {
       subtitle: 'MiniMax is identifying ingredients and steps...',
       icon: (
         <div className="relative w-32 h-32 flex items-center justify-center">
-          <div className="absolute inset-0 bg-purple-200 rounded-[2.5rem] blur-2xl animate-pulse" />
-          <div className="relative w-24 h-24 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-3xl shadow-2xl flex items-center justify-center transform -rotate-6 transition-transform">
-            <svg className="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+          <div className="absolute inset-0 bg-purple-200/30 rounded-[2.5rem] blur-2xl animate-pulse" />
+          <div className="relative w-24 h-24 bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 rounded-3xl shadow-2xl flex items-center justify-center transform -rotate-6 transition-transform border-4 border-white/20">
+            <svg className="w-12 h-12 text-white drop-shadow-lg" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
             </svg>
           </div>
         </div>
@@ -45,9 +45,9 @@ export default function AILoadingOverlay({ stage }: AILoadingOverlayProps) {
       subtitle: 'Polishing your editorial-style instructions...',
       icon: (
         <div className="relative w-32 h-32 flex items-center justify-center">
-          <div className="absolute inset-0 bg-emerald-200 rounded-[2.5rem] blur-2xl animate-pulse" />
-          <div className="relative w-24 h-24 bg-gradient-to-br from-emerald-400 to-teal-600 rounded-3xl shadow-2xl flex items-center justify-center transform hover:scale-110 transition-transform">
-            <svg className="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="absolute inset-0 bg-emerald-200/30 rounded-[2.5rem] blur-2xl animate-pulse" />
+          <div className="relative w-24 h-24 bg-gradient-to-br from-emerald-400 via-teal-500 to-cyan-600 rounded-3xl shadow-2xl flex items-center justify-center transform hover:scale-110 transition-transform border-4 border-white/20">
+            <svg className="w-12 h-12 text-white drop-shadow-lg" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
             </svg>
           </div>
