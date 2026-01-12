@@ -7,7 +7,7 @@
 - [x] Task: Integrate OpenRouter for MiniMax M2.1 0b3258e
     - [x] Sub-task: Write unit tests for `OpenRouterService` (mocking MiniMax output).
     - [x] Sub-task: Implement `OpenRouterService` with specialized prompts for recipe structuring.
-- [ ] Task: Conductor - User Manual Verification 'Phase 1: API Infrastructure & Service Layer' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 1: API Infrastructure & Service Layer' (Protocol in workflow.md) [checkpoint: cafa214]
 
 ## Phase 2: Core Extraction Logic & Multi-Platform Support
 - [ ] Task: Implement Unified AI Extractor
