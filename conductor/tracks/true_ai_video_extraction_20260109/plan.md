@@ -14,12 +14,12 @@
     - [x] Sub-task: Write tests for `VideoAIExtractor` orchestration.
     - [x] Sub-task: Implement `VideoAIExtractor` orchestrating Supadata -> OpenRouter flow.
     - [x] Sub-task: Implement fallback logic to scrape descriptions if transcripts are missing.
-- [ ] Task: Conductor - User Manual Verification 'Phase 2: Core Extraction Logic & Multi-Platform Support' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 2: Core Extraction Logic & Multi-Platform Support' (Protocol in workflow.md) [checkpoint: 02536cb]
 
 ## Phase 3: Sophisticated Loading UI (3D Airbnb Style)
-- [ ] Task: Design Loading Stage Component
-    - [ ] Sub-task: Create visually refined loading states for "Transcribing", "Analyzing", and "Finalizing".
-    - [ ] Sub-task: Source or generate 3D-inspired icons/images for each step.
+- [x] Task: Design Loading Stage Component df66ef1
+    - [x] Sub-task: Create visually refined loading states for "Transcribing", "Analyzing", and "Finalizing".
+    - [x] Sub-task: Source or generate 3D-inspired icons/images for each step.
 - [ ] Task: Implement UI State Management for Progress
     - [ ] Sub-task: Connect `VideoAIExtractor` progress events to the UI.
 - [ ] Task: Conductor - User Manual Verification 'Phase 3: Sophisticated Loading UI' (Protocol in workflow.md)
