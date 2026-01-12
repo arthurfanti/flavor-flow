@@ -17,4 +17,23 @@ export class SupadataService {
     const data = await response.json();
     return data.content || '';
   }
+
+  async fetchMetadata(url: string): Promise<{ title?: string; description?: string; image?: string }> {
+    const response = await fetch(`${this.baseUrl}/media/metadata?url=${encodeURIComponent(url)}`, {
+      headers: {
+        'x-api-key': this.apiKey,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch metadata from Supadata');
+    }
+
+    const data = await response.json();
+    return {
+      title: data.title,
+      description: data.description,
+      image: data.image || data.thumbnail,
+    };
+  }
 }
