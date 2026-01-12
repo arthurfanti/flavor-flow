@@ -20,9 +20,9 @@
 - [x] Task: Design Loading Stage Component df66ef1
     - [x] Sub-task: Create visually refined loading states for "Transcribing", "Analyzing", and "Finalizing".
     - [x] Sub-task: Source or generate 3D-inspired icons/images for each step.
-- [ ] Task: Implement UI State Management for Progress
-    - [ ] Sub-task: Connect `VideoAIExtractor` progress events to the UI.
-- [ ] Task: Conductor - User Manual Verification 'Phase 3: Sophisticated Loading UI' (Protocol in workflow.md)
+- [x] Task: Implement UI State Management for Progress 02536cb
+    - [x] Sub-task: Connect `VideoAIExtractor` progress events to the UI.
+- [x] Task: Conductor - User Manual Verification 'Phase 3: Sophisticated Loading UI' (Protocol in workflow.md) [checkpoint: 97df87f]
 
 ## Phase 4: Database Sync & Final End-to-End Integration
 - [ ] Task: Update Persistence Flow
