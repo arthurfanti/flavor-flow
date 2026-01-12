@@ -25,8 +25,8 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 3: Sophisticated Loading UI' (Protocol in workflow.md) [checkpoint: 97df87f]
 
 ## Phase 4: Database Sync & Final End-to-End Integration
-- [ ] Task: Update Persistence Flow
-    - [ ] Sub-task: Ensure AI-extracted recipes map correctly to Supabase `recipes` table.
+- [x] Task: Update Persistence Flow ba06c93
+    - [x] Sub-task: Ensure AI-extracted recipes map correctly to Supabase `recipes` table.
 - [ ] Task: Final Quality Pass & E2E Test
     - [ ] Sub-task: Test with real YouTube, Instagram, and TikTok URLs where the recipe is only spoken.
 - [ ] Task: Conductor - User Manual Verification 'Phase 4: Final End-to-End Integration' (Protocol in workflow.md)
