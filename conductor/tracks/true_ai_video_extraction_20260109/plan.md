@@ -4,9 +4,9 @@
 - [x] Task: Integrate Supadata for Video Transcription 1cd049b
     - [x] Sub-task: Write unit tests for `SupadataService` (mocking API responses).
     - [x] Sub-task: Implement `SupadataService` to handle transcript extraction.
-- [ ] Task: Integrate OpenRouter for MiniMax M2.1
-    - [ ] Sub-task: Write unit tests for `OpenRouterService` (mocking MiniMax output).
-    - [ ] Sub-task: Implement `OpenRouterService` with specialized prompts for recipe structuring.
+- [x] Task: Integrate OpenRouter for MiniMax M2.1 0b3258e
+    - [x] Sub-task: Write unit tests for `OpenRouterService` (mocking MiniMax output).
+    - [x] Sub-task: Implement `OpenRouterService` with specialized prompts for recipe structuring.
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: API Infrastructure & Service Layer' (Protocol in workflow.md)
 
 ## Phase 2: Core Extraction Logic & Multi-Platform Support
