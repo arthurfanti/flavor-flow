@@ -14,9 +14,22 @@ export class SpoonacularExtractor implements RecipeExtractor {
 
     const data = await response.json();
 
+    // Junk filter for common social media footer/metadata strings
+    const junkKeywords = [
+      'google llc', 'youtube', 'copyright', 'urheberrecht', 'impressum', 
+      'datenschutz', 'terms of service', 'all rights reserved', 'privacy policy'
+    ];
+
+    const cleanIngredients = (data.extendedIngredients || [])
+      .map((i: any) => i.original)
+      .filter((ing: string) => {
+        const lowerIng = ing.toLowerCase();
+        return !junkKeywords.some(keyword => lowerIng.includes(keyword));
+      });
+
     return {
       title: data.title || '',
-      ingredients: (data.extendedIngredients || []).map((i: any) => i.original),
+      ingredients: cleanIngredients,
       instructions: (data.instructions || '').split('\n').filter((s: string) => s.trim() !== ''),
       sourceUrl: url,
       image_url: data.image,

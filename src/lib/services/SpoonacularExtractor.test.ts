@@ -25,6 +25,29 @@ describe('SpoonacularExtractor', () => {
     expect(global.fetch).toHaveBeenCalled();
   });
 
+  it('should filter out junk ingredients (metadata/footers)', async () => {
+    const mockData = {
+      title: 'Recipe',
+      extendedIngredients: [
+        { original: '1 cup milk' },
+        { original: '© 2026 Google LLC' },
+        { original: 'YouTube Terms of Service' }
+      ],
+      instructions: 'Do it.',
+    };
+    
+    (global.fetch as jest.Mock).mockResolvedValue({
+      ok: true,
+      json: jest.fn().mockResolvedValue(mockData),
+    });
+
+    const extractor = new SpoonacularExtractor('test-key');
+    const result = await extractor.extractFromUrl('https://example.com');
+    
+    expect(result.ingredients).toEqual(['1 cup milk']);
+    expect(result.ingredients).not.toContain('© 2026 Google LLC');
+  });
+
   it('should throw error if API fails', async () => {
     (global.fetch as jest.Mock).mockResolvedValue({
       ok: false,
