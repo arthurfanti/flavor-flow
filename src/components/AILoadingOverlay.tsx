@@ -16,10 +16,12 @@ export default function AILoadingOverlay({ stage }: AILoadingOverlayProps) {
       icon: (
         <div className="relative w-32 h-32 flex items-center justify-center">
           <div className="absolute inset-0 bg-brand-yellow/20 rounded-[2.5rem] blur-2xl animate-pulse" />
-          <div className="relative w-24 h-24 bg-gradient-to-br from-brand-yellow to-orange-400 rounded-3xl shadow-2xl flex items-center justify-center transform hover:rotate-6 transition-transform">
-            <svg className="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
-            </svg>
+          <div className="relative w-24 h-24 rounded-3xl shadow-2xl overflow-hidden transform hover:rotate-6 transition-transform border-4 border-brand-yellow/20">
+            <img 
+              src="/icons/transcribing.jpg" 
+              alt="Transcribing" 
+              className="w-full h-full object-cover"
+            />
           </div>
         </div>
       )
