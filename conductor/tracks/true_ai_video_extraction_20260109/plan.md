@@ -10,10 +10,10 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 1: API Infrastructure & Service Layer' (Protocol in workflow.md) [checkpoint: cafa214]
 
 ## Phase 2: Core Extraction Logic & Multi-Platform Support
-- [ ] Task: Implement Unified AI Extractor
-    - [ ] Sub-task: Write tests for `VideoAIExtractor` orchestration.
-    - [ ] Sub-task: Implement `VideoAIExtractor` orchestrating Supadata -> OpenRouter flow.
-    - [ ] Sub-task: Implement fallback logic to scrape descriptions if transcripts are missing.
+- [x] Task: Implement Unified AI Extractor ba06c93
+    - [x] Sub-task: Write tests for `VideoAIExtractor` orchestration.
+    - [x] Sub-task: Implement `VideoAIExtractor` orchestrating Supadata -> OpenRouter flow.
+    - [x] Sub-task: Implement fallback logic to scrape descriptions if transcripts are missing.
 - [ ] Task: Conductor - User Manual Verification 'Phase 2: Core Extraction Logic & Multi-Platform Support' (Protocol in workflow.md)
 
 ## Phase 3: Sophisticated Loading UI (3D Airbnb Style)
