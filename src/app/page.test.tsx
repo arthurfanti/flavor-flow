@@ -28,7 +28,38 @@ jest.mock("../lib/repositories/SupabaseRecipeRepository", () => ({
   })),
 }));
 
+// Mock window.alert
+window.alert = jest.fn();
+
+// Mock global fetch for AI Extraction
+global.fetch = jest.fn(() =>
+  Promise.resolve({
+    ok: true,
+    json: () => Promise.resolve({
+      // Supadata response
+      content: 'Mock transcript content',
+      // or OpenRouter response
+      choices: [{ message: { content: JSON.stringify({ title: 'Mock Recipe 1', ingredients: ['Ingredient A'], instructions: ['Step 1'] }) } }]
+    }),
+  })
+) as jest.Mock;
+
 describe("Home", () => {
+  const originalEnv = process.env;
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+    process.env = { 
+      ...originalEnv, 
+      NEXT_PUBLIC_SUPADATA_API_KEY: 'valid-key',
+      NEXT_PUBLIC_OPENROUTER_API_KEY: 'valid-key'
+    };
+  });
+
+  afterAll(() => {
+    process.env = originalEnv;
+  });
+
   it("renders the heading", () => {
     render(<Home />);
     const heading = screen.getByRole('heading', { name: /Discover/i, level: 1 });

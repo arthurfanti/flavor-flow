@@ -30,14 +30,15 @@ jest.mock("../lib/supabase/client", () => ({
 // Mock window.alert
 window.alert = jest.fn();
 
-// Mock global fetch for Spoonacular
+// Mock global fetch for AI Extraction
 global.fetch = jest.fn(() =>
   Promise.resolve({
     ok: true,
     json: () => Promise.resolve({
-      title: 'Mock Recipe 1',
-      extendedIngredients: [{ original: 'Ingredient A' }],
-      instructions: 'Step 1'
+      // Supadata response
+      content: 'Mock transcript content',
+      // or OpenRouter response
+      choices: [{ message: { content: JSON.stringify({ title: 'Mock Recipe 1', ingredients: ['Ingredient A'], instructions: ['Step 1'] }) } }]
     }),
   })
 ) as jest.Mock;
@@ -51,7 +52,11 @@ describe("End-to-End Workflow", () => {
     MockPlannerRepository.clearForTests();
     MockPantryRepository.clearForTests();
     jest.clearAllMocks();
-    process.env = { ...originalEnv, NEXT_PUBLIC_SPOONACULAR_API_KEY: 'valid-api-key' };
+    process.env = { 
+      ...originalEnv, 
+      NEXT_PUBLIC_SUPADATA_API_KEY: 'valid-key',
+      NEXT_PUBLIC_OPENROUTER_API_KEY: 'valid-key'
+    };
   });
 
   afterEach(() => {

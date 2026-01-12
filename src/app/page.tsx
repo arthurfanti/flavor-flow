@@ -12,7 +12,9 @@ import { SupabaseShoppingListRepository } from '@/lib/repositories/SupabaseShopp
 import { SupabasePlannerRepository } from '@/lib/repositories/SupabasePlannerRepository';
 import { SupabasePantryRepository } from '@/lib/repositories/SupabasePantryRepository';
 import { createSupabaseClient } from '@/lib/supabase/client';
-import { SpoonacularExtractor } from '@/lib/services/SpoonacularExtractor';
+import { VideoAIExtractor } from '@/lib/services/VideoAIExtractor';
+import { SupadataService } from '@/lib/services/SupadataService';
+import { OpenRouterService } from '@/lib/services/OpenRouterService';
 import { IngredientMatcher } from '@/lib/services/IngredientMatcher';
 
 export default function Home() {
@@ -21,6 +23,25 @@ export default function Home() {
   const [isEditing, setIsEditing] = useState(false);
   const [recentRecipes, setRecentRecipes] = useState<any[]>([]);
   const [configError, setConfigError] = useState<string | null>(null);
+
+  const extractor = useMemo(() => {
+    try {
+      const supadataKey = process.env.NEXT_PUBLIC_SUPADATA_API_KEY;
+      const openRouterKey = process.env.NEXT_PUBLIC_OPENROUTER_API_KEY;
+      
+      if (!supadataKey || !openRouterKey) {
+        throw new Error('AI Extraction keys (Supadata/OpenRouter) are missing.');
+      }
+
+      return new VideoAIExtractor(
+        new SupadataService(supadataKey),
+        new OpenRouterService(openRouterKey)
+      );
+    } catch (e: any) {
+      console.warn('AI Extractor could not be initialized:', e.message);
+      return null;
+    }
+  }, []);
 
   const repos = useMemo(() => {
     try {
@@ -52,18 +73,15 @@ export default function Home() {
   }, [refreshRecent]);
 
   const handleExtract = async (url: string) => {
-    if (!repos) return;
+    if (!repos || !extractor) {
+      alert('AI Extractor or Repositories not initialized. Check your API keys.');
+      return;
+    }
     setIsLoading(true);
     try {
-      const apiKey = process.env.NEXT_PUBLIC_SPOONACULAR_API_KEY;
-      if (!apiKey || apiKey === '' || apiKey.includes('your-spoonacular-key')) {
-        throw new Error('Spoonacular API key is missing or invalid.');
-      }
-      
-      console.log('Flavor Flow: Calling Spoonacular API...');
-      const extractor = new SpoonacularExtractor(apiKey);
+      console.log('Flavor Flow: Initializing True AI Extraction...');
       const extracted = await extractor.extractFromUrl(url);
-      console.log('Flavor Flow: Extraction successful:', extracted.title);
+      console.log('Flavor Flow: AI Extraction successful:', extracted.title);
 
       console.log('Flavor Flow: Saving to Supabase...');
       await repos.recipe.addRecipe(extracted);
