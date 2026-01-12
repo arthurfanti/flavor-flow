@@ -19,9 +19,11 @@ jest.mock("../lib/repositories/SupabaseRecipeRepository", () => ({
 }));
 
 const mockAddItem = jest.fn().mockResolvedValue(null);
+const mockAddItems = jest.fn().mockResolvedValue(null);
 jest.mock("../lib/repositories/SupabaseShoppingListRepository", () => ({
   SupabaseShoppingListRepository: jest.fn().mockImplementation(() => ({
     addItem: mockAddItem,
+    addItems: mockAddItems,
   })),
 }));
 
@@ -104,7 +106,7 @@ describe("Home Pantry Integration", () => {
     fireEvent.click(addPlannerButton);
     
     await waitFor(() => {
-      expect(mockAddItem).toHaveBeenCalledWith({ name: 'Ingredient A', bought: false });
+      expect(mockAddItems).toHaveBeenCalledWith([{ name: 'Ingredient A', bought: false }]);
     });
     
     expect(window.alert).toHaveBeenCalledWith(expect.stringContaining("1 items added"));
@@ -128,7 +130,7 @@ describe("Home Pantry Integration", () => {
     const addPlannerButton = await screen.findByRole('button', { name: /Add to Planner/i });
     
     // Clear previous calls
-    mockAddItem.mockClear();
+    mockAddItems.mockClear();
     
     fireEvent.click(addPlannerButton);
     
@@ -136,7 +138,7 @@ describe("Home Pantry Integration", () => {
       expect(window.alert).toHaveBeenCalledWith(expect.stringContaining("0 items added"));
     });
     
-    expect(mockAddItem).not.toHaveBeenCalled();
+    expect(mockAddItems).not.toHaveBeenCalled();
     expect(window.alert).toHaveBeenCalledWith(expect.stringContaining("1 items found in your pantry"));
   });
 });

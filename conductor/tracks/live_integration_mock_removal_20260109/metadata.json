@@ -1,0 +1,8 @@
+{
+  "track_id": "live_integration_mock_removal_20260109",
+  "type": "feature",
+  "status": "new",
+  "created_at": "2026-01-09T20:50:00Z",
+  "updated_at": "2026-01-09T20:50:00Z",
+  "description": "Remove all Mocks and ensure all integrations (Supabase and Spoonacular) are properly working with live keys."
+}

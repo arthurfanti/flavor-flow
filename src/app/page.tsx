@@ -112,15 +112,12 @@ export default function Home() {
   const handleAddToList = async (ingredients: string[]) => {
     if (!repos) return;
     try {
-      console.log('Flavor Flow: Optimistically adding items to list...');
-      // In a real app with global state, we would update the store here.
-      // For now, we provide immediate feedback.
-      for (const ingredient of ingredients) {
-        await repos.shoppingList.addItem({ name: ingredient, bought: false });
-      }
-      alert('Added to shopping list!');
+      console.log('Flavor Flow: Bulk adding items to list...');
+      await repos.shoppingList.addItems(ingredients.map(ing => ({ name: ing, bought: false })));
+      // Success feedback handled by RecipePreview button
     } catch (error) {
       console.error('Failed to add to shopping list:', error);
+      alert('Failed to add items to shopping list.');
     }
   };
 
@@ -128,34 +125,35 @@ export default function Home() {
     if (!repos) return;
     setIsLoading(true);
     try {
-      console.log('Flavor Flow: Optimistically adding to planner...');
+      console.log('Flavor Flow: Adding to planner with pantry sync...');
       // 1. Add to Planner Queue
       await repos.planner.addToQueue({ 
         title: targetRecipe.title, 
         source_url: targetRecipe.source_url || targetRecipe.sourceUrl || '',
-        image_url: targetRecipe.image_url 
+        image_url: targetRecipe.image_url || targetRecipe.imageUrl
       });
 
       // 2. Intelligent Shopping List Sync (Pantry Awareness)
       const pantryItems = await repos.pantry.getItems();
       const matcher = new IngredientMatcher();
       
-      const missingIngredients = targetRecipe.ingredients.filter((ing: string) => {
+      const missingIngredients = (targetRecipe.ingredients || []).filter((ing: string) => {
         const found = pantryItems.find(p => matcher.isMatch(p.name, ing));
         return !found;
       });
 
-      const alreadyInPantry = targetRecipe.ingredients.length - missingIngredients.length;
-
-      // 3. Push missing to shopping list
-      for (const ingredient of missingIngredients) {
-        await repos.shoppingList.addItem({ name: ingredient, bought: false });
+      // 3. Push missing to shopping list in bulk
+      if (missingIngredients.length > 0) {
+        await repos.shoppingList.addItems(missingIngredients.map((ing: string) => ({ name: ing, bought: false })));
       }
 
       setIsLoading(false);
+      // Success feedback handled by RecipePreview button
+      // We still alert the useful pantry info
+      const alreadyInPantry = (targetRecipe.ingredients?.length || 0) - missingIngredients.length;
       alert(
-        `Added to planner!\n\n` +
-        `Shopping List updated: ${missingIngredients.length} items added.\n` +
+        `Planned!\n\n` +
+        `${missingIngredients.length} items added to shopping list.\n` +
         `${alreadyInPantry} items found in your pantry.`
       );
     } catch (error) {

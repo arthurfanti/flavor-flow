@@ -10,13 +10,16 @@ Flavor Flow is designed for a diverse audience focused on simplifying their cook
 - **Students and Solo Dwellers:** People managing their own kitchens who need an efficient way to track their pantry and cook simple meals.
 
 ## Core Features (MVP)
-- **Video-to-Recipe Extraction:** Powerful parsing of URLs from YouTube, Instagram, and TikTok to automatically extract ingredient lists and cooking instructions.
-- **Integrated Meal Planner & Shopping List:** A weekly planning tool where users can select recipes, which then automatically populates a consolidated shopping list.
+- **True AI Video-to-Recipe Extraction:** A cutting-edge pipeline that uses high-fidelity transcription and Large Language Models (MiniMax M2.1) to extract ingredients and steps from any video URL (YouTube, Instagram, TikTok), even when they are only spoken.
+- **Intelligent Planner & Shopping List:** A tool to queue recipes for cooking. When adding a recipe to the planner, the app automatically identifies missing ingredients by cross-referencing your Digital Pantry and adds only those items to the shopping list.
+- **Recipe Library:** A dedicated space to archive and manage all successfully extracted recipes for future reference.
 - **Digital Pantry Management:** A dedicated view for users to track their current inventory, helping to reduce food waste and identify missing ingredients for planned recipes.
 
 ## User Experience Goals
 - **Mobile-First & Clean Design (P0):** A visually focused interface optimized for mobile use, ensuring that the cooking and shopping experience is intuitive and aesthetic.
+- **Immersive AI Experience (P1):** A sophisticated extraction overlay with 3D-inspired icons and smooth transitions that guides the user through the transcription and analysis phases.
 - **Offline Capability (P0):** Essential access to shopping lists and pantry inventory even without an internet connection, ensuring reliability in grocery stores or kitchens with poor reception.
+- **Seamless Automation (P1):** The transition from planning to shopping is made intelligent through automatic pantry-awareness, reducing manual data entry for the user.
 - **Efficient Video Processing (P1):** While prioritizing UX, the app aims for fast and reliable extraction of recipe data from video links to provide a seamless user journey.
 
 ## Platform Strategy

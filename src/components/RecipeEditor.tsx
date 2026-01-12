@@ -5,6 +5,7 @@ interface Recipe {
   ingredients: string[];
   instructions: string[];
   sourceUrl: string;
+  image_url?: string;
 }
 
 interface RecipeEditorProps {

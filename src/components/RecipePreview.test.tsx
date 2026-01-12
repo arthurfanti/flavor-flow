@@ -10,20 +10,20 @@ const mockRecipe = {
 
 describe('RecipePreview', () => {
   it('renders recipe title with serif font', () => {
-    render(<RecipePreview recipe={mockRecipe} />);
+    render(<RecipePreview recipe={mockRecipe} onAddToList={jest.fn()} onAddToPlanner={jest.fn()} />);
     const title = screen.getByRole('heading', { name: /Test Recipe/i, level: 2 });
     expect(title).toBeInTheDocument();
     expect(title).toHaveClass('font-serif');
   });
 
   it('renders ingredients list', () => {
-    render(<RecipePreview recipe={mockRecipe} />);
+    render(<RecipePreview recipe={mockRecipe} onAddToList={jest.fn()} onAddToPlanner={jest.fn()} />);
     expect(screen.getByText('1 cup flour')).toBeInTheDocument();
     expect(screen.getByText('2 eggs')).toBeInTheDocument();
   });
 
   it('renders instructions list', () => {
-    render(<RecipePreview recipe={mockRecipe} onAddToList={jest.fn()} />);
+    render(<RecipePreview recipe={mockRecipe} onAddToList={jest.fn()} onAddToPlanner={jest.fn()} />);
     expect(screen.getByText('Mix ingredients')).toBeInTheDocument();
     expect(screen.getByText('Bake at 350F')).toBeInTheDocument();
   });

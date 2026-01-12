@@ -21,6 +21,7 @@
     "@testing-library/jest-dom": "latest",
     "@testing-library/react": "latest",
     "@testing-library/user-event": "latest",
+    "@types/jest": "^30.0.0",
     "@types/node": "latest",
     "@types/react": "latest",
     "@types/react-dom": "latest",
@@ -31,6 +32,7 @@
     "jest-environment-jsdom": "latest",
     "postcss": "latest",
     "tailwindcss": "latest",
+    "ts-jest": "^29.4.6",
     "typescript": "latest",
     "typescript-eslint": "^8.51.0"
   }

@@ -17,8 +17,8 @@ export class SupabaseRecipeRepository implements RecipeRepository {
       title: recipe.title,
       ingredients: recipe.ingredients,
       instructions: recipe.instructions,
-      source_url: recipe.sourceUrl || recipe.source_url,
-      image_url: recipe.image_url,
+      source_url: recipe.source_url || recipe.sourceUrl,
+      image_url: recipe.image_url || recipe.imageUrl,
     };
     const { error } = await this.supabase.from('recipes').insert([dbRecipe]);
     if (error) {

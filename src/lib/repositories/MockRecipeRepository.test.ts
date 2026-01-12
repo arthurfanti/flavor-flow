@@ -15,4 +15,16 @@ describe('MockRecipeRepository', () => {
     const newCount = (await repo.getRecipes()).length;
     expect(newCount).toBe(initialCount + 1);
   });
+
+  it('should return latest recipes', async () => {
+    const repo = new MockRecipeRepository();
+    const latest = await repo.getLatest(1);
+    expect(latest.length).toBe(1);
+  });
+
+  it('should return all recipes', async () => {
+    const repo = new MockRecipeRepository();
+    const all = await repo.getAll();
+    expect(all.length).toBeGreaterThan(0);
+  });
 });

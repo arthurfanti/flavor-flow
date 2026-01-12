@@ -24,9 +24,17 @@ export class SupabasePlannerRepository implements PlannerRepository {
     
     const nextOrder = (data && data[0]?.order !== undefined) ? data[0].order + 1 : 0;
 
+    const dbRecipe = {
+      title: recipe.title,
+      source_url: recipe.source_url || (recipe as any).sourceUrl || '',
+      image_url: recipe.image_url || (recipe as any).imageUrl,
+      order: nextOrder,
+      planned_at: new Date().toISOString()
+    };
+
     const { error } = await this.supabase
       .from('planned_recipes')
-      .insert([{ ...recipe, order: nextOrder, planned_at: new Date().toISOString() }]);
+      .insert([dbRecipe]);
     
     if (error) throw error;
   }

@@ -12,12 +12,24 @@ export class MockShoppingListRepository implements ShoppingListRepository {
 
   async addItem(item: Partial<ShoppingListItem>): Promise<void> {
     const newItem: ShoppingListItem = {
-      id: Date.now(),
+      id: Date.now() + Math.random(),
       name: item.name || 'Unknown',
       bought: item.bought || false,
       recipe_id: item.recipe_id,
     };
     MockShoppingListRepository.items.push(newItem);
+  }
+
+  async addItems(items: Partial<ShoppingListItem>[]): Promise<void> {
+    items.forEach(item => {
+      const newItem: ShoppingListItem = {
+        id: Date.now() + Math.random(),
+        name: item.name || 'Unknown',
+        bought: item.bought || false,
+        recipe_id: item.recipe_id,
+      };
+      MockShoppingListRepository.items.push(newItem);
+    });
   }
 
   async toggleItem(id: number, bought: boolean): Promise<void> {

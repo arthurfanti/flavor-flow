@@ -35,7 +35,7 @@ describe('RecipeEditor', () => {
     render(<RecipeEditor recipe={mockRecipe} onSave={onSave} onCancel={jest.fn()} />);
     
     fireEvent.change(screen.getByDisplayValue('Test Recipe'), { target: { value: 'Updated Title' } });
-    fireEvent.click(screen.getByRole('button', { name: /Save/i }));
+    fireEvent.click(screen.getByRole('button', { name: /Save Recipe/i }));
 
     expect(onSave).toHaveBeenCalledWith(expect.objectContaining({
       title: 'Updated Title',
@@ -46,7 +46,7 @@ describe('RecipeEditor', () => {
   it('calls onCancel', () => {
     const onCancel = jest.fn();
     render(<RecipeEditor recipe={mockRecipe} onSave={jest.fn()} onCancel={onCancel} />);
-    fireEvent.click(screen.getByRole('button', { name: /Cancel/i }));
+    fireEvent.click(screen.getByRole('button', { name: /Discard Changes/i }));
     expect(onCancel).toHaveBeenCalled();
   });
 });

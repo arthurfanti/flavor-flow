@@ -32,7 +32,10 @@ jest.mock("../lib/repositories/SupabaseRecipeRepository", () => ({
 window.alert = jest.fn();
 
 // Mock global fetch for AI Extraction
-global.fetch = jest.fn(() =>
+const fetchMock = jest.fn() as jest.MockedFunction<typeof fetch>;
+global.fetch = fetchMock;
+
+fetchMock.mockImplementation(() =>
   Promise.resolve({
     ok: true,
     json: () => Promise.resolve({
@@ -41,8 +44,8 @@ global.fetch = jest.fn(() =>
       // or OpenRouter response
       choices: [{ message: { content: JSON.stringify({ title: 'Mock Recipe 1', ingredients: ['Ingredient A'], instructions: ['Step 1'] }) } }]
     }),
-  })
-) as jest.Mock;
+  } as Response)
+);
 
 describe("Home", () => {
   const originalEnv = process.env;

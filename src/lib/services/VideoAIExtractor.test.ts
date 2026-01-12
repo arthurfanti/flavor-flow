@@ -28,14 +28,35 @@ describe('VideoAIExtractor', () => {
     mockSupadata.fetchTranscript.mockResolvedValue(transcript);
     mockOpenRouter.structureRecipe.mockResolvedValue(structuredRecipe);
 
-    const result = await extractor.extractFromUrl(url);
+    const onProgress = jest.fn();
+    const result = await extractor.extractFromUrl(url, onProgress);
 
     expect(result).toEqual({
       ...structuredRecipe,
+      source_url: url,
       sourceUrl: url,
+      image_url: null,
     });
     expect(mockSupadata.fetchTranscript).toHaveBeenCalledWith(url);
     expect(mockOpenRouter.structureRecipe).toHaveBeenCalledWith(transcript);
+    expect(onProgress).toHaveBeenCalledWith('transcribing');
+    expect(onProgress).toHaveBeenCalledWith('analyzing');
+    expect(onProgress).toHaveBeenCalledWith('finalizing');
+  });
+
+  it('should derive YouTube thumbnail directly from URL', async () => {
+    const url = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ';
+    const transcript = 'Raw transcript text';
+    const structuredRecipe = { title: 'YT Recipe', ingredients: [], instructions: [] };
+
+    mockSupadata.fetchTranscript.mockResolvedValue(transcript);
+    mockOpenRouter.structureRecipe.mockResolvedValue(structuredRecipe);
+    // Mock metadata failure to ensure fallback works
+    mockSupadata.fetchMetadata.mockRejectedValue(new Error('Failed'));
+
+    const result = await extractor.extractFromUrl(url);
+
+    expect(result.image_url).toBe('https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg');
   });
 
   it('should fallback to metadata if transcript is empty', async () => {

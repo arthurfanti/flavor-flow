@@ -22,6 +22,15 @@ export class SupabaseShoppingListRepository implements ShoppingListRepository {
     if (error) throw error;
   }
 
+  async addItems(items: Partial<ShoppingListItem>[]): Promise<void> {
+    if (items.length === 0) return;
+    const { error } = await this.supabase
+      .from('shopping_list')
+      .insert(items.map(item => ({ ...item, bought: item.bought || false })));
+    
+    if (error) throw error;
+  }
+
   async toggleItem(id: number, bought: boolean): Promise<void> {
     const { error } = await this.supabase
       .from('shopping_list')

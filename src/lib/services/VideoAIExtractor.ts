@@ -9,20 +9,37 @@ export class VideoAIExtractor implements RecipeExtractor {
     private openRouter: OpenRouterService
   ) {}
 
+  private getYouTubeThumbnail(url: string): string | null {
+    const regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
+    const match = url.match(regExp);
+    const videoId = (match && match[7].length === 11) ? match[7] : null;
+    return videoId ? `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg` : null;
+  }
+
   async extractFromUrl(url: string, onProgress?: (stage: AIStage) => void): Promise<ExtractedRecipe> {
     let sourceText = '';
     let imageUrl = '';
 
-    // 1. Fetch metadata first to ensure we always have an image and a backup description
+    // Priority 1: YouTube direct thumbnail extraction
+    if (url.includes('youtube.com') || url.includes('youtu.be')) {
+      imageUrl = this.getYouTubeThumbnail(url) || '';
+    }
+
+    // 2. Fetch metadata (Supadata)
     try {
       const metadata = await this.supadata.fetchMetadata(url);
-      imageUrl = metadata.image || '';
+      
+      // Only overwrite if we didn't get a YT thumbnail or if Supadata has something better
+      if (!imageUrl || metadata.image || metadata.thumbnail) {
+        imageUrl = metadata.image || metadata.thumbnail || imageUrl;
+      }
+      
       sourceText = metadata.description || '';
     } catch (e) {
       console.warn('Metadata extraction failed:', e);
     }
 
-    // 2. Try Transcript as primary source
+    // 3. Try Transcript as primary source
     try {
       onProgress?.('transcribing');
       const transcript = await this.supadata.fetchTranscript(url);
@@ -37,7 +54,7 @@ export class VideoAIExtractor implements RecipeExtractor {
       throw new Error('No content found to extract recipe from (no transcript or description).');
     }
 
-    // 3. AI Structuring
+    // 4. AI Structuring
     onProgress?.('analyzing');
     const structured = await this.openRouter.structureRecipe(sourceText);
 
@@ -46,7 +63,7 @@ export class VideoAIExtractor implements RecipeExtractor {
       ...structured,
       source_url: url,
       sourceUrl: url, // Keep for backward compatibility if needed
-      image_url: imageUrl || structured.image_url,
+      image_url: imageUrl || structured.image_url || null,
     };
   }
 

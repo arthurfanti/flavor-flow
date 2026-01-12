@@ -30,3 +30,14 @@
 - [ ] Task: Final Quality Pass & E2E Test
     - [ ] Sub-task: Test with real YouTube, Instagram, and TikTok URLs where the recipe is only spoken.
 - [ ] Task: Conductor - User Manual Verification 'Phase 4: Final End-to-End Integration' (Protocol in workflow.md)
+
+## Phase 5: UI/UX Refinements & Bug Fixes
+- [x] Task: Update Remaining AI Loading Icons 2f328f4
+    - [x] Sub-task: Replace placeholder SVGs with custom 3D-inspired icons for 'Analyzing' and 'Finalizing'.
+- [x] Task: Implement Optimistic UI for Global Actions 3e7c8d2
+    - [x] Sub-task: Implement optimistic updates when adding recipes to the Planner.
+    - [x] Sub-task: Implement optimistic updates when adding ingredients to the Shopping List.
+- [x] Task: Fix Recipe Image Bug in Planner List 3e7c8d2
+    - [x] Sub-task: Audit `PlannerQueue` component and verify image data mapping from Supabase.
+    - [x] Sub-task: Ensure recipe thumbnails render correctly in the Next Meals queue.
+- [ ] Task: Conductor - User Manual Verification 'Phase 5: UI/UX Refinements & Bug Fixes' (Protocol in workflow.md)
