@@ -6,7 +6,7 @@ This plan outlines the steps to replace existing navigation icons with Google's 
 
 - [x] **Task 1: Integrate Material Symbols Stylesheet** 8745b4ac
     - [ ] Add the `<link>` tag for Material Symbols Rounded to the `<head>` in `src/app/layout.tsx`.
-- [ ] **Task 2: Create Reusable Icon Component (TDD)**
+- [x] **Task 2: Create Reusable Icon Component (TDD)** 469af4df
     - [ ] **Write Tests (Red Phase)**: Create `src/components/Icon.test.tsx` and define tests for rendering with a specific icon name and applying custom classes.
     - [ ] **Implement (Green Phase)**: Create `src/components/Icon.tsx` using the `material-symbols-rounded` class.
     - [ ] **Refactor/Coverage**: Ensure tests pass and coverage is >80%.
