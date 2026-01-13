@@ -4,5 +4,5 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-## [~] Track: Enhanced Notifications & Optimized Planner Flow
-*Link: [./conductor/tracks/enhanced_notifications_20260112/](./conductor/tracks/enhanced_notifications_20260112/)*
+## [~] Track: Migration of navigation icons to Material Symbols Rounded
+*Link: [./conductor/tracks/material_symbols_migration_20260113/](./conductor/tracks/material_symbols_migration_20260113/)*
