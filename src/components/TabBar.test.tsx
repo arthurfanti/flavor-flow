@@ -8,21 +8,21 @@ jest.mock('next/navigation', () => ({
 }));
 
 describe('TabBar', () => {
-  it('renders all four navigation links', () => {
+  it('renders all four navigation links with aria-labels', () => {
     (usePathname as jest.Mock).mockReturnValue('/');
     render(<TabBar />);
     
-    expect(screen.getByText('Home')).toBeInTheDocument();
-    expect(screen.getByText('Planner')).toBeInTheDocument();
-    expect(screen.getByText('Pantry')).toBeInTheDocument();
-    expect(screen.getByText('Shopping')).toBeInTheDocument();
+    expect(screen.getByLabelText('Home')).toBeInTheDocument();
+    expect(screen.getByLabelText('Planner')).toBeInTheDocument();
+    expect(screen.getByLabelText('Pantry')).toBeInTheDocument();
+    expect(screen.getByLabelText('Shopping')).toBeInTheDocument();
   });
 
   it('highlights the active link based on pathname', () => {
     (usePathname as jest.Mock).mockReturnValue('/planner');
     render(<TabBar />);
     
-    const plannerLink = screen.getByText('Planner').closest('a');
+    const plannerLink = screen.getByLabelText('Planner');
     expect(plannerLink).toHaveClass('text-brand-yellow-dark'); 
   });
 

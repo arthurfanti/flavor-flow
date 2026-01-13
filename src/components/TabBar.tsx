@@ -39,14 +39,12 @@ export default function TabBar() {
           <Link
             key={item.name}
             href={item.href}
+            aria-label={item.name}
             className={`flex flex-col items-center gap-1 p-2 transition-all active:scale-90 ${
               isActive ? 'text-brand-yellow-dark' : 'text-gray-500 hover:text-gray-700'
             }`}
           >
             <Icon name={item.iconName} className="text-[24px]" />
-            <span className="text-[10px] font-serif font-semibold uppercase tracking-wider">
-              {item.name}
-            </span>
           </Link>
         );
       })}
