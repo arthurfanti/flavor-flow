@@ -3,9 +3,10 @@ import Home from "./page";
 import { toast } from "sonner";
 
 // Mock next/navigation
+const mockPush = jest.fn();
 jest.mock("next/navigation", () => ({
   useRouter: jest.fn(() => ({
-    push: jest.fn(),
+    push: mockPush,
   })),
 }));
 
@@ -116,6 +117,37 @@ describe("Home Notifications", () => {
 
     await waitFor(() => {
       expect(toast.success).toHaveBeenCalledWith(expect.stringContaining("Recipe extracted"));
+    });
+  });
+
+  it("redirects to /planner when adding to planner from preview", async () => {
+    const { VideoAIExtractor } = require("../lib/services/VideoAIExtractor");
+    
+    // 1. Mock a successful extraction first to show the preview
+    const mockExtract = jest.fn().mockResolvedValue({ 
+      title: 'Mock Recipe', 
+      ingredients: ['Ing 1'], 
+      instructions: ['Step 1'] 
+    });
+    VideoAIExtractor.mockImplementation(() => ({
+      extractFromUrl: mockExtract,
+    }));
+
+    render(<Home />);
+    
+    const input = screen.getByPlaceholderText(/Paste video URL/i);
+    const extractButton = screen.getByRole('button', { name: /Extract Recipe/i });
+
+    fireEvent.change(input, { target: { value: 'https://example.com/success' } });
+    fireEvent.click(extractButton);
+
+    // 2. Wait for preview and click Add to Planner
+    const addPlannerButton = await screen.findByRole('button', { name: /Add to Planner/i });
+    fireEvent.click(addPlannerButton);
+
+    // 3. Verify redirection
+    await waitFor(() => {
+      expect(mockPush).toHaveBeenCalledWith('/planner');
     });
   });
 });

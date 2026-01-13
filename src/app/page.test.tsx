@@ -30,23 +30,34 @@ jest.mock("../lib/repositories/SupabaseShoppingListRepository", () => ({
   SupabaseShoppingListRepository: jest.fn().mockImplementation(() => ({
     getItems: jest.fn().mockResolvedValue([]),
     addItem: jest.fn().mockResolvedValue(null),
+    addItems: jest.fn().mockResolvedValue(null),
     toggleItem: jest.fn().mockResolvedValue(null),
     removeItem: jest.fn().mockResolvedValue(null),
   })),
 }));
 
+const mockGetLatest = jest.fn().mockResolvedValue([]);
+const mockAddRecipe = jest.fn().mockResolvedValue(null);
 jest.mock("../lib/repositories/SupabaseRecipeRepository", () => ({
   SupabaseRecipeRepository: jest.fn().mockImplementation(() => ({
-    getLatest: jest.fn().mockResolvedValue([]),
+    getLatest: mockGetLatest,
     getAll: jest.fn().mockResolvedValue([]),
-    addRecipe: jest.fn().mockResolvedValue(null),
+    addRecipe: mockAddRecipe,
   })),
 }));
 
-// Mock window.alert
-window.alert = jest.fn();
+jest.mock("../lib/repositories/SupabasePlannerRepository", () => ({
+  SupabasePlannerRepository: jest.fn().mockImplementation(() => ({
+    addToQueue: jest.fn().mockResolvedValue(null),
+  })),
+}));
 
-// Mock global fetch for AI Extraction
+jest.mock("../lib/repositories/SupabasePantryRepository", () => ({
+  SupabasePantryRepository: jest.fn().mockImplementation(() => ({
+    getItems: jest.fn().mockResolvedValue([]),
+  })),
+}));
+
 const fetchMock = jest.fn() as jest.MockedFunction<typeof fetch>;
 global.fetch = fetchMock;
 
@@ -70,7 +81,9 @@ describe("Home", () => {
     process.env = { 
       ...originalEnv, 
       NEXT_PUBLIC_SUPADATA_API_KEY: 'valid-key',
-      NEXT_PUBLIC_OPENROUTER_API_KEY: 'valid-key'
+      NEXT_PUBLIC_OPENROUTER_API_KEY: 'valid-key',
+      NEXT_PUBLIC_SUPABASE_URL: 'https://test.supabase.co',
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: 'test-key'
     };
   });
 
@@ -103,10 +116,7 @@ describe("Home", () => {
 
   it("renders Recent Extractions section if recipes exist", async () => {
     const mockRecipes = [{ title: 'Recent Recipe', image_url: '', ingredients: [] }];
-    // @ts-ignore
-    require("../lib/repositories/SupabaseRecipeRepository").SupabaseRecipeRepository.mockImplementation(() => ({
-      getLatest: jest.fn().mockResolvedValue(mockRecipes),
-    }));
+    mockGetLatest.mockResolvedValue(mockRecipes);
 
     render(<Home />);
     expect(await screen.findByText(/Recent Extractions/i)).toBeInTheDocument();
@@ -119,16 +129,9 @@ describe("Home", () => {
   });
 
   it("calls addRecipe and refreshes list on successful extraction", async () => {
-    // Mock getLatest for initial load
-    const mockGetLatest = jest.fn().mockResolvedValue([]);
-    // Mock addRecipe
-    const mockAddRecipe = jest.fn().mockResolvedValue(null);
-    
-    // @ts-ignore
-    require("../lib/repositories/SupabaseRecipeRepository").SupabaseRecipeRepository.mockImplementation(() => ({
-      getLatest: mockGetLatest,
-      addRecipe: mockAddRecipe,
-    }));
+    // Reset mocks for this test
+    mockGetLatest.mockResolvedValue([]);
+    mockAddRecipe.mockResolvedValue(null);
 
     render(<Home />);
     

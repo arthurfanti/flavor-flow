@@ -58,9 +58,6 @@ jest.mock("../lib/repositories/SupabasePantryRepository", () => ({
   })),
 }));
 
-// Mock window.alert
-window.alert = jest.fn();
-
 // Mock global fetch for AI Extraction
 global.fetch = jest.fn(() =>
   Promise.resolve({
