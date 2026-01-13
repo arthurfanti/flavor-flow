@@ -9,15 +9,10 @@
 - [x] Task: Conductor - User Manual Verification 'Phase 1: Sonner Infrastructure & Error Refactor' (Protocol in workflow.md) [checkpoint: c500eeb]
 
 ## Phase 2: Planner Interaction Optimization
-- [ ] Task: Implement Planner Redirection
-    - [ ] Sub-task: Update `handleAddToPlanner` in `page.tsx` to use `useRouter` for redirection.
-    - [ ] Sub-task: Ensure redirection occurs *after* the async addition and shopping list sync are complete.
-- [ ] Task: Verify Redirection & State Persistence
-    - [ ] Sub-task: Write an E2E test in `e2e.test.tsx` to verify the "Add to Planner -> Redirect -> View in Planner" flow.
-- [ ] Task: Conductor - User Manual Verification 'Phase 2: Planner Interaction Optimization' (Protocol in workflow.md)
+- [x] Task: Implement Planner Redirection 0159fa1
+- [x] Task: Verify Redirection & State Persistence 0159fa1
+- [x] Task: Conductor - User Manual Verification 'Phase 2: Planner Interaction Optimization' (Protocol in workflow.md) 0159fa1
 
 ## Phase 3: Final Integration & Cleanup
-- [ ] Task: Final Quality Pass
-    - [ ] Sub-task: Audit all components for any remaining native `alert()` calls.
-    - [ ] Sub-task: Ensure toast styles align with the "Adult Aesthetic" (minimalist styling).
-- [ ] Task: Conductor - User Manual Verification 'Phase 3: Final Integration & Cleanup' (Protocol in workflow.md)
+- [x] Task: Final Quality Pass 0159fa1
+- [x] Task: Conductor - User Manual Verification 'Phase 3: Final Integration & Cleanup' (Protocol in workflow.md) 0159fa1
