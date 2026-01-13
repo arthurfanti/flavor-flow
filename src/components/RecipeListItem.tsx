@@ -7,7 +7,7 @@ interface RecipeListItemProps {
 
 export default function RecipeListItem({ recipe }: RecipeListItemProps) {
   return (
-    <div className="flex items-center gap-4 p-3 bg-white rounded-2xl border border-gray-50 shadow-sm hover:shadow-md transition-shadow group">
+    <div className="flex items-center gap-4 p-3 bg-white/10 rounded-2xl border border-white/20 shadow-[0_2px_8px_rgba(255,255,255,0.06)] hover:bg-white/20 transition-shadow group text-gray-900 backdrop-blur-md">
       <div className="w-14 h-14 rounded-xl overflow-hidden flex-shrink-0 bg-gray-100">
         {recipe.image_url ? (
           <img 

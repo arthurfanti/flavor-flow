@@ -4,5 +4,5 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-## [~] Track: Live Integration & Mock Removal
-*Link: [./conductor/tracks/live_integration_mock_removal_20260109/](./conductor/tracks/live_integration_mock_removal_20260109/)*
+## [~] Track: Enhanced Notifications & Optimized Planner Flow
+*Link: [./conductor/tracks/enhanced_notifications_20260112/](./conductor/tracks/enhanced_notifications_20260112/)*

@@ -4,12 +4,8 @@
 - [x] Task: Install Sonner & Setup Toaster 96e9a73
     - [ ] Sub-task: Install `sonner` package.
     - [ ] Sub-task: Add `<Toaster />` component to the root `layout.tsx`.
-- [ ] Task: Refactor Error Notifications
-    - [ ] Sub-task: Write tests in `page.test.tsx` (or relevant component tests) to expect `toast.error` instead of `alert`.
-    - [ ] Sub-task: Replace all `alert()` calls for errors with `toast.error()`.
-- [ ] Task: Refactor Major Success Notifications
-    - [ ] Sub-task: Update `handleExtract` to use `toast.success` for successful extraction.
-    - [ ] Sub-task: Remove redundant alerts for minor actions (Shopping List, Pantry) as per spec.
+- [x] Task: Refactor Error Notifications 69ee586
+- [x] Task: Refactor Major Success Notifications 69ee586
 - [ ] Task: Conductor - User Manual Verification 'Phase 1: Sonner Infrastructure & Error Refactor' (Protocol in workflow.md)
 
 ## Phase 2: Planner Interaction Optimization

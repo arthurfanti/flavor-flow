@@ -12,7 +12,7 @@ interface PantryListProps {
 export default function PantryList({ items, onDelete, onToggleLowStock }: PantryListProps) {
   if (items.length === 0) {
     return (
-      <div className="w-full py-12 text-center bg-white rounded-3xl border border-ui-border shadow-sm">
+      <div className="w-full py-12 text-center bg-white/10 rounded-3xl border border-white/20 shadow-xl shadow-cyan-300/10 text-gray-900 backdrop-blur-md">
         <p className="text-gray-400 font-medium italic">Your pantry is empty.</p>
       </div>
     );
@@ -43,7 +43,7 @@ export default function PantryList({ items, onDelete, onToggleLowStock }: Pantry
             {catItems.map((item) => (
               <div 
                 key={item.id}
-                className="flex items-center justify-between p-5 bg-white rounded-2xl border border-gray-50 shadow-[0_2px_8px_rgba(0,0,0,0.02)] hover:shadow-md transition-shadow group"
+                className="flex items-center justify-between p-5 bg-white/10 rounded-2xl border border-white/20 shadow-[0_2px_8px_rgba(255,255,255,0.06)] hover:bg-white/20 transition-shadow group text-gray-900 backdrop-blur-md"
               >
                 <div className="flex items-center gap-4">
                   <span className="text-lg font-medium text-gray-700">{item.name}</span>

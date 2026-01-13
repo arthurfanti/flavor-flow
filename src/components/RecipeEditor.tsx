@@ -34,7 +34,7 @@ export default function RecipeEditor({ recipe, onSave, onCancel }: RecipeEditorP
   };
 
   return (
-    <div className="w-full max-w-2xl bg-white rounded-[2rem] shadow-xl shadow-gray-200/50 p-8 md:p-10 mt-8 animate-fade-in">
+    <div className="w-full max-w-2xl bg-white/10 rounded-[2rem] shadow-xl shadow-cyan-300/10 p-8 md:p-10 mt-8 animate-fade-in border border-white/20 backdrop-blur-md text-gray-900">
       <header className="mb-10">
         <span className="text-brand-yellow font-sans font-bold uppercase tracking-[0.2em] text-[10px] mb-2 block">Editing Mode</span>
         <h2 className="text-4xl font-serif font-bold text-gray-900 tracking-tight">Edit Recipe</h2>
@@ -47,7 +47,7 @@ export default function RecipeEditor({ recipe, onSave, onCancel }: RecipeEditorP
             type="text"
             value={editedRecipe.title}
             onChange={handleTitleChange}
-            className="w-full p-5 rounded-2xl border border-gray-100 focus:outline-none focus:ring-4 focus:ring-brand-yellow/20 bg-white shadow-sm transition-all text-xl font-medium text-gray-700"
+            className="w-full p-5 rounded-2xl border border-white/20 focus:outline-none focus:ring-4 focus:ring-sky-300/40 bg-white/10 backdrop-blur-md shadow-[0_8px_30px_rgba(255,255,255,0.06)] transition-all text-xl font-medium text-gray-900 placeholder:text-gray-500"
           />
         </div>
 

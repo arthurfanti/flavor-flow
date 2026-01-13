@@ -22,7 +22,7 @@ export default function PlannerQueue({ recipes, onRemove }: PlannerQueueProps) {
       {recipes.map((recipe, idx) => (
         <div 
           key={recipe.id}
-          className="animate-fade-in group relative bg-white rounded-3xl border border-gray-100 shadow-[0_4px_20px_rgba(0,0,0,0.02)] overflow-hidden hover:shadow-xl transition-all duration-500 sm:h-40"
+          className="animate-fade-in group relative bg-white/10 rounded-3xl border border-white/20 shadow-[0_8px_30px_rgba(255,255,255,0.06)] overflow-hidden hover:bg-white/20 transition-all duration-500 sm:h-40 text-gray-900 backdrop-blur-md"
           style={{ animationDelay: `${idx * 100}ms` }}
         >
           <div className="flex flex-col sm:flex-row h-full">

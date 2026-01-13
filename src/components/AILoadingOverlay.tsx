@@ -79,7 +79,7 @@ export default function AILoadingOverlay({ stage }: AILoadingOverlayProps) {
         </div>
 
         <div className="mt-12 w-48 h-1 bg-gray-100 rounded-full overflow-hidden">
-          <div className="h-full bg-brand-yellow animate-shimmer" style={{ width: '60%' }} />
+          <div className="h-full bg-gradient-to-r from-sky-300 to-pink-300 animate-shimmer" style={{ width: '60%' }} />
         </div>
       </div>
     </div>

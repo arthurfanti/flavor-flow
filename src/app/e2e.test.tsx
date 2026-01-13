@@ -8,6 +8,22 @@ import { MockShoppingListRepository } from "../lib/repositories/MockShoppingList
 import { MockPlannerRepository } from "../lib/repositories/MockPlannerRepository";
 import { MockPantryRepository } from "../lib/repositories/MockPantryRepository";
 
+// Mock next/navigation
+const mockPush = jest.fn();
+jest.mock("next/navigation", () => ({
+  useRouter: jest.fn(() => ({
+    push: mockPush,
+  })),
+}));
+
+// Mock sonner
+jest.mock("sonner", () => ({
+  toast: {
+    error: jest.fn(),
+    success: jest.fn(),
+  },
+}));
+
 // Swap Supabase Repos with Mock Repos for E2E testing logic
 jest.mock("../lib/repositories/SupabaseRecipeRepository", () => ({
   SupabaseRecipeRepository: jest.requireActual("../lib/repositories/MockRecipeRepository").MockRecipeRepository
@@ -80,7 +96,7 @@ describe("End-to-End Workflow", () => {
 
     // 2. Add to Planner
     fireEvent.click(addPlannerButton);
-    await waitFor(() => expect(window.alert).toHaveBeenCalled());
+    await waitFor(() => expect(mockPush).toHaveBeenCalledWith('/planner'));
 
     cleanup();
 
