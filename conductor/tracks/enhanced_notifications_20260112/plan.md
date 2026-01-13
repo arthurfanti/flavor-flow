@@ -6,7 +6,7 @@
     - [ ] Sub-task: Add `<Toaster />` component to the root `layout.tsx`.
 - [x] Task: Refactor Error Notifications 69ee586
 - [x] Task: Refactor Major Success Notifications 69ee586
-- [ ] Task: Conductor - User Manual Verification 'Phase 1: Sonner Infrastructure & Error Refactor' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Phase 1: Sonner Infrastructure & Error Refactor' (Protocol in workflow.md) [checkpoint: c500eeb]
 
 ## Phase 2: Planner Interaction Optimization
 - [ ] Task: Implement Planner Redirection
