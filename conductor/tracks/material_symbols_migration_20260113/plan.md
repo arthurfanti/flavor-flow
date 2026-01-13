@@ -10,7 +10,7 @@ This plan outlines the steps to replace existing navigation icons with Google's 
 
 ## Phase 2: TabBar Migration
 
-- [ ] **Task 1: Update TabBar Navigation (TDD)**
+- [x] **Task 1: Update TabBar Navigation (TDD)** 7c96f567
     - [ ] **Write Tests (Red Phase)**: Update `src/components/TabBar.test.tsx` to expect the `Icon` component (or its underlying HTML structure) with the new icon names (`home`, `calendar_month`, `kitchen`, `shopping_bag`).
     - [ ] **Implement (Green Phase)**: Update `src/components/TabBar.tsx` to remove SVG paths and use the `Icon` component for all navigation items.
     - [ ] **Refactor/Coverage**: Ensure tests pass and the UI remains visually consistent.
