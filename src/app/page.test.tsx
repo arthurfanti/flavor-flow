@@ -1,6 +1,21 @@
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import Home from "./page";
 
+// Mock next/navigation
+jest.mock("next/navigation", () => ({
+  useRouter: jest.fn(() => ({
+    push: jest.fn(),
+  })),
+}));
+
+// Mock sonner
+jest.mock("sonner", () => ({
+  toast: {
+    error: jest.fn(),
+    success: jest.fn(),
+  },
+}));
+
 // Mock Supabase and Repositories
 jest.mock("../lib/supabase/client", () => ({
   createSupabaseClient: jest.fn(() => ({

@@ -2,6 +2,8 @@
 
 import { useState, useEffect, useMemo, useCallback } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
 import UrlInput from '@/components/UrlInput';
 import RecipePreview from '@/components/RecipePreview';
 import RecipeEditor from '@/components/RecipeEditor';
@@ -19,6 +21,7 @@ import { OpenRouterService } from '@/lib/services/OpenRouterService';
 import { IngredientMatcher } from '@/lib/services/IngredientMatcher';
 
 export default function Home() {
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [aiStage, setAiStage] = useState<AIStage>('idle');
   const [recipe, setRecipe] = useState<any | null>(null);
@@ -76,7 +79,7 @@ export default function Home() {
 
   const handleExtract = async (url: string) => {
     if (!repos || !extractor) {
-      alert('AI Extractor or Repositories not initialized. Check your API keys.');
+      toast.error('AI Extractor or Repositories not initialized. Check your API keys.');
       return;
     }
     setIsLoading(true);
@@ -91,13 +94,14 @@ export default function Home() {
       
       setRecipe(extracted);
       await refreshRecent();
+      toast.success('Recipe extracted and saved!');
     } catch (error: any) {
       console.error('Flavor Flow Error Object:', JSON.stringify(error, Object.getOwnPropertyNames(error)));
       // More user-friendly error message
       const msg = error.message === 'Failed to fetch' 
         ? 'Network error: Could not reach the server. Please check your internet connection or Supabase settings.'
         : error.message || 'An unexpected error occurred.';
-      alert(`Extraction Error: ${msg}`);
+      toast.error(`Extraction Error: ${msg}`);
     } finally {
       setIsLoading(false);
       setAiStage('idle');
@@ -107,6 +111,7 @@ export default function Home() {
   const handleSave = (updatedRecipe: any) => {
     setRecipe(updatedRecipe);
     setIsEditing(false);
+    toast.success('Recipe updates saved locally.');
   };
 
   const handleAddToList = async (ingredients: string[]) => {
@@ -117,7 +122,7 @@ export default function Home() {
       // Success feedback handled by RecipePreview button
     } catch (error) {
       console.error('Failed to add to shopping list:', error);
-      alert('Failed to add items to shopping list.');
+      toast.error('Failed to add items to shopping list.');
     }
   };
 
@@ -148,18 +153,12 @@ export default function Home() {
       }
 
       setIsLoading(false);
-      // Success feedback handled by RecipePreview button
-      // We still alert the useful pantry info
-      const alreadyInPantry = (targetRecipe.ingredients?.length || 0) - missingIngredients.length;
-      alert(
-        `Planned!\n\n` +
-        `${missingIngredients.length} items added to shopping list.\n` +
-        `${alreadyInPantry} items found in your pantry.`
-      );
+      // Success feedback handled by redirection
+      router.push('/planner');
     } catch (error) {
       setIsLoading(false);
       console.error('Failed to add to planner:', error);
-      alert('Failed to add to planner. Please try again.');
+      toast.error('Failed to add to planner. Please try again.');
     }
   };
 

@@ -1,6 +1,22 @@
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import Home from "./page";
 
+// Mock next/navigation
+const mockPush = jest.fn();
+jest.mock("next/navigation", () => ({
+  useRouter: jest.fn(() => ({
+    push: mockPush,
+  })),
+}));
+
+// Mock sonner
+jest.mock("sonner", () => ({
+  toast: {
+    error: jest.fn(),
+    success: jest.fn(),
+  },
+}));
+
 // Mock Repositories
 jest.mock("../lib/supabase/client", () => ({
   createSupabaseClient: jest.fn(() => ({
@@ -109,7 +125,9 @@ describe("Home Pantry Integration", () => {
       expect(mockAddItems).toHaveBeenCalledWith([{ name: 'Ingredient A', bought: false }]);
     });
     
-    expect(window.alert).toHaveBeenCalledWith(expect.stringContaining("1 items added"));
+    await waitFor(() => {
+      expect(mockPush).toHaveBeenCalledWith('/planner');
+    });
   });
 
   it("skips ingredients already in pantry", async () => {
@@ -135,10 +153,9 @@ describe("Home Pantry Integration", () => {
     fireEvent.click(addPlannerButton);
     
     await waitFor(() => {
-      expect(window.alert).toHaveBeenCalledWith(expect.stringContaining("0 items added"));
+      expect(mockPush).toHaveBeenCalledWith('/planner');
     });
     
     expect(mockAddItems).not.toHaveBeenCalled();
-    expect(window.alert).toHaveBeenCalledWith(expect.stringContaining("1 items found in your pantry"));
   });
 });
