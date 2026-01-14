@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { normalizeImageUrl } from '@/lib/utils';
 
 interface Recipe {
   title: string;
@@ -50,7 +51,7 @@ export default function RecipePreview({ recipe, onAddToList, onAddToPlanner }: R
       {recipe.image_url && (
         <div className="w-full h-64 md:h-80 overflow-hidden relative group">
           <img 
-            src={recipe.image_url} 
+            src={normalizeImageUrl(recipe.image_url)} 
             alt={recipe.title}
             className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
           />

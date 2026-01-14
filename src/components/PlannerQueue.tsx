@@ -3,6 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { PlannedRecipe } from '@/lib/repositories/PlannerRepository';
+import { normalizeImageUrl } from '@/lib/utils';
 
 interface PlannerQueueProps {
   recipes: PlannedRecipe[];
@@ -23,7 +24,7 @@ export default function PlannerQueue({ recipes, onRemove }: PlannerQueueProps) {
       <div className="w-full sm:w-48 h-40 sm:h-full overflow-hidden bg-gray-100">
         {recipe.image_url ? (
           <img 
-            src={recipe.image_url} 
+            src={normalizeImageUrl(recipe.image_url)} 
             alt={recipe.title}
             className="w-full h-full object-cover grayscale-[10%] group-hover:grayscale-0 group-hover:scale-110 transition-all duration-700"
             onError={(e) => {

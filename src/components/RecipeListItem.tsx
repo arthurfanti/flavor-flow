@@ -1,5 +1,6 @@
 import React from 'react';
 import { ExtractedRecipe } from '@/lib/services/RecipeExtractor';
+import { normalizeImageUrl } from '@/lib/utils';
 
 interface RecipeListItemProps {
   recipe: any;
@@ -11,7 +12,7 @@ export default function RecipeListItem({ recipe }: RecipeListItemProps) {
       <div className="w-14 h-14 rounded-xl overflow-hidden flex-shrink-0 bg-gray-100">
         {recipe.image_url ? (
           <img 
-            src={recipe.image_url} 
+            src={normalizeImageUrl(recipe.image_url)} 
             alt={recipe.title}
             className="w-full h-full object-cover grayscale-[10%] group-hover:grayscale-0 transition-all"
           />
