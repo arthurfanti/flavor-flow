@@ -59,11 +59,11 @@ export default function PlannerQueue({ recipes, onRemove }: PlannerQueueProps) {
         >
           <div className="flex flex-col sm:flex-row h-full">
             {recipe.recipe_id ? (
-              <Link href={`/recipes/${recipe.recipe_id}`} className="flex flex-col sm:flex-row flex-grow min-w-0">
+              <Link href={`/recipes/${recipe.recipe_id}`} className="flex flex-col sm:flex-row flex-grow min-w-0 h-full">
                  {renderContent(recipe)}
               </Link>
             ) : (
-              <div className="flex flex-col sm:flex-row flex-grow min-w-0">
+              <div className="flex flex-col sm:flex-row flex-grow min-w-0 h-full">
                  {renderContent(recipe)}
               </div>
             )}
