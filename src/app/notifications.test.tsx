@@ -42,7 +42,7 @@ jest.mock("../lib/repositories/SupabaseRecipeRepository", () => ({
   SupabaseRecipeRepository: jest.fn().mockImplementation(() => ({
     getLatest: jest.fn().mockResolvedValue([]),
     getAll: jest.fn().mockResolvedValue([]),
-    addRecipe: jest.fn().mockResolvedValue(null),
+    addRecipe: jest.fn().mockImplementation((r) => Promise.resolve({ id: 123, ...r })),
   })),
 }));
 

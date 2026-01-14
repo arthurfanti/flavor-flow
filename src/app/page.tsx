@@ -89,10 +89,10 @@ export default function Home() {
       console.log('Flavor Flow: AI Extraction successful:', extracted.title);
 
       console.log('Flavor Flow: Saving to Supabase...');
-      await repos.recipe.addRecipe(extracted);
+      const savedRecipe = await repos.recipe.addRecipe(extracted);
       console.log('Flavor Flow: Save successful.');
       
-      setRecipe(extracted);
+      setRecipe(savedRecipe);
       await refreshRecent();
       toast.success('Recipe extracted and saved!');
     } catch (error: any) {
@@ -133,7 +133,8 @@ export default function Home() {
       console.log('Flavor Flow: Adding to planner with pantry sync...');
       // 1. Add to Planner Queue
       await repos.planner.addToQueue({ 
-        title: targetRecipe.title, 
+        title: targetRecipe.title,
+        recipe_id: targetRecipe.id,
         source_url: targetRecipe.source_url || targetRecipe.sourceUrl || '',
         image_url: targetRecipe.image_url || targetRecipe.imageUrl
       });

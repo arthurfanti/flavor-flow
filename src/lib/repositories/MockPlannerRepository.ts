@@ -28,6 +28,7 @@ export class MockPlannerRepository implements PlannerRepository {
     const nextOrder = MockPlannerRepository.queue.length > 0 ? Math.max(...MockPlannerRepository.queue.map(r => r.order)) + 1 : 0;
     const newRecipe: PlannedRecipe = {
       id: Date.now(),
+      recipe_id: recipe.recipe_id,
       title: recipe.title || 'Unknown Recipe',
       source_url: recipe.source_url || '',
       image_url: recipe.image_url,

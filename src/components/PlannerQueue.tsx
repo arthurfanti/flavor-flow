@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Link from 'next/link';
 import { PlannedRecipe } from '@/lib/repositories/PlannerRepository';
 
 interface PlannerQueueProps {
@@ -17,6 +18,36 @@ export default function PlannerQueue({ recipes, onRemove }: PlannerQueueProps) {
     );
   }
 
+  const renderContent = (recipe: PlannedRecipe) => (
+    <>
+      <div className="w-full sm:w-48 h-40 sm:h-full overflow-hidden bg-gray-100">
+        {recipe.image_url ? (
+          <img 
+            src={recipe.image_url} 
+            alt={recipe.title}
+            className="w-full h-full object-cover grayscale-[10%] group-hover:grayscale-0 group-hover:scale-110 transition-all duration-700"
+            onError={(e) => {
+              (e.target as HTMLImageElement).style.display = 'none';
+            }}
+          />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center text-brand-yellow">
+            <svg className="w-12 h-12 opacity-20" fill="currentColor" viewBox="0 0 20 20">
+              <path fillRule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clipRule="evenodd" />
+            </svg>
+          </div>
+        )}
+      </div>
+      
+      <div className="flex-grow p-6 flex flex-col justify-center overflow-hidden">
+        <span className="text-[10px] font-sans font-bold uppercase tracking-[0.2em] text-brand-yellow-dark mb-2 block">Planned Meal</span>
+        <h3 className="text-2xl font-serif font-bold text-gray-900 leading-tight line-clamp-2">
+          {recipe.title}
+        </h3>
+      </div>
+    </>
+  );
+
   return (
     <div className="w-full space-y-6 pb-12">
       {recipes.map((recipe, idx) => (
@@ -26,33 +57,17 @@ export default function PlannerQueue({ recipes, onRemove }: PlannerQueueProps) {
           style={{ animationDelay: `${idx * 100}ms` }}
         >
           <div className="flex flex-col sm:flex-row h-full">
-            <div className="w-full sm:w-48 h-40 sm:h-full overflow-hidden bg-gray-100">
-              {recipe.image_url ? (
-                <img 
-                  src={recipe.image_url} 
-                  alt={recipe.title}
-                  className="w-full h-full object-cover grayscale-[10%] group-hover:grayscale-0 group-hover:scale-110 transition-all duration-700"
-                  onError={(e) => {
-                    (e.target as HTMLImageElement).style.display = 'none';
-                  }}
-                />
-              ) : (
-                <div className="w-full h-full flex items-center justify-center text-brand-yellow">
-                  <svg className="w-12 h-12 opacity-20" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clipRule="evenodd" />
-                  </svg>
-                </div>
-              )}
-            </div>
-            
-            <div className="flex-grow p-6 flex flex-col justify-center overflow-hidden">
-              <span className="text-[10px] font-sans font-bold uppercase tracking-[0.2em] text-brand-yellow-dark mb-2 block">Planned Meal</span>
-              <h3 className="text-2xl font-serif font-bold text-gray-900 leading-tight line-clamp-2">
-                {recipe.title}
-              </h3>
-            </div>
+            {recipe.recipe_id ? (
+              <Link href={`/recipes/${recipe.recipe_id}`} className="flex flex-col sm:flex-row flex-grow min-w-0">
+                 {renderContent(recipe)}
+              </Link>
+            ) : (
+              <div className="flex flex-col sm:flex-row flex-grow min-w-0">
+                 {renderContent(recipe)}
+              </div>
+            )}
 
-            <div className="p-4 flex items-center justify-end sm:border-l border-gray-50 h-16 sm:h-full">
+            <div className="p-4 flex items-center justify-end sm:border-l border-gray-50 h-16 sm:h-full z-10 relative">
               <button
                 onClick={() => onRemove(recipe.id!)}
                 className="w-12 h-12 rounded-2xl text-gray-300 hover:text-red-500 hover:bg-red-50 flex items-center justify-center transition-all active:scale-90"

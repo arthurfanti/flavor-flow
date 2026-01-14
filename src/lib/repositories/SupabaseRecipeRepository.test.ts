@@ -50,7 +50,11 @@ describe('SupabaseRecipeRepository', () => {
 
   it('addRecipe should call supabase insert with mapped fields', async () => {
     const repo = new SupabaseRecipeRepository(mockSupabase);
-    const mockInsert = jest.fn().mockResolvedValue({ error: null });
+    
+    const mockSingle = jest.fn().mockResolvedValue({ data: { id: 1, title: 'Test' }, error: null });
+    const mockSelect = jest.fn().mockReturnValue({ single: mockSingle });
+    const mockInsert = jest.fn().mockReturnValue({ select: mockSelect });
+
     (mockSupabase.from as jest.Mock).mockReturnValue({
       insert: mockInsert,
     });
@@ -66,14 +70,20 @@ describe('SupabaseRecipeRepository', () => {
       source_url: 'http://example.com',
       image_url: 'img.jpg'
     }]);
+    expect(mockSelect).toHaveBeenCalled();
+    expect(mockSingle).toHaveBeenCalled();
   });
 
   it('addRecipe should throw error if supabase fails', async () => {
     const repo = new SupabaseRecipeRepository(mockSupabase);
     const mockError = new Error('Supabase error');
     
+    const mockSingle = jest.fn().mockResolvedValue({ data: null, error: mockError });
+    const mockSelect = jest.fn().mockReturnValue({ single: mockSingle });
+    const mockInsert = jest.fn().mockReturnValue({ select: mockSelect });
+
     (mockSupabase.from as jest.Mock).mockReturnValue({
-      insert: jest.fn().mockResolvedValue({ error: mockError }),
+      insert: mockInsert,
     });
 
     await expect(repo.addRecipe({ title: 'Test' })).rejects.toThrow('Supabase error');

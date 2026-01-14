@@ -26,6 +26,7 @@ export class SupabasePlannerRepository implements PlannerRepository {
 
     const dbRecipe = {
       title: recipe.title,
+      recipe_id: recipe.recipe_id,
       source_url: recipe.source_url || (recipe as any).sourceUrl || '',
       image_url: recipe.image_url || (recipe as any).imageUrl,
       order: nextOrder,

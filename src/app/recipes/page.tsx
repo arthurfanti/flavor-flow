@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useMemo } from 'react';
+import Link from 'next/link';
 import { createSupabaseClient } from '@/lib/supabase/client';
 import { SupabaseRecipeRepository } from '@/lib/repositories/SupabaseRecipeRepository';
 import RecipeListItem from '@/components/RecipeListItem';
@@ -79,7 +80,9 @@ export default function RecipesPage() {
       ) : (
         <div className="grid grid-cols-1 gap-4">
           {recipes.map((recipe) => (
-            <RecipeListItem key={recipe.id || recipe.sourceUrl} recipe={recipe} />
+            <Link key={recipe.id || recipe.sourceUrl} href={`/recipes/${recipe.id}`}>
+              <RecipeListItem recipe={recipe} />
+            </Link>
           ))}
         </div>
       )}

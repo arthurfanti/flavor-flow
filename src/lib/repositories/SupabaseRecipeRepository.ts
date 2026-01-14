@@ -12,7 +12,7 @@ export class SupabaseRecipeRepository implements RecipeRepository {
     return data || [];
   }
 
-  async addRecipe(recipe: any): Promise<void> {
+  async addRecipe(recipe: any): Promise<any> {
     const dbRecipe = {
       title: recipe.title,
       ingredients: recipe.ingredients,
@@ -20,10 +20,16 @@ export class SupabaseRecipeRepository implements RecipeRepository {
       source_url: recipe.source_url || recipe.sourceUrl,
       image_url: recipe.image_url || recipe.imageUrl,
     };
-    const { error } = await this.supabase.from('recipes').insert([dbRecipe]);
+    const { data, error } = await this.supabase
+      .from('recipes')
+      .insert([dbRecipe])
+      .select()
+      .single();
+      
     if (error) {
       throw error;
     }
+    return data;
   }
 
   async getLatest(count: number): Promise<any[]> {
@@ -43,5 +49,19 @@ export class SupabaseRecipeRepository implements RecipeRepository {
       .order('title', { ascending: true });
     if (error) throw error;
     return data || [];
+  }
+
+  async getById(id: string): Promise<any | null> {
+    const { data, error } = await this.supabase
+      .from('recipes')
+      .select('*')
+      .eq('id', id)
+      .single();
+    
+    if (error) {
+      if (error.code === 'PGRST116') return null;
+      throw error;
+    }
+    return data;
   }
 }

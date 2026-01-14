@@ -1,5 +1,6 @@
 export interface PlannedRecipe {
   id?: number;
+  recipe_id?: number; // foreign key
   title: string;
   image_url?: string;
   source_url: string;

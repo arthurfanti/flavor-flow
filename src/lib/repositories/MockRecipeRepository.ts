@@ -10,8 +10,10 @@ export class MockRecipeRepository implements RecipeRepository {
     return MockRecipeRepository.recipes;
   }
 
-  async addRecipe(recipe: any): Promise<void> {
-    MockRecipeRepository.recipes.push({ id: MockRecipeRepository.recipes.length + 1, ...recipe });
+  async addRecipe(recipe: any): Promise<any> {
+    const newRecipe = { id: MockRecipeRepository.recipes.length + 1, ...recipe };
+    MockRecipeRepository.recipes.push(newRecipe);
+    return newRecipe;
   }
 
   async getLatest(count: number): Promise<any[]> {
@@ -20,6 +22,10 @@ export class MockRecipeRepository implements RecipeRepository {
 
   async getAll(): Promise<any[]> {
     return [...MockRecipeRepository.recipes].sort((a, b) => a.title.localeCompare(b.title));
+  }
+
+  async getById(id: string): Promise<any | null> {
+    return MockRecipeRepository.recipes.find(r => r.id.toString() === id) || null;
   }
 
   static clearForTests() {
