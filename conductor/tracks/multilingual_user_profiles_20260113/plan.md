@@ -9,7 +9,7 @@ This plan implements user authentication, personalized profiles with language pr
     - [ ] Create `recipe_translations` table.
     - [ ] Add `user_id` columns to `pantry_items`, `shopping_list`, `planned_recipes`, and `recipes`.
     - [ ] Add `source_locale` to `recipes`.
-- [ ] **Task 2: Row Level Security (RLS) Implementation**
+- [x] **Task 2: Row Level Security (RLS) Implementation** dafac750
     - [ ] Enable RLS on all dynamic tables.
     - [ ] Define policies for `profiles` (owner only).
     - [ ] Define policies for `pantry_items`, `shopping_list`, `planned_recipes` (owner only).
