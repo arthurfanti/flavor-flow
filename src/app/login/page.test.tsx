@@ -2,10 +2,17 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import LoginPage from './page';
 import { createSupabaseClient } from '@/lib/supabase/client';
 import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
 
 jest.mock('@/lib/supabase/client');
 jest.mock('next/navigation', () => ({
   useRouter: jest.fn(),
+}));
+jest.mock('sonner', () => ({
+  toast: {
+    success: jest.fn(),
+    error: jest.fn(),
+  },
 }));
 
 describe('LoginPage', () => {
@@ -43,7 +50,24 @@ describe('LoginPage', () => {
         email: 'test@example.com',
         password: 'password123',
       });
+      expect(toast.success).toHaveBeenCalledWith("Welcome back!");
       expect(mockPush).toHaveBeenCalledWith('/');
+    });
+  });
+
+  it('displays error message on failed sign in', async () => {
+    mockSupabase.auth.signInWithPassword.mockResolvedValue({ 
+      data: { session: null }, 
+      error: { message: 'Invalid credentials' } 
+    });
+    render(<LoginPage />);
+
+    fireEvent.change(screen.getByLabelText(/email/i), { target: { value: 'test@example.com' } });
+    fireEvent.change(screen.getByLabelText(/password/i), { target: { value: 'wrong' } });
+    fireEvent.click(screen.getByRole('button', { name: /sign in/i }));
+
+    await waitFor(() => {
+      expect(screen.getByText('Invalid credentials')).toBeInTheDocument();
     });
   });
 });
