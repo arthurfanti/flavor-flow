@@ -3,6 +3,7 @@ import { Playfair_Display, Inter } from "next/font/google";
 import { Toaster } from "sonner";
 import ServiceWorkerRegister from "@/components/ServiceWorkerRegister";
 import MainLayout from "@/components/MainLayout";
+import { AuthProvider } from "@/components/AuthProvider";
 import "./globals.css";
 
 const playfair = Playfair_Display({
@@ -43,7 +44,9 @@ export default function RootLayout({
       <body className="antialiased font-sans">
         <Toaster position="top-center" richColors />
         <ServiceWorkerRegister />
-        <MainLayout>{children}</MainLayout>
+        <AuthProvider>
+          <MainLayout>{children}</MainLayout>
+        </AuthProvider>
       </body>
     </html>
   );
