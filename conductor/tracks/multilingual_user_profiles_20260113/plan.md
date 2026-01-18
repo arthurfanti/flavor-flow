@@ -14,7 +14,7 @@ This plan implements user authentication, personalized profiles with language pr
     - [ ] Define policies for `profiles` (owner only).
     - [ ] Define policies for `pantry_items`, `shopping_list`, `planned_recipes` (owner only).
     - [ ] Define policies for `recipes` (Global read, Authenticated insert).
-- [ ] **Task 3: Supabase Auth Frontend Setup**
+- [x] **Task 3: Supabase Auth Frontend Setup** 9b7d1894
     - [ ] Implement Auth context/hooks to manage session state.
     - [ ] Create a basic Login/Sign-up entry point.
 - [ ] **Task: Conductor - User Manual Verification 'Database Foundation & Auth Setup' (Protocol in workflow.md)**
