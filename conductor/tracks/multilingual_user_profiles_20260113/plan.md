@@ -21,7 +21,7 @@ This plan implements user authentication, personalized profiles with language pr
 
 ## Phase 2: User-Aware Repositories (TDD)
 
-- [ ] **Task 1: Profile Repository (TDD)**
+- [x] **Task 1: Profile Repository (TDD)** b8d473ea
     - [ ] **Write Tests**: Create `SupabaseProfileRepository.test.ts`.
     - [ ] **Implement**: Create `SupabaseProfileRepository.ts` for profile CRUD.
 - [ ] **Task 2: Scoping Existing Repositories (TDD)**
