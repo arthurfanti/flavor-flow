@@ -2,7 +2,7 @@
 
 This plan implements user authentication, personalized profiles with language preferences, data scoping for privacy, and an on-demand AI translation system for shared recipes.
 
-## Phase 1: Database Foundation & Auth Setup
+## Phase 1: Database Foundation & Auth Setup [checkpoint: 00278c8]
 
 - [x] **Task 1: Database Migration - Schema Updates** b267622
     - [ ] Create `profiles` table linked to `auth.users`.
