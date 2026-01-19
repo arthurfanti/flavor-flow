@@ -8,41 +8,84 @@ import { SupabaseRecipeRepository } from '@/lib/repositories/SupabaseRecipeRepos
 import { SupabaseShoppingListRepository } from '@/lib/repositories/SupabaseShoppingListRepository';
 import { SupabasePlannerRepository } from '@/lib/repositories/SupabasePlannerRepository';
 import { SupabasePantryRepository } from '@/lib/repositories/SupabasePantryRepository';
+import { SupabaseProfileRepository } from '@/lib/repositories/SupabaseProfileRepository';
 import { createSupabaseClient } from '@/lib/supabase/client';
 import { IngredientMatcher } from '@/lib/services/IngredientMatcher';
+import { useAuth } from '@/components/AuthProvider';
+import { TranslationService } from '@/lib/services/TranslationService';
+import { OpenRouterService } from '@/lib/services/OpenRouterService';
 
 export default function RecipeDetailPage() {
   const params = useParams();
   const id = params?.id as string;
   const router = useRouter();
+  const { session, loading: authLoading } = useAuth();
   const [recipe, setRecipe] = useState<any | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   const repos = useMemo(() => {
+    if (authLoading) return null;
     try {
       const supabase = createSupabaseClient();
+      const userId = session?.user?.id;
       return {
-        recipe: new SupabaseRecipeRepository(supabase),
-        shoppingList: new SupabaseShoppingListRepository(supabase),
-        planner: new SupabasePlannerRepository(supabase),
-        pantry: new SupabasePantryRepository(supabase),
+        recipe: new SupabaseRecipeRepository(supabase, userId),
+        shoppingList: userId ? new SupabaseShoppingListRepository(supabase, userId) : null,
+        planner: userId ? new SupabasePlannerRepository(supabase, userId) : null,
+        pantry: userId ? new SupabasePantryRepository(supabase, userId) : null,
+        profile: userId ? new SupabaseProfileRepository(supabase) : null,
       };
     } catch (e: any) {
       console.error(e);
       return null;
     }
+  }, [session, authLoading]);
+
+  const translationService = useMemo(() => {
+    const key = process.env.NEXT_PUBLIC_OPENROUTER_API_KEY;
+    if (!key) return null;
+    return new TranslationService(new OpenRouterService(key));
   }, []);
 
   useEffect(() => {
-    const fetchRecipe = async () => {
+    const fetchAndTranslate = async () => {
       if (!repos || !id) return;
       try {
-        const data = await repos.recipe.getById(id);
+        let preferredLocale = 'en';
+        if (session?.user?.id && repos.profile) {
+          const profile = await repos.profile.getProfile(session.user.id);
+          if (profile?.preferred_locale) {
+            preferredLocale = profile.preferred_locale;
+          }
+        }
+
+        // 1. Fetch recipe (SupabaseRecipeRepository already joins translations if locale provided)
+        const data = await repos.recipe.getById(id, preferredLocale);
         if (!data) {
-           setError('Recipe not found');
+          setError('Recipe not found');
+          setIsLoading(false);
+          return;
+        }
+
+        // 2. Check if we need to trigger AI translation
+        const sourceLocale = data.source_locale || 'en';
+        const existingTranslations = data.translations || [];
+
+        if (sourceLocale !== preferredLocale && existingTranslations.length === 0 && translationService) {
+          console.log('RecipeDetailPage: Triggering AI translation...');
+          const translated = await translationService.translateRecipe({
+            title: data.title,
+            ingredients: data.ingredients,
+            instructions: data.instructions
+          }, preferredLocale);
+
+          // Save translation
+          await repos.recipe.saveTranslation(Number(id), preferredLocale, translated);
+          
+          setRecipe({ ...data, ...translated });
         } else {
-           setRecipe(data);
+          setRecipe(data);
         }
       } catch (err) {
         console.error(err);
@@ -51,8 +94,9 @@ export default function RecipeDetailPage() {
         setIsLoading(false);
       }
     };
-    fetchRecipe();
-  }, [repos, id]);
+
+    fetchAndTranslate();
+  }, [repos, id, session, translationService]);
 
   const handleAddToList = async (ingredients: string[]) => {
     if (!repos) return;
