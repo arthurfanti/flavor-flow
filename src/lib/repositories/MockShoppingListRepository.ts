@@ -1,6 +1,7 @@
 import { ShoppingListItem, ShoppingListRepository } from './ShoppingListRepository';
 
 export class MockShoppingListRepository implements ShoppingListRepository {
+  constructor(private _supabase?: any, private _userId?: string) {}
   private static items: ShoppingListItem[] = [
     { id: 1, name: 'Mock Apple', bought: false },
     { id: 2, name: 'Mock Banana', bought: true },

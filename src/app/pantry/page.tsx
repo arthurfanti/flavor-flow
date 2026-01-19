@@ -6,22 +6,27 @@ import { SupabasePantryRepository } from '@/lib/repositories/SupabasePantryRepos
 import PantryList from '@/components/PantryList';
 import PantryItemForm from '@/components/PantryItemForm';
 import { PantryItem } from '@/lib/repositories/PantryRepository';
+import { useAuth } from '@/components/AuthProvider';
+import { useRouter } from 'next/navigation';
 
 export default function PantryPage() {
+  const router = useRouter();
+  const { session, loading: authLoading } = useAuth();
   const [items, setItems] = useState<PantryItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isAdding, setIsAdding] = useState(false);
   const [configError, setConfigError] = useState<string | null>(null);
 
   const pantryRepo = useMemo(() => {
+    if (authLoading || !session?.user?.id) return null;
     try {
       const supabase = createSupabaseClient();
-      return new SupabasePantryRepository(supabase);
+      return new SupabasePantryRepository(supabase, session.user.id);
     } catch (e: any) {
       setConfigError(e.message);
       return null;
     }
-  }, []);
+  }, [session, authLoading]);
 
   const refreshItems = async () => {
     if (!pantryRepo) return;
@@ -38,6 +43,12 @@ export default function PantryPage() {
       setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (!authLoading && !session) {
+      router.push('/login');
+    }
+  }, [session, authLoading, router]);
 
   useEffect(() => {
     refreshItems();

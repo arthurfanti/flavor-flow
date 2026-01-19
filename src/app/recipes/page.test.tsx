@@ -1,6 +1,14 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import RecipesPage from "./page";
 
+// Mock Auth
+jest.mock("@/components/AuthProvider", () => ({
+  useAuth: jest.fn(() => ({
+    session: { user: { id: 'user-123' } },
+    loading: false,
+  })),
+}));
+
 // Mock Supabase and Repositories
 jest.mock("../../lib/supabase/client", () => ({
   createSupabaseClient: jest.fn(() => ({

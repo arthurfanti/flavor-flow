@@ -1,6 +1,7 @@
 import { PantryRepository, PantryItem } from './PantryRepository';
 
 export class MockPantryRepository implements PantryRepository {
+  constructor(private _supabase?: any, private _userId?: string) {}
   private static items: PantryItem[] = [
     { id: 1, name: 'Olive Oil', category: 'Pantry Staples', is_low_stock: false },
     { id: 2, name: 'Garlic', category: 'Produce', is_low_stock: true },

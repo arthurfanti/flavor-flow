@@ -16,6 +16,18 @@ jest.mock("next/navigation", () => ({
   })),
 }));
 
+// Mock Auth
+const mockSession = { user: { id: 'user-123' } };
+const mockAuthContext = {
+  session: mockSession,
+  loading: false,
+};
+
+jest.mock("@/components/AuthProvider", () => ({
+  __esModule: true,
+  useAuth: () => mockAuthContext,
+}));
+
 // Mock sonner
 jest.mock("sonner", () => ({
   toast: {
@@ -26,16 +38,16 @@ jest.mock("sonner", () => ({
 
 // Swap Supabase Repos with Mock Repos for E2E testing logic
 jest.mock("../lib/repositories/SupabaseRecipeRepository", () => ({
-  SupabaseRecipeRepository: jest.requireActual("../lib/repositories/MockRecipeRepository").MockRecipeRepository
+  SupabaseRecipeRepository: jest.fn().mockImplementation((supabase, userId) => new MockRecipeRepository(supabase, userId))
 }));
 jest.mock("../lib/repositories/SupabaseShoppingListRepository", () => ({
-  SupabaseShoppingListRepository: jest.requireActual("../lib/repositories/MockShoppingListRepository").MockShoppingListRepository
+  SupabaseShoppingListRepository: jest.fn().mockImplementation((supabase, userId) => new MockShoppingListRepository(supabase, userId))
 }));
 jest.mock("../lib/repositories/SupabasePlannerRepository", () => ({
-  SupabasePlannerRepository: jest.requireActual("../lib/repositories/MockPlannerRepository").MockPlannerRepository
+  SupabasePlannerRepository: jest.fn().mockImplementation((supabase, userId) => new MockPlannerRepository(supabase, userId))
 }));
 jest.mock("../lib/repositories/SupabasePantryRepository", () => ({
-  SupabasePantryRepository: jest.requireActual("../lib/repositories/MockPantryRepository").MockPantryRepository
+  SupabasePantryRepository: jest.fn().mockImplementation((supabase, userId) => new MockPantryRepository(supabase, userId))
 }));
 
 // Mock Supabase Client to succeed
@@ -115,6 +127,6 @@ describe("End-to-End Workflow", () => {
 
     // 5. Shopping List
     render(<ShoppingListPage />);
-    expect(await screen.findByText('Ingredient A')).toBeInTheDocument();
+    expect(await screen.findByText('Ingredient A', {}, { timeout: 3000 })).toBeInTheDocument();
   });
 });

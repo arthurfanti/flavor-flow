@@ -5,21 +5,26 @@ import { createSupabaseClient } from '@/lib/supabase/client';
 import { SupabasePlannerRepository } from '@/lib/repositories/SupabasePlannerRepository';
 import PlannerQueue from '@/components/PlannerQueue';
 import { PlannedRecipe } from '@/lib/repositories/PlannerRepository';
+import { useAuth } from '@/components/AuthProvider';
+import { useRouter } from 'next/navigation';
 
 export default function PlannerPage() {
+  const router = useRouter();
+  const { session, loading: authLoading } = useAuth();
   const [recipes, setRecipes] = useState<PlannedRecipe[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [configError, setConfigError] = useState<string | null>(null);
 
   const plannerRepo = useMemo(() => {
+    if (authLoading || !session?.user?.id) return null;
     try {
       const supabase = createSupabaseClient();
-      return new SupabasePlannerRepository(supabase);
+      return new SupabasePlannerRepository(supabase, session.user.id);
     } catch (e: any) {
       setConfigError(e.message);
       return null;
     }
-  }, []);
+  }, [session, authLoading]);
 
   const refreshQueue = async () => {
     if (!plannerRepo) return;
@@ -36,6 +41,12 @@ export default function PlannerPage() {
       setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (!authLoading && !session) {
+      router.push('/login');
+    }
+  }, [session, authLoading, router]);
 
   useEffect(() => {
     refreshQueue();

@@ -4,21 +4,26 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { createSupabaseClient } from '@/lib/supabase/client';
 import { SupabaseShoppingListRepository } from '@/lib/repositories/SupabaseShoppingListRepository';
 import ShoppingList from '@/components/ShoppingList';
+import { useAuth } from '@/components/AuthProvider';
+import { useRouter } from 'next/navigation';
 
 export default function ShoppingListPage() {
+  const router = useRouter();
+  const { session, loading: authLoading } = useAuth();
   const [items, setItems] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [configError, setConfigError] = useState<string | null>(null);
 
   const shoppingListRepo = useMemo(() => {
+    if (authLoading || !session?.user?.id) return null;
     try {
       const supabase = createSupabaseClient();
-      return new SupabaseShoppingListRepository(supabase);
+      return new SupabaseShoppingListRepository(supabase, session.user.id);
     } catch (e: any) {
       setConfigError(e.message);
       return null;
     }
-  }, []);
+  }, [session, authLoading]);
 
   const refreshItems = async () => {
     if (!shoppingListRepo) return;
@@ -35,6 +40,12 @@ export default function ShoppingListPage() {
       setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (!authLoading && !session) {
+      router.push('/login');
+    }
+  }, [session, authLoading, router]);
 
   useEffect(() => {
     refreshItems();

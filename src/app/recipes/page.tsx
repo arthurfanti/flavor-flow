@@ -5,21 +5,24 @@ import Link from 'next/link';
 import { createSupabaseClient } from '@/lib/supabase/client';
 import { SupabaseRecipeRepository } from '@/lib/repositories/SupabaseRecipeRepository';
 import RecipeListItem from '@/components/RecipeListItem';
+import { useAuth } from '@/components/AuthProvider';
 
 export default function RecipesPage() {
+  const { session, loading: authLoading } = useAuth();
   const [recipes, setRecipes] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [configError, setConfigError] = useState<string | null>(null);
 
   const recipeRepo = useMemo(() => {
+    if (authLoading) return null;
     try {
       const supabase = createSupabaseClient();
-      return new SupabaseRecipeRepository(supabase);
+      return new SupabaseRecipeRepository(supabase, session?.user?.id);
     } catch (e: any) {
       setConfigError(e.message);
       return null;
     }
-  }, []);
+  }, [session, authLoading]);
 
   useEffect(() => {
     const fetchRecipes = async () => {

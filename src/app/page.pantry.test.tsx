@@ -9,6 +9,14 @@ jest.mock("next/navigation", () => ({
   })),
 }));
 
+// Mock Auth
+jest.mock("@/components/AuthProvider", () => ({
+  useAuth: jest.fn(() => ({
+    session: { user: { id: 'user-123' } },
+    loading: false,
+  })),
+}));
+
 // Mock sonner
 jest.mock("sonner", () => ({
   toast: {

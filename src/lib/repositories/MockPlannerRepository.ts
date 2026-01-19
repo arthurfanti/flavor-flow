@@ -1,6 +1,7 @@
 import { PlannerRepository, PlannedRecipe } from './PlannerRepository';
 
 export class MockPlannerRepository implements PlannerRepository {
+  constructor(private _supabase?: any, private _userId?: string) {}
   private static queue: PlannedRecipe[] = [
     { 
       id: 1, 

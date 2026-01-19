@@ -19,9 +19,11 @@ import { VideoAIExtractor } from '@/lib/services/VideoAIExtractor';
 import { SupadataService } from '@/lib/services/SupadataService';
 import { OpenRouterService } from '@/lib/services/OpenRouterService';
 import { IngredientMatcher } from '@/lib/services/IngredientMatcher';
+import { useAuth } from '@/components/AuthProvider';
 
 export default function Home() {
   const router = useRouter();
+  const { session, loading: authLoading } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [aiStage, setAiStage] = useState<AIStage>('idle');
   const [recipe, setRecipe] = useState<any | null>(null);
@@ -49,19 +51,22 @@ export default function Home() {
   }, []);
 
   const repos = useMemo(() => {
+    if (authLoading) return null;
     try {
       const supabase = createSupabaseClient();
+      const userId = session?.user?.id;
+      
       return {
-        recipe: new SupabaseRecipeRepository(supabase),
-        shoppingList: new SupabaseShoppingListRepository(supabase),
-        planner: new SupabasePlannerRepository(supabase),
-        pantry: new SupabasePantryRepository(supabase),
+        recipe: new SupabaseRecipeRepository(supabase, userId),
+        shoppingList: userId ? new SupabaseShoppingListRepository(supabase, userId) : null,
+        planner: userId ? new SupabasePlannerRepository(supabase, userId) : null,
+        pantry: userId ? new SupabasePantryRepository(supabase, userId) : null,
       };
     } catch (e: any) {
       setConfigError(e.message);
       return null;
     }
-  }, []);
+  }, [session, authLoading]);
 
   const refreshRecent = useCallback(async () => {
     if (!repos) return;
@@ -115,7 +120,10 @@ export default function Home() {
   };
 
   const handleAddToList = async (ingredients: string[]) => {
-    if (!repos) return;
+    if (!repos?.shoppingList) {
+      toast.error('Please sign in to manage your shopping list.');
+      return;
+    }
     try {
       console.log('Flavor Flow: Bulk adding items to list...');
       await repos.shoppingList.addItems(ingredients.map(ing => ({ name: ing, bought: false })));
@@ -127,7 +135,10 @@ export default function Home() {
   };
 
   const handleAddToPlanner = async (targetRecipe: any) => {
-    if (!repos) return;
+    if (!repos?.planner || !repos?.pantry || !repos?.shoppingList) {
+      toast.error('Please sign in to use the meal planner.');
+      return;
+    }
     setIsLoading(true);
     try {
       console.log('Flavor Flow: Adding to planner with pantry sync...');

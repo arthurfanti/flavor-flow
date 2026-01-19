@@ -1,6 +1,7 @@
 import { RecipeRepository } from './RecipeRepository';
 
 export class MockRecipeRepository implements RecipeRepository {
+  constructor(private _supabase?: any, private _userId?: string) {}
   private static recipes: any[] = [
     { id: 1, title: 'Mock Recipe 1', ingredients: ['Ingredient A'], instructions: ['Step 1'] },
     { id: 2, title: 'Mock Recipe 2', ingredients: ['Ingredient B'], instructions: ['Step 1'] },

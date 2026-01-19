@@ -2,7 +2,7 @@ import { SupabaseClient } from '@supabase/supabase-js';
 import { RecipeRepository } from './RecipeRepository';
 
 export class SupabaseRecipeRepository implements RecipeRepository {
-  constructor(private supabase: SupabaseClient) {}
+  constructor(private supabase: SupabaseClient, private userId?: string) {}
 
   async getRecipes(): Promise<any[]> {
     const { data, error } = await this.supabase.from('recipes').select('*');
@@ -19,6 +19,7 @@ export class SupabaseRecipeRepository implements RecipeRepository {
       instructions: recipe.instructions,
       source_url: recipe.source_url || recipe.sourceUrl,
       image_url: recipe.image_url || recipe.imageUrl,
+      user_id: this.userId,
     };
     const { data, error } = await this.supabase
       .from('recipes')
