@@ -8,3 +8,10 @@
 4. **Response contract**:
    - Explicitly state which skills and rules are in effect.
    - Provide findings, recommendations, or code while enforcing all loaded constraints. If any conflicts arise, ask for clarification before diverging.
+5. **GitFlow Mandate**:
+   - **NEVER** commit directly to `master` (or `main`).
+   - Use a `develop` branch for integration.
+   - All new work must be performed in `feature/<description>` branches.
+   - Use `chore/`, `fix/`, or `refactor/` prefixes for non-feature branches.
+   - Always merge features into `develop` first.
+
