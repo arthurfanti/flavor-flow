@@ -34,7 +34,7 @@ This plan implements user authentication, personalized profiles with language pr
 
 ## Phase 3: Translation Engine & UI Integration
 
-- [ ] **Task 1: AI Translation Service (TDD)**
+- [x] **Task 1: AI Translation Service (TDD)** 5449656a
     - [ ] **Write Tests**: Create `TranslationService.test.ts` mocking OpenRouter.
     - [ ] **Implement**: Create `TranslationService.ts` to prompt MiniMax M2.1 for JSON recipe translations.
 - [ ] **Task 2: Profile Page & Language Selector**
