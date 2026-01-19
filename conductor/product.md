@@ -12,6 +12,8 @@ Flavor Flow is designed for a diverse audience focused on simplifying their cook
 ## Core Features (MVP)
 - **True AI Video-to-Recipe Extraction:** A cutting-edge pipeline that uses high-fidelity transcription and Large Language Models (MiniMax M2.1) to extract ingredients and steps from any video URL (YouTube, Instagram, TikTok), even when they are only spoken.
 - **Intelligent Planner & Shopping List:** A tool to queue recipes for cooking. When adding a recipe to the planner, the app automatically identifies missing ingredients by cross-referencing your Digital Pantry and adds only those items to the shopping list.
+- **User Authentication & Profiles:** Secure account creation and management via Supabase Auth. Personalized user profiles allow users to set display names and language preferences.
+- **Multilingual Support & On-Demand Translation:** A global recipe library where content is automatically translated into the user's preferred language using AI (MiniMax M2.1) if the original source is different.
 - **Recipe Library:** A dedicated space to archive and manage all successfully extracted recipes for future reference.
 - **Digital Pantry Management:** A dedicated view for users to track their current inventory, helping to reduce food waste and identify missing ingredients for planned recipes.
 

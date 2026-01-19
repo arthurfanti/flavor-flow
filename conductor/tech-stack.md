@@ -8,14 +8,17 @@
 - **State Management:** React Query (TanStack Query) - For efficient data fetching, caching, and handling the synchronization between the app and the backend.
 
 ## Backend & Infrastructure
-- **BaaS (Backend as a Service):** Supabase (or Firebase) - Provides a fast foundation for authentication, real-time database, and storage. 
+- **BaaS (Backend as a Service):** Supabase - Provides a fast foundation for authentication (Supabase Auth), real-time database (PostgreSQL), and storage. 
     - *Strategic Note:* We will implement a repository pattern in the frontend to abstract database calls, ensuring we can migrate to a custom backend (like Node.js or Python) in the future without a full rewrite.
+    - *Security:* Row Level Security (RLS) is used to isolate user-bounded data (pantry, shopping list, planner).
 - **PWA Support:** Native Next.js support (Metadata API for Manifest) + Custom Service Worker - To handle installability and offline caching without reliance on outdated third-party packages.
 
 ## External Services
 - **Recipe Extraction Pipeline:**
     - **Supadata.ai:** Used for fetching video transcripts and media metadata.
     - **OpenRouter (MiniMax M2.1):** Used for transforming raw transcripts into structured recipe JSON (ingredients and instructions).
+- **On-Demand Translation:**
+    - **OpenRouter (MiniMax M2.1):** Used for translating recipe fields (title, ingredients, instructions) into user-preferred languages.
 
 ## Development & Deployment
 - **Language:** TypeScript - For type safety and better developer experience across the stack.
