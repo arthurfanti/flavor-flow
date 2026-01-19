@@ -70,4 +70,24 @@ describe('LoginPage', () => {
       expect(screen.getByText('Invalid credentials')).toBeInTheDocument();
     });
   });
+
+  it('calls signUp on form submit in signUp mode', async () => {
+    mockSupabase.auth.signUp.mockResolvedValue({ data: { user: {} }, error: null });
+    render(<LoginPage />);
+
+    // Toggle to Sign Up mode
+    fireEvent.click(screen.getByText(/Create one/i));
+
+    fireEvent.change(screen.getByLabelText(/email/i), { target: { value: 'new@example.com' } });
+    fireEvent.change(screen.getByLabelText(/password/i), { target: { value: 'password123' } });
+    fireEvent.click(screen.getByRole('button', { name: /Create Account/i }));
+
+    await waitFor(() => {
+      expect(mockSupabase.auth.signUp).toHaveBeenCalledWith({
+        email: 'new@example.com',
+        password: 'password123',
+      });
+      expect(toast.success).toHaveBeenCalledWith("Check your email for the confirmation link!");
+    });
+  });
 });
