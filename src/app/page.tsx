@@ -66,7 +66,7 @@ export default function Home() {
       setConfigError(e.message);
       return null;
     }
-  }, [session, authLoading]);
+  }, [session?.user?.id, authLoading]);
 
   const refreshRecent = useCallback(async () => {
     if (!repos?.recipe) return;

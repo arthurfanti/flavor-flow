@@ -40,7 +40,7 @@ export default function RecipeDetailPage() {
       console.error(e);
       return null;
     }
-  }, [session, authLoading]);
+  }, [session?.user?.id, authLoading]);
 
   const translationService = useMemo(() => {
     const key = process.env.NEXT_PUBLIC_OPENROUTER_API_KEY;

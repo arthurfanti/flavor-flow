@@ -22,7 +22,7 @@ export default function RecipesPage() {
       setConfigError(e.message);
       return null;
     }
-  }, [session, authLoading]);
+  }, [session?.user?.id, authLoading]);
 
   useEffect(() => {
     const fetchRecipes = async () => {

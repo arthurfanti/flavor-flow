@@ -24,7 +24,7 @@ export default function PlannerPage() {
       setConfigError(e.message);
       return null;
     }
-  }, [session, authLoading]);
+  }, [session?.user?.id, authLoading]);
 
   const refreshQueue = async () => {
     if (!plannerRepo) return;

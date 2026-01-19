@@ -18,13 +18,13 @@ export default function ProfilePage() {
   const profileRepo = useMemo(() => {
     if (authLoading || !session?.user?.id) return null;
     return new SupabaseProfileRepository(createSupabaseClient());
-  }, [session, authLoading]);
+  }, [session?.user?.id, authLoading]);
 
   useEffect(() => {
     if (!authLoading && !session) {
       router.push('/login');
     }
-  }, [authLoading, session, router]);
+  }, [authLoading, !!session, router]);
 
   useEffect(() => {
     const loadProfile = async () => {
@@ -46,7 +46,7 @@ export default function ProfilePage() {
     if (profileRepo) {
       loadProfile();
     }
-  }, [profileRepo, session]);
+  }, [!!profileRepo, session?.user?.id]);
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();

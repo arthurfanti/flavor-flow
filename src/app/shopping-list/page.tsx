@@ -23,7 +23,7 @@ export default function ShoppingListPage() {
       setConfigError(e.message);
       return null;
     }
-  }, [session, authLoading]);
+  }, [session?.user?.id, authLoading]);
 
   const refreshItems = async () => {
     if (!shoppingListRepo) return;
