@@ -4,5 +4,5 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-## [~] Track: Multilingual Recipes & User Profiles (Scoped Data)
+## [x] Track: Multilingual Recipes & User Profiles (Scoped Data)
 *Link: [./conductor/tracks/multilingual_user_profiles_20260113/](./conductor/tracks/multilingual_user_profiles_20260113/)*
