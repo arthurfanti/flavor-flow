@@ -17,7 +17,7 @@ This plan implements user authentication, personalized profiles with language pr
 - [x] **Task 3: Supabase Auth Frontend Setup** 9b7d1894
     - [ ] Implement Auth context/hooks to manage session state.
     - [ ] Create a basic Login/Sign-up entry point.
-- [ ] **Task: Conductor - User Manual Verification 'Database Foundation & Auth Setup' (Protocol in workflow.md)**
+- [x] **Task: Conductor - User Manual Verification 'Database Foundation & Auth Setup' (Protocol in workflow.md)**
 
 ## Phase 2: User-Aware Repositories (TDD) [checkpoint: 9afc183]
 
@@ -30,9 +30,9 @@ This plan implements user authentication, personalized profiles with language pr
 - [x] **Task 3: Localized Recipe Repository (TDD)** d4fd470c
     - [ ] **Write Tests**: Create tests for fetching recipes with automatic translation joins.
     - [ ] **Implement**: Update `RecipeRepository` to handle locale fallbacks and `user_id` tracking.
-- [ ] **Task: Conductor - User Manual Verification 'User-Aware Repositories' (Protocol in workflow.md)**
+- [x] **Task: Conductor - User Manual Verification 'User-Aware Repositories' (Protocol in workflow.md)**
 
-## Phase 3: Translation Engine & UI Integration
+## Phase 3: Translation Engine & UI Integration [checkpoint: 8361772]
 
 - [x] **Task 1: AI Translation Service (TDD)** 5449656a
     - [ ] **Write Tests**: Create `TranslationService.test.ts` mocking OpenRouter.
@@ -43,4 +43,4 @@ This plan implements user authentication, personalized profiles with language pr
 - [x] **Task 3: On-Demand Translation Logic in UI** 0c3ebb7
     - [ ] **Write Tests**: Update `RecipePreview.test.tsx` to verify translation trigger when locales mismatch.
     - [ ] **Implement**: Integrate `TranslationService` into the recipe view flow.
-- [ ] **Task: Conductor - User Manual Verification 'Translation Engine & UI Integration' (Protocol in workflow.md)**
+- [x] **Task: Conductor - User Manual Verification 'Translation Engine & UI Integration' (Protocol in workflow.md)**
