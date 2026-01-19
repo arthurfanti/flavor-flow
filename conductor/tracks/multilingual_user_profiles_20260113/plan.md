@@ -27,7 +27,7 @@ This plan implements user authentication, personalized profiles with language pr
 - [x] **Task 2: Scoping Existing Repositories (TDD)** 766788d7
     - [ ] **Write Tests**: Update tests for Pantry, Shopping List, and Planner to expect `user_id` filtering.
     - [ ] **Implement**: Update repository implementations to pass the session `user_id` to Supabase calls.
-- [ ] **Task 3: Localized Recipe Repository (TDD)**
+- [x] **Task 3: Localized Recipe Repository (TDD)** d4fd470c
     - [ ] **Write Tests**: Create tests for fetching recipes with automatic translation joins.
     - [ ] **Implement**: Update `RecipeRepository` to handle locale fallbacks and `user_id` tracking.
 - [ ] **Task: Conductor - User Manual Verification 'User-Aware Repositories' (Protocol in workflow.md)**
