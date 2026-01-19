@@ -24,7 +24,7 @@ This plan implements user authentication, personalized profiles with language pr
 - [x] **Task 1: Profile Repository (TDD)** b8d473ea
     - [ ] **Write Tests**: Create `SupabaseProfileRepository.test.ts`.
     - [ ] **Implement**: Create `SupabaseProfileRepository.ts` for profile CRUD.
-- [ ] **Task 2: Scoping Existing Repositories (TDD)**
+- [x] **Task 2: Scoping Existing Repositories (TDD)** 766788d7
     - [ ] **Write Tests**: Update tests for Pantry, Shopping List, and Planner to expect `user_id` filtering.
     - [ ] **Implement**: Update repository implementations to pass the session `user_id` to Supabase calls.
 - [ ] **Task 3: Localized Recipe Repository (TDD)**
