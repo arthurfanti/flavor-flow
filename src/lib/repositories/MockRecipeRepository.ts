@@ -29,6 +29,10 @@ export class MockRecipeRepository implements RecipeRepository {
     return MockRecipeRepository.recipes.find(r => r.id.toString() === id) || null;
   }
 
+  async saveTranslation(recipeId: number, locale: string, translation: any): Promise<void> {
+    // Mock save
+  }
+
   static clearForTests() {
     MockRecipeRepository.recipes = [
       { id: 1, title: 'Mock Recipe 1', ingredients: ['Ingredient A'], instructions: ['Step 1'] },
