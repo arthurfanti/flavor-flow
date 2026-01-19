@@ -40,7 +40,7 @@ This plan implements user authentication, personalized profiles with language pr
 - [x] **Task 2: Profile Page & Language Selector** 90cf340
     - [ ] **Write Tests**: Component tests for the Profile settings form.
     - [ ] **Implement**: Create `/profile` page with locale, name, and avatar settings.
-- [ ] **Task 3: On-Demand Translation Logic in UI**
+- [x] **Task 3: On-Demand Translation Logic in UI** 0c3ebb7
     - [ ] **Write Tests**: Update `RecipePreview.test.tsx` to verify translation trigger when locales mismatch.
     - [ ] **Implement**: Integrate `TranslationService` into the recipe view flow.
 - [ ] **Task: Conductor - User Manual Verification 'Translation Engine & UI Integration' (Protocol in workflow.md)**
