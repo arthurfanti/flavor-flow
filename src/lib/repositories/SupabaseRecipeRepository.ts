@@ -71,9 +71,23 @@ export class SupabaseRecipeRepository implements RecipeRepository {
 
     if (locale && data.recipe_translations && data.recipe_translations.length > 0) {
       const translation = data.recipe_translations[0];
-      return { ...data, ...translation };
+      return { ...data, ...translation, translations: data.recipe_translations };
     }
 
-    return data;
+    return { ...data, translations: data.recipe_translations || [] };
+  }
+
+  async saveTranslation(recipeId: number, locale: string, translation: any): Promise<void> {
+    const { error } = await this.supabase
+      .from('recipe_translations')
+      .upsert({
+        recipe_id: recipeId,
+        locale,
+        title: translation.title,
+        ingredients: translation.ingredients,
+        instructions: translation.instructions,
+      });
+
+    if (error) throw error;
   }
 }

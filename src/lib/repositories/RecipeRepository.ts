@@ -4,4 +4,5 @@ export interface RecipeRepository {
   getLatest(count: number): Promise<any[]>;
   getAll(): Promise<any[]>;
   getById(id: string, locale?: string): Promise<any | null>;
+  saveTranslation(recipeId: number, locale: string, translation: any): Promise<void>;
 }

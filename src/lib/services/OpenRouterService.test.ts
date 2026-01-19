@@ -59,7 +59,7 @@ describe("OpenRouterService", () => {
     } as Response);
 
     await expect(service.structureRecipe("text")).rejects.toThrow(
-      "Failed to structure recipe via AI"
+      "OpenRouter API failed"
     );
   });
 });
