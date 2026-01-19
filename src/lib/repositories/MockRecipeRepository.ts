@@ -25,7 +25,7 @@ export class MockRecipeRepository implements RecipeRepository {
     return [...MockRecipeRepository.recipes].sort((a, b) => a.title.localeCompare(b.title));
   }
 
-  async getById(id: string): Promise<any | null> {
+  async getById(id: string, locale?: string): Promise<any | null> {
     return MockRecipeRepository.recipes.find(r => r.id.toString() === id) || null;
   }
 

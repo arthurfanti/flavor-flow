@@ -3,5 +3,5 @@ export interface RecipeRepository {
   addRecipe(recipe: any): Promise<any>;
   getLatest(count: number): Promise<any[]>;
   getAll(): Promise<any[]>;
-  getById(id: string): Promise<any | null>;
+  getById(id: string, locale?: string): Promise<any | null>;
 }

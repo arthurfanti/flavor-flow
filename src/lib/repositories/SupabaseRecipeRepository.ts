@@ -52,17 +52,28 @@ export class SupabaseRecipeRepository implements RecipeRepository {
     return data || [];
   }
 
-  async getById(id: string): Promise<any | null> {
-    const { data, error } = await this.supabase
+  async getById(id: string, locale?: string): Promise<any | null> {
+    let query = this.supabase
       .from('recipes')
-      .select('*')
-      .eq('id', id)
-      .single();
+      .select(locale ? '*, recipe_translations(title, ingredients, instructions)' : '*')
+      .eq('id', id);
+
+    if (locale) {
+      query = query.eq('recipe_translations.locale', locale);
+    }
+
+    const { data, error } = await query.single();
     
     if (error) {
       if (error.code === 'PGRST116') return null;
       throw error;
     }
+
+    if (locale && data.recipe_translations && data.recipe_translations.length > 0) {
+      const translation = data.recipe_translations[0];
+      return { ...data, ...translation };
+    }
+
     return data;
   }
 }
