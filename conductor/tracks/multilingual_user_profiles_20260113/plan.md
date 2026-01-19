@@ -19,7 +19,7 @@ This plan implements user authentication, personalized profiles with language pr
     - [ ] Create a basic Login/Sign-up entry point.
 - [ ] **Task: Conductor - User Manual Verification 'Database Foundation & Auth Setup' (Protocol in workflow.md)**
 
-## Phase 2: User-Aware Repositories (TDD)
+## Phase 2: User-Aware Repositories (TDD) [checkpoint: 9afc183]
 
 - [x] **Task 1: Profile Repository (TDD)** b8d473ea
     - [ ] **Write Tests**: Create `SupabaseProfileRepository.test.ts`.
