@@ -37,7 +37,7 @@ export default function RecipesPage() {
       }
     };
     fetchRecipes();
-  }, [recipeRepo]);
+  }, [!!recipeRepo]);
 
   if (configError) {
     return (

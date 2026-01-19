@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState, useMemo } from "react";
 import { Session } from "@supabase/supabase-js";
 import { createSupabaseClient } from "@/lib/supabase/client";
 
@@ -43,8 +43,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     return () => subscription.unsubscribe();
   }, []);
 
+  const value = useMemo(() => ({ session, loading }), [session, loading]);
+
   return (
-    <AuthContext.Provider value={{ session, loading }}>
+    <AuthContext.Provider value={value}>
       {children}
     </AuthContext.Provider>
   );

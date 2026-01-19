@@ -49,7 +49,7 @@ export default function ShoppingListPage() {
 
   useEffect(() => {
     refreshItems();
-  }, [shoppingListRepo]);
+  }, [!!shoppingListRepo]);
 
   const handleToggleItem = async (id: number, bought: boolean) => {
     if (!shoppingListRepo) return;

@@ -52,7 +52,7 @@ export default function PantryPage() {
 
   useEffect(() => {
     refreshItems();
-  }, [pantryRepo]);
+  }, [!!pantryRepo]);
 
   const handleSaveItem = async (data: Partial<PantryItem>) => {
     if (!pantryRepo) return;

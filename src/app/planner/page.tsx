@@ -50,7 +50,7 @@ export default function PlannerPage() {
 
   useEffect(() => {
     refreshQueue();
-  }, [plannerRepo]);
+  }, [!!plannerRepo]);
 
   const handleRemove = async (id: number) => {
     if (!plannerRepo) return;

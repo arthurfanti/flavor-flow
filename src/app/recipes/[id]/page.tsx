@@ -96,7 +96,7 @@ export default function RecipeDetailPage() {
     };
 
     fetchAndTranslate();
-  }, [repos, id, session, translationService]);
+  }, [!!repos, id, session?.user?.id, !!translationService]);
 
   const handleAddToList = async (ingredients: string[]) => {
     if (!repos) return;

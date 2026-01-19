@@ -69,14 +69,14 @@ export default function Home() {
   }, [session, authLoading]);
 
   const refreshRecent = useCallback(async () => {
-    if (!repos) return;
+    if (!repos?.recipe) return;
     try {
       const latest = await repos.recipe.getLatest(3);
       setRecentRecipes(latest);
     } catch (error) {
       console.error('Failed to fetch recent recipes:', error);
     }
-  }, [repos]);
+  }, [repos?.recipe]);
 
   useEffect(() => {
     refreshRecent();
