@@ -2,7 +2,7 @@
 
 This plan overhauls the application's visual identity using Magic UI and Airbnb design principles, optimized for a high-contrast dark aesthetic.
 
-## Phase 1: Foundation & Design System
+## Phase 1: Foundation & Design System [checkpoint: a84f79c]
 
 - [x] Task 1: Design Tokens & Styleguide efc86f2
     - [ ] Create `STYLEGUIDE.md` with tokens for Colors (Glow/Neon focus), Typography, Spacing, and Elevation.
@@ -14,7 +14,7 @@ This plan overhauls the application's visual identity using Magic UI and Airbnb 
 
 ## Phase 2: Component Makeover (TDD)
 
-- [ ] Task 1: Core Interactive Elements
+- [x] Task 1: Core Interactive Elements f0dde50
     - [ ] Write Tests: Verify visual state and accessibility for new components.
     - [ ] Implement: Overhaul Buttons (using `ShinyButton` logic), Inputs, and Modals.
 - [ ] Task 2: Card & Surface System
