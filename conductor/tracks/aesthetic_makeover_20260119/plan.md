@@ -17,7 +17,7 @@ This plan overhauls the application's visual identity using Magic UI and Airbnb 
 - [x] Task 1: Core Interactive Elements f0dde50
     - [ ] Write Tests: Verify visual state and accessibility for new components.
     - [ ] Implement: Overhaul Buttons (using `ShinyButton` logic), Inputs, and Modals.
-- [ ] Task 2: Card & Surface System
+- [x] Task 2: Card & Surface System 861e6a8
     - [ ] Write Tests: Ensure layout consistency across different content types.
     - [ ] Implement: Create `MagicCard` and `NeonGradientCard` wrappers for Recipes and Pantry items.
 - [ ] Task: Conductor - User Manual Verification 'Component Makeover' (Protocol in workflow.md)
