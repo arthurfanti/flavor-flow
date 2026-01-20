@@ -4,15 +4,17 @@
   --font-serif: var(--font-playfair), serif;
   --font-sans: var(--font-inter), sans-serif;
   
-  --color-brand-yellow: #FACC15;
-  --color-brand-yellow-dark: #EAB308;
-  --color-app-bg: #FDFDFD;
-  --color-ui-border: #F3F4F6;
+  --color-brand-primary: #E05D44;
+  --color-brand-secondary: #8A9A5B;
+  --color-brand-neutral: #A0A0A0;
+  --color-glass-surface: rgba(255, 255, 255, 0.05);
+  --color-magic-amber: #FFBF00;
+  --color-magic-blue: #00F0FF;
 }
 
 :root {
-  --background: #FDFDFD;
-  --foreground: #111827;
+  --background: #0F0F0F;
+  --foreground: #EDEDED;
 }
 
 body {
@@ -33,6 +35,13 @@ h1, h2, h3, h4, .font-serif {
   }
   .animate-slide-up {
     animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  
+  /* Magic UI Utils */
+  .glass {
+    background: var(--color-glass-surface);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
   }
 }
 
