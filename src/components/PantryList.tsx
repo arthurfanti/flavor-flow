@@ -14,7 +14,11 @@ interface PantryListProps {
 export default function PantryList({ items, onDelete, onToggleLowStock }: PantryListProps) {
   if (items.length === 0) {
     return (
-      <MagicCard className="w-full py-12 text-center border-white/5">
+      <MagicCard 
+        className="w-full py-12 text-center border-white/5"
+        gradientColor="#E05D44"
+        variant="neon"
+      >
         <p className="text-neutral-500 font-medium italic">Your pantry is empty.</p>
       </MagicCard>
     );
@@ -48,8 +52,8 @@ export default function PantryList({ items, onDelete, onToggleLowStock }: Pantry
               <MagicCard 
                 key={item.id}
                 className="p-5 border-white/5 hover:border-brand-primary/20 transition-colors group"
-                variant={item.is_low_stock ? 'neon' : 'default'}
-                gradientColor={item.is_low_stock ? 'rgba(224,93,68,0.1)' : 'rgba(255,255,255,0.05)'}
+                variant="neon"
+                gradientColor="#E05D44"
               >
                 <div className="flex items-center justify-between">
                   <div className="flex flex-col gap-1">

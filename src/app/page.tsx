@@ -216,7 +216,11 @@ export default function Home() {
       </header>
 
       {!recipe && (
-        <MagicCard className="w-full max-w-2xl p-6 md:p-10 border-white/5 shadow-2xl">
+        <MagicCard 
+          className="w-full max-w-2xl p-6 md:p-10 border-white/5 shadow-2xl"
+          gradientColor="#E05D44"
+          variant="neon"
+        >
           <h2 className="text-2xl font-display font-bold text-white mb-8 px-4 text-center">Start your recipe</h2>
           <UrlInput onExtract={handleExtract} isLoading={isLoading} />
           

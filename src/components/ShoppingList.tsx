@@ -17,7 +17,11 @@ interface ShoppingListProps {
 export default function ShoppingList({ items, onToggle, onRemove }: ShoppingListProps) {
   if (items.length === 0) {
     return (
-      <MagicCard className="w-full max-w-2xl py-12 text-center mt-8 border-white/5">
+      <MagicCard 
+        className="w-full max-w-2xl py-12 text-center mt-8 border-white/5"
+        gradientColor="#E05D44"
+        variant="neon"
+      >
         <div className="text-neutral-700 mb-4">
           <ShoppingBag className="w-16 h-16 mx-auto opacity-20" />
         </div>
@@ -27,7 +31,11 @@ export default function ShoppingList({ items, onToggle, onRemove }: ShoppingList
   }
 
   return (
-    <MagicCard className="w-full max-w-2xl p-6 md:p-10 mt-8 border-white/5 overflow-hidden" variant="default">
+    <MagicCard 
+      className="w-full max-w-2xl p-6 md:p-10 mt-8 border-white/5 overflow-hidden" 
+      variant="neon"
+      gradientColor="#E05D44"
+    >
       <div className="flex flex-col gap-1 mb-10 px-1">
         <span className="text-[10px] font-sans font-bold uppercase tracking-[0.2em] text-brand-primary block">Inventory</span>
         <h2 className="text-4xl font-display font-bold text-white">Shopping List</h2>

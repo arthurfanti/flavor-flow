@@ -49,7 +49,11 @@ export default function RecipePreview({ recipe, onAddToList, onAddToPlanner }: R
   };
 
   return (
-    <MagicCard className="w-full max-w-3xl mt-8 animate-fade-in border-white/5 overflow-hidden text-left" variant="default">
+    <MagicCard 
+      className="w-full max-w-3xl mt-8 animate-fade-in border-white/5 overflow-hidden text-left" 
+      variant="neon"
+      gradientColor="#E05D44"
+    >
       {/* Hero Image Section */}
       {recipe.image_url && (
         <div className="w-full h-64 md:h-96 overflow-hidden relative group">
