@@ -5,6 +5,10 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '@/components/AuthProvider';
 import { createSupabaseClient } from '@/lib/supabase/client';
 import { SupabaseProfileRepository } from '@/lib/repositories/SupabaseProfileRepository';
+import { MagicCard } from '@/components/MagicCard';
+import { MagicInput } from '@/components/MagicInput';
+import { MagicButton } from '@/components/MagicButton';
+import { User, Languages, Save } from 'lucide-react';
 import { toast } from 'sonner';
 
 export default function ProfilePage() {
@@ -70,68 +74,92 @@ export default function ProfilePage() {
 
   if (authLoading || isLoading) {
     return (
-      <div className="flex justify-center items-center min-h-screen" role="status">
-        <div className="animate-spin h-8 w-8 border-4 border-brand-yellow border-t-transparent rounded-full" />
+      <div className="flex justify-center items-center min-h-[60vh]" role="status">
+        <div className="animate-spin h-8 w-8 border-4 border-brand-primary border-t-transparent rounded-full" />
       </div>
     );
   }
 
   return (
-    <div className="max-w-2xl mx-auto p-6 pb-24">
-      <header className="mb-8">
-        <h1 className="text-3xl font-serif font-bold text-gray-900">Profile Settings</h1>
-        <p className="text-gray-500 mt-2">Manage your account preferences and language.</p>
+    <div className="max-w-2xl mx-auto p-6 pb-24 animate-fade-in">
+      <header className="mb-12">
+        <span className="text-brand-primary font-sans font-bold uppercase tracking-[0.3em] text-[10px] block mb-2">Preferences</span>
+        <h1 className="text-4xl font-display font-bold text-white tracking-tight">Profile Settings</h1>
+        <p className="text-neutral-400 mt-3 text-lg">Manage your account preferences and language.</p>
       </header>
 
-      <form onSubmit={handleSave} className="space-y-6 bg-white p-8 rounded-3xl shadow-sm border border-gray-100">
-        <div>
-          <label htmlFor="displayName" className="block text-sm font-medium text-gray-700 mb-1">
-            Display Name
-          </label>
-          <input
-            type="text"
-            id="displayName"
-            value={displayName}
-            onChange={(e) => setDisplayName(e.target.value)}
-            className="w-full px-4 py-2 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-yellow/50"
-            placeholder="Your Name"
-          />
-        </div>
+      <MagicCard 
+        className="p-8 md:p-10 border-white/5"
+        gradientColor="#E05D44"
+        variant="neon"
+      >
+        <form onSubmit={handleSave} className="space-y-10">
+          <div className="space-y-4">
+            <label htmlFor="displayName" className="flex items-center gap-2 text-sm font-bold text-neutral-300 uppercase tracking-widest">
+              <User className="h-4 w-4 text-brand-primary" />
+              Display Name
+            </label>
+            <MagicInput
+              type="text"
+              id="displayName"
+              value={displayName}
+              onChange={(e) => setDisplayName(e.target.value)}
+              placeholder="Your Name"
+              className="h-14"
+            />
+          </div>
 
-        <div>
-          <label htmlFor="locale" className="block text-sm font-medium text-gray-700 mb-1">
-            Preferred Language
-          </label>
-          <select
-            id="locale"
-            value={locale}
-            onChange={(e) => setLocale(e.target.value)}
-            className="w-full px-4 py-2 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-yellow/50 bg-white"
-          >
-            <option value="en">English</option>
-            <option value="es">Spanish</option>
-            <option value="fr">French</option>
-            <option value="de">German</option>
-            <option value="it">Italian</option>
-            <option value="pt">Portuguese</option>
-            <option value="ja">Japanese</option>
-            <option value="zh">Chinese</option>
-          </select>
-          <p className="text-xs text-gray-400 mt-2">
-            Recipes will be automatically translated to this language when viewed.
-          </p>
-        </div>
+          <div className="space-y-4">
+            <label htmlFor="locale" className="flex items-center gap-2 text-sm font-bold text-neutral-300 uppercase tracking-widest">
+              <Languages className="h-4 w-4 text-brand-primary" />
+              Preferred Language
+            </label>
+            <div className="relative">
+              <select
+                id="locale"
+                value={locale}
+                onChange={(e) => setLocale(e.target.value)}
+                className="w-full h-14 px-4 py-2 border border-white/10 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-primary/50 bg-glass-surface text-foreground appearance-none backdrop-blur-sm transition-all cursor-pointer"
+              >
+                <option value="en">English</option>
+                <option value="es">Spanish</option>
+                <option value="fr">French</option>
+                <option value="de">German</option>
+                <option value="it">Italian</option>
+                <option value="pt">Portuguese</option>
+                <option value="ja">Japanese</option>
+                <option value="zh">Chinese</option>
+              </select>
+              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-neutral-500">
+                <svg className="h-4 w-4 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                  <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+                </svg>
+              </div>
+            </div>
+            <p className="text-xs text-neutral-500 italic mt-2">
+              Recipes will be automatically translated to this language when viewed.
+            </p>
+          </div>
 
-        <div className="pt-4">
-          <button
-            type="submit"
-            disabled={isSaving}
-            className="w-full bg-brand-yellow text-black font-bold py-3 px-6 rounded-xl hover:brightness-105 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {isSaving ? 'Saving...' : 'Save Profile'}
-          </button>
-        </div>
-      </form>
+          <div className="pt-6">
+            <MagicButton
+              type="submit"
+              disabled={isSaving}
+              variant="shiny"
+              className="w-full h-14 font-bold uppercase tracking-[0.2em] text-xs"
+            >
+              {isSaving ? (
+                <div className="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full" />
+              ) : (
+                <span className="flex items-center gap-2">
+                  <Save className="h-4 w-4" />
+                  Save Profile
+                </span>
+              )}
+            </MagicButton>
+          </div>
+        </form>
+      </MagicCard>
     </div>
   );
 }
