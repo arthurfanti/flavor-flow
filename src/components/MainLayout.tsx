@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 import TabBar from "./TabBar";
 
 interface MainLayoutProps {
@@ -13,11 +14,16 @@ export default function MainLayout({ children }: MainLayoutProps) {
         <div className="absolute inset-0 w-full bg-linear-to-b from-black/20 to-transparent backdrop-blur-md mask-b-from-60%" />
         <div className="absolute inset-0 w-full bg-linear-to-b from-black/30 to-transparent backdrop-blur-sm mask-b-from-80%" />
         <div className="relative max-w-2xl mx-auto flex items-center justify-between">
-          <h1 className="text-3xl font-display font-bold tracking-tight text-foreground">
-            Flavor Flow
-          </h1>
-          {/* Future slot for user profile/settings */}
-          <div className="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 backdrop-blur-sm">
+          <Link href="/">
+            <h1 className="text-3xl font-display font-bold tracking-tight text-foreground hover:text-brand-primary transition-colors cursor-pointer">
+              Flavor Flow
+            </h1>
+          </Link>
+          <Link 
+            href="/profile"
+            className="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 backdrop-blur-sm hover:bg-white/10 hover:text-white transition-all active:scale-95"
+            aria-label="User Profile"
+          >
             <svg
               className="w-5 h-5"
               fill="none"
@@ -31,7 +37,7 @@ export default function MainLayout({ children }: MainLayoutProps) {
                 d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
               />
             </svg>
-          </div>
+          </Link>
         </div>
       </header>
 
