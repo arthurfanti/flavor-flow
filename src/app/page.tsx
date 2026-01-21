@@ -10,6 +10,8 @@ import RecipeEditor from '@/components/RecipeEditor';
 import ShoppingList from '@/components/ShoppingList';
 import RecipeListItem from '@/components/RecipeListItem';
 import AILoadingOverlay, { AIStage } from '@/components/AILoadingOverlay';
+import { MagicCard } from '@/components/MagicCard';
+import { MagicButton } from '@/components/MagicButton';
 import { SupabaseRecipeRepository } from '@/lib/repositories/SupabaseRecipeRepository';
 import { SupabaseShoppingListRepository } from '@/lib/repositories/SupabaseShoppingListRepository';
 import { SupabasePlannerRepository } from '@/lib/repositories/SupabasePlannerRepository';
@@ -188,42 +190,42 @@ export default function Home() {
     <div className="flex flex-col items-center w-full animate-fade-in text-gray-900 relative">
       <AILoadingOverlay stage={aiStage} />
       
-      <div className="w-full h-56 rounded-[2rem] overflow-hidden mb-10 shadow-lg relative group bg-gradient-to-br from-brand-yellow/20 to-orange-100">
+      <div className="w-full h-56 rounded-[2rem] overflow-hidden mb-10 shadow-2xl relative group border border-white/5">
         <img 
           src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&q=80&w=1000" 
           alt="Fresh food"
-          className="w-full h-full object-cover group-hover:scale-105 transition-all duration-1000 ease-out"
+          className="w-full h-full object-cover group-hover:scale-105 transition-all duration-1000 ease-out brightness-[0.7]"
           onError={(e) => {
             (e.target as HTMLImageElement).style.display = 'none';
           }}
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
         <div className="absolute bottom-8 left-8">
-          <span className="text-brand-yellow font-sans font-bold uppercase tracking-[0.2em] text-[10px] mb-2 block">Premium Kitchen</span>
-          <h1 className="text-4xl font-bold text-white tracking-tight">
+          <span className="text-brand-primary font-sans font-bold uppercase tracking-[0.2em] text-[10px] mb-2 block">Premium Kitchen</span>
+          <h1 className="text-4xl font-display font-bold text-white tracking-tight">
             Discover
           </h1>
         </div>
       </div>
 
       <header className="text-center mb-12 max-w-lg">
-        <p className="text-2xl text-gray-800 font-medium leading-relaxed">
+        <p className="text-2xl text-foreground font-medium leading-relaxed">
           Transform your cooking inspiration into actionable lists.
         </p>
-        <div className="w-12 h-1 bg-brand-yellow mx-auto mt-6 rounded-full" />
+        <div className="w-12 h-1 bg-brand-primary mx-auto mt-6 rounded-full" />
       </header>
 
       {!recipe && (
-        <div className="w-full max-w-2xl bg-white rounded-3xl shadow-xl shadow-gray-200/50 p-6 md:p-8">
-          <h2 className="text-xl font-semibold text-gray-800 mb-6 px-4">Start your recipe</h2>
+        <MagicCard className="w-full max-w-2xl p-6 md:p-8 border-white/5">
+          <h2 className="text-xl font-display font-semibold text-white mb-6 px-4">Start your recipe</h2>
           <UrlInput onExtract={handleExtract} isLoading={isLoading} />
           
-          <div className="mt-8 px-4 py-6 border-t border-gray-100">
-            <p className="text-sm text-gray-400 text-center italic">
+          <div className="mt-8 px-4 py-6 border-t border-white/5">
+            <p className="text-sm text-neutral-500 text-center italic">
               Paste a link from YouTube, Instagram, or TikTok to begin.
             </p>
           </div>
-        </div>
+        </MagicCard>
       )}
 
       {recipe && !isEditing && (
@@ -255,12 +257,12 @@ export default function Home() {
       {!recipe && !isLoading && recentRecipes.length > 0 && (
         <div className="w-full mt-16 animate-slide-up">
           <div className="flex items-center justify-between mb-8 px-2">
-            <h2 className="text-sm font-sans font-bold uppercase tracking-[0.2em] text-gray-400">
+            <h2 className="text-sm font-sans font-bold uppercase tracking-[0.2em] text-neutral-500">
               Recent Extractions
             </h2>
             <Link 
               href="/recipes" 
-              className="text-[10px] font-sans font-bold uppercase tracking-widest text-brand-yellow-dark hover:text-yellow-600 transition-colors"
+              className="text-[10px] font-sans font-bold uppercase tracking-widest text-brand-primary hover:text-brand-primary/80 transition-colors"
             >
               View All
             </Link>
