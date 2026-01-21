@@ -27,7 +27,7 @@ This plan overhauls the application's visual identity using Magic UI and Airbnb 
 - [x] Task 1: Immersive Discovery (Home) 7825ec4
     - [ ] Write Tests: Snapshot tests for the new grid layout.
     - [ ] Implement: Overhaul Home page with grid-based imagery and Magic UI entry animations.
-- [ ] Task 2: Editorial Recipe Detail
+- [x] Task 2: Editorial Recipe Detail ed6548e
     - [ ] Write Tests: Verify translation/locale integration remains functional with new UI.
     - [ ] Implement: Implement editorial layout with `AnimatedBeam` for AI steps or sophisticated typography.
 - [ ] Task 3: Interactive Tooling (Pantry/Planner/List)
