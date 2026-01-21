@@ -1,11 +1,10 @@
-'use client';
+"use client";
 
-import React from 'react';
-import Link from 'next/link';
-import { PlannedRecipe } from '@/lib/repositories/PlannerRepository';
-import { normalizeImageUrl } from '@/lib/utils';
-import { MagicCard } from './MagicCard';
-import { Trash2, ExternalLink } from 'lucide-react';
+import { PlannedRecipe } from "@/lib/repositories/PlannerRepository";
+import { normalizeImageUrl } from "@/lib/utils";
+import { Trash2 } from "lucide-react";
+import Link from "next/link";
+import { MagicCard } from "./MagicCard";
 
 interface PlannerQueueProps {
   recipes: PlannedRecipe[];
@@ -15,8 +14,14 @@ interface PlannerQueueProps {
 export default function PlannerQueue({ recipes, onRemove }: PlannerQueueProps) {
   if (recipes.length === 0) {
     return (
-      <MagicCard className="w-full py-12 text-center border-white/5">
-        <p className="text-neutral-500 font-medium italic">Your planner is empty.</p>
+      <MagicCard
+        gradientColor="#E05D44"
+        variant="neon"
+        className="w-full py-12 text-center"
+      >
+        <p className="text-neutral-500 font-medium italic">
+          Your planner is empty.
+        </p>
       </MagicCard>
     );
   }
@@ -25,26 +30,32 @@ export default function PlannerQueue({ recipes, onRemove }: PlannerQueueProps) {
     <>
       <div className="w-full sm:w-48 h-40 sm:h-full overflow-hidden bg-white/5 relative group">
         {recipe.image_url ? (
-          <img 
-            src={normalizeImageUrl(recipe.image_url)} 
+          <img
+            src={normalizeImageUrl(recipe.image_url)}
             alt={recipe.title}
             className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110 brightness-[0.8]"
             onError={(e) => {
-              (e.target as HTMLImageElement).style.display = 'none';
+              (e.target as HTMLImageElement).style.display = "none";
             }}
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center text-brand-primary/20">
             <svg className="w-12 h-12" fill="currentColor" viewBox="0 0 20 20">
-              <path fillRule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clipRule="evenodd" />
+              <path
+                fillRule="evenodd"
+                d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z"
+                clipRule="evenodd"
+              />
             </svg>
           </div>
         )}
         <div className="absolute inset-0 bg-gradient-to-r from-black/40 to-transparent sm:hidden" />
       </div>
-      
+
       <div className="flex-grow p-6 flex flex-col justify-center overflow-hidden">
-        <span className="text-[10px] font-sans font-bold uppercase tracking-[0.2em] text-brand-primary mb-2 block">Planned Meal</span>
+        <span className="text-[10px] font-sans font-bold uppercase tracking-[0.2em] text-brand-primary mb-2 block">
+          Planned Meal
+        </span>
         <h3 className="text-2xl font-display font-bold text-white leading-tight line-clamp-2 group-hover:text-brand-primary transition-colors">
           {recipe.title}
         </h3>
@@ -55,19 +66,24 @@ export default function PlannerQueue({ recipes, onRemove }: PlannerQueueProps) {
   return (
     <div className="w-full space-y-6 pb-12">
       {recipes.map((recipe, idx) => (
-        <MagicCard 
+        <MagicCard
           key={recipe.id}
           className="animate-fade-in group relative border-white/5 sm:h-40 overflow-hidden"
           style={{ animationDelay: `${idx * 100}ms` }}
+          gradientColor="#E05D44"
+          variant="neon"
         >
           <div className="flex flex-col sm:flex-row h-full">
             {recipe.recipe_id ? (
-              <Link href={`/recipes/${recipe.recipe_id}`} className="flex flex-col sm:flex-row flex-grow min-w-0 h-full">
-                 {renderContent(recipe)}
+              <Link
+                href={`/recipes/${recipe.recipe_id}`}
+                className="flex flex-col sm:flex-row flex-grow min-w-0 h-full"
+              >
+                {renderContent(recipe)}
               </Link>
             ) : (
               <div className="flex flex-col sm:flex-row flex-grow min-w-0 h-full">
-                 {renderContent(recipe)}
+                {renderContent(recipe)}
               </div>
             )}
 

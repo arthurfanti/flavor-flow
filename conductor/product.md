@@ -18,7 +18,8 @@ Flavor Flow is designed for a diverse audience focused on simplifying their cook
 - **Digital Pantry Management:** A dedicated view for users to track their current inventory, helping to reduce food waste and identify missing ingredients for planned recipes.
 
 ## User Experience Goals
-- **Mobile-First & Clean Design (P0):** A visually focused interface optimized for mobile use, ensuring that the cooking and shopping experience is intuitive and aesthetic.
+- **Immersive "Magic" UI (P0):** A sophisticated, high-contrast interface powered by dynamic lighting, glow effects, and smooth animations that make the application feel premium and interactive.
+- **Editorial Cookbook Aesthetic (P1):** A layout anchored by Airbnb's editorial spacing and card-based principles, optimized for a dark mode environment.
 - **Immersive AI Experience (P1):** A sophisticated extraction overlay with 3D-inspired icons and smooth transitions that guides the user through the transcription and analysis phases.
 - **Offline Capability (P0):** Essential access to shopping lists and pantry inventory even without an internet connection, ensuring reliability in grocery stores or kitchens with poor reception.
 - **Seamless Automation (P1):** The transition from planning to shopping is made intelligent through automatic pantry-awareness, reducing manual data entry for the user.

@@ -1,33 +1,31 @@
-'use client';
+"use client";
 
-import { useState, useEffect, useMemo, useCallback } from 'react';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { toast } from 'sonner';
-import UrlInput from '@/components/UrlInput';
-import RecipePreview from '@/components/RecipePreview';
-import RecipeEditor from '@/components/RecipeEditor';
-import ShoppingList from '@/components/ShoppingList';
-import RecipeListItem from '@/components/RecipeListItem';
-import AILoadingOverlay, { AIStage } from '@/components/AILoadingOverlay';
-import { MagicCard } from '@/components/MagicCard';
-import { MagicButton } from '@/components/MagicButton';
-import { SupabaseRecipeRepository } from '@/lib/repositories/SupabaseRecipeRepository';
-import { SupabaseShoppingListRepository } from '@/lib/repositories/SupabaseShoppingListRepository';
-import { SupabasePlannerRepository } from '@/lib/repositories/SupabasePlannerRepository';
-import { SupabasePantryRepository } from '@/lib/repositories/SupabasePantryRepository';
-import { createSupabaseClient } from '@/lib/supabase/client';
-import { VideoAIExtractor } from '@/lib/services/VideoAIExtractor';
-import { SupadataService } from '@/lib/services/SupadataService';
-import { OpenRouterService } from '@/lib/services/OpenRouterService';
-import { IngredientMatcher } from '@/lib/services/IngredientMatcher';
-import { useAuth } from '@/components/AuthProvider';
+import AILoadingOverlay, { AIStage } from "@/components/AILoadingOverlay";
+import { useAuth } from "@/components/AuthProvider";
+import { MagicCard } from "@/components/MagicCard";
+import RecipeEditor from "@/components/RecipeEditor";
+import RecipeListItem from "@/components/RecipeListItem";
+import RecipePreview from "@/components/RecipePreview";
+import UrlInput from "@/components/UrlInput";
+import { SupabasePantryRepository } from "@/lib/repositories/SupabasePantryRepository";
+import { SupabasePlannerRepository } from "@/lib/repositories/SupabasePlannerRepository";
+import { SupabaseRecipeRepository } from "@/lib/repositories/SupabaseRecipeRepository";
+import { SupabaseShoppingListRepository } from "@/lib/repositories/SupabaseShoppingListRepository";
+import { IngredientMatcher } from "@/lib/services/IngredientMatcher";
+import { OpenRouterService } from "@/lib/services/OpenRouterService";
+import { SupadataService } from "@/lib/services/SupadataService";
+import { VideoAIExtractor } from "@/lib/services/VideoAIExtractor";
+import { createSupabaseClient } from "@/lib/supabase/client";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { toast } from "sonner";
 
 export default function Home() {
   const router = useRouter();
   const { session, loading: authLoading } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
-  const [aiStage, setAiStage] = useState<AIStage>('idle');
+  const [aiStage, setAiStage] = useState<AIStage>("idle");
   const [recipe, setRecipe] = useState<any | null>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [recentRecipes, setRecentRecipes] = useState<any[]>([]);
@@ -37,9 +35,11 @@ export default function Home() {
     try {
       const supadataKey = process.env.NEXT_PUBLIC_SUPADATA_API_KEY;
       const openRouterKey = process.env.NEXT_PUBLIC_OPENROUTER_API_KEY;
-      
+
       if (!supadataKey || !openRouterKey) {
-        throw new Error('AI Extraction keys (Supadata/OpenRouter) are missing.');
+        throw new Error(
+          "AI Extraction keys (Supadata/OpenRouter) are missing."
+        );
       }
 
       return new VideoAIExtractor(
@@ -47,7 +47,7 @@ export default function Home() {
         new OpenRouterService(openRouterKey)
       );
     } catch (e: any) {
-      console.warn('AI Extractor could not be initialized:', e.message);
+      console.warn("AI Extractor could not be initialized:", e.message);
       return null;
     }
   }, []);
@@ -57,11 +57,15 @@ export default function Home() {
     try {
       const supabase = createSupabaseClient();
       const userId = session?.user?.id;
-      
+
       return {
         recipe: new SupabaseRecipeRepository(supabase, userId),
-        shoppingList: userId ? new SupabaseShoppingListRepository(supabase, userId) : null,
-        planner: userId ? new SupabasePlannerRepository(supabase, userId) : null,
+        shoppingList: userId
+          ? new SupabaseShoppingListRepository(supabase, userId)
+          : null,
+        planner: userId
+          ? new SupabasePlannerRepository(supabase, userId)
+          : null,
         pantry: userId ? new SupabasePantryRepository(supabase, userId) : null,
       };
     } catch (e: any) {
@@ -76,7 +80,7 @@ export default function Home() {
       const latest = await repos.recipe.getLatest(3);
       setRecentRecipes(latest);
     } catch (error) {
-      console.error('Failed to fetch recent recipes:', error);
+      console.error("Failed to fetch recent recipes:", error);
     }
   }, [repos?.recipe]);
 
@@ -86,102 +90,123 @@ export default function Home() {
 
   const handleExtract = async (url: string) => {
     if (!repos || !extractor) {
-      toast.error('AI Extractor or Repositories not initialized. Check your API keys.');
+      toast.error(
+        "AI Extractor or Repositories not initialized. Check your API keys."
+      );
       return;
     }
     setIsLoading(true);
     try {
-      console.log('Flavor Flow: Initializing True AI Extraction...');
-      const extracted = await extractor.extractFromUrl(url, (stage) => setAiStage(stage));
-      console.log('Flavor Flow: AI Extraction successful:', extracted.title);
+      console.log("Flavor Flow: Initializing True AI Extraction...");
+      const extracted = await extractor.extractFromUrl(url, (stage) =>
+        setAiStage(stage)
+      );
+      console.log("Flavor Flow: AI Extraction successful:", extracted.title);
 
-      console.log('Flavor Flow: Saving to Supabase...');
+      console.log("Flavor Flow: Saving to Supabase...");
       const savedRecipe = await repos.recipe.addRecipe(extracted);
-      console.log('Flavor Flow: Save successful.');
-      
+      console.log("Flavor Flow: Save successful.");
+
       setRecipe(savedRecipe);
       await refreshRecent();
-      toast.success('Recipe extracted and saved!');
+      toast.success("Recipe extracted and saved!");
     } catch (error: any) {
-      console.error('Flavor Flow Error Object:', JSON.stringify(error, Object.getOwnPropertyNames(error)));
+      console.error(
+        "Flavor Flow Error Object:",
+        JSON.stringify(error, Object.getOwnPropertyNames(error))
+      );
       // More user-friendly error message
-      const msg = error.message === 'Failed to fetch' 
-        ? 'Network error: Could not reach the server. Please check your internet connection or Supabase settings.'
-        : error.message || 'An unexpected error occurred.';
+      const msg =
+        error.message === "Failed to fetch"
+          ? "Network error: Could not reach the server. Please check your internet connection or Supabase settings."
+          : error.message || "An unexpected error occurred.";
       toast.error(`Extraction Error: ${msg}`);
     } finally {
       setIsLoading(false);
-      setAiStage('idle');
+      setAiStage("idle");
     }
   };
 
   const handleSave = (updatedRecipe: any) => {
     setRecipe(updatedRecipe);
     setIsEditing(false);
-    toast.success('Recipe updates saved locally.');
+    toast.success("Recipe updates saved locally.");
   };
 
   const handleAddToList = async (ingredients: string[]) => {
     if (!repos?.shoppingList) {
-      toast.error('Please sign in to manage your shopping list.');
+      toast.error("Please sign in to manage your shopping list.");
       return;
     }
     try {
-      console.log('Flavor Flow: Bulk adding items to list...');
-      await repos.shoppingList.addItems(ingredients.map(ing => ({ name: ing, bought: false })));
+      console.log("Flavor Flow: Bulk adding items to list...");
+      await repos.shoppingList.addItems(
+        ingredients.map((ing) => ({ name: ing, bought: false }))
+      );
       // Success feedback handled by RecipePreview button
     } catch (error) {
-      console.error('Failed to add to shopping list:', error);
-      toast.error('Failed to add items to shopping list.');
+      console.error("Failed to add to shopping list:", error);
+      toast.error("Failed to add items to shopping list.");
     }
   };
 
   const handleAddToPlanner = async (targetRecipe: any) => {
     if (!repos?.planner || !repos?.pantry || !repos?.shoppingList) {
-      toast.error('Please sign in to use the meal planner.');
+      toast.error("Please sign in to use the meal planner.");
       return;
     }
     setIsLoading(true);
     try {
-      console.log('Flavor Flow: Adding to planner with pantry sync...');
+      console.log("Flavor Flow: Adding to planner with pantry sync...");
       // 1. Add to Planner Queue
-      await repos.planner.addToQueue({ 
+      await repos.planner.addToQueue({
         title: targetRecipe.title,
         recipe_id: targetRecipe.id,
-        source_url: targetRecipe.source_url || targetRecipe.sourceUrl || '',
-        image_url: targetRecipe.image_url || targetRecipe.imageUrl
+        source_url: targetRecipe.source_url || targetRecipe.sourceUrl || "",
+        image_url: targetRecipe.image_url || targetRecipe.imageUrl,
       });
 
       // 2. Intelligent Shopping List Sync (Pantry Awareness)
       const pantryItems = await repos.pantry.getItems();
       const matcher = new IngredientMatcher();
-      
-      const missingIngredients = (targetRecipe.ingredients || []).filter((ing: string) => {
-        const found = pantryItems.find(p => matcher.isMatch(p.name, ing));
-        return !found;
-      });
+
+      const missingIngredients = (targetRecipe.ingredients || []).filter(
+        (ing: string) => {
+          const found = pantryItems.find((p) => matcher.isMatch(p.name, ing));
+          return !found;
+        }
+      );
 
       // 3. Push missing to shopping list in bulk
       if (missingIngredients.length > 0) {
-        await repos.shoppingList.addItems(missingIngredients.map((ing: string) => ({ name: ing, bought: false })));
+        await repos.shoppingList.addItems(
+          missingIngredients.map((ing: string) => ({
+            name: ing,
+            bought: false,
+          }))
+        );
       }
 
       setIsLoading(false);
       // Success feedback handled by redirection
-      router.push('/planner');
+      router.push("/planner");
     } catch (error) {
       setIsLoading(false);
-      console.error('Failed to add to planner:', error);
-      toast.error('Failed to add to planner. Please try again.');
+      console.error("Failed to add to planner:", error);
+      toast.error("Failed to add to planner. Please try again.");
     }
   };
 
   if (configError) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen p-4 text-center">
-        <h1 className="text-2xl font-bold text-red-600 mb-4">Configuration Error</h1>
+        <h1 className="text-2xl font-bold text-red-600 mb-4">
+          Configuration Error
+        </h1>
         <p className="text-gray-700">{configError}</p>
-        <p className="text-sm text-gray-500 mt-4">Please check your environment variables.</p>
+        <p className="text-sm text-gray-500 mt-4">
+          Please check your environment variables.
+        </p>
       </div>
     );
   }
@@ -189,19 +214,21 @@ export default function Home() {
   return (
     <div className="flex flex-col items-center w-full animate-fade-in text-gray-900 relative">
       <AILoadingOverlay stage={aiStage} />
-      
+
       <div className="w-full h-56 rounded-[2rem] overflow-hidden mb-10 shadow-2xl relative group border border-white/5">
-        <img 
-          src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&q=80&w=1000" 
+        <img
+          src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&q=80&w=1000"
           alt="Fresh food"
           className="w-full h-full object-cover group-hover:scale-105 transition-all duration-1000 ease-out brightness-[0.7]"
           onError={(e) => {
-            (e.target as HTMLImageElement).style.display = 'none';
+            (e.target as HTMLImageElement).style.display = "none";
           }}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
         <div className="absolute bottom-8 left-8">
-          <span className="text-brand-primary font-sans font-bold uppercase tracking-[0.2em] text-[10px] mb-2 block">Premium Kitchen</span>
+          <span className="text-brand-primary font-sans font-bold uppercase tracking-[0.2em] text-[10px] mb-2 block">
+            Premium Kitchen
+          </span>
           <h1 className="text-4xl font-display font-bold text-white tracking-tight">
             Discover
           </h1>
@@ -216,45 +243,49 @@ export default function Home() {
       </header>
 
       {!recipe && (
-        <MagicCard 
-          className="w-full max-w-2xl p-6 md:p-10 border-white/5 shadow-2xl"
+        <MagicCard
+          className="w-full max-w-2xl inset-0 border-white/5 shadow-2xl"
           gradientColor="#E05D44"
           variant="neon"
         >
-          <h2 className="text-2xl font-display font-bold text-white mb-8 px-4 text-center">Start your recipe</h2>
-          <UrlInput onExtract={handleExtract} isLoading={isLoading} />
-          
-          <div className="mt-10 px-4 py-6 border-t border-white/5">
-            <p className="text-xs text-neutral-500 text-center uppercase tracking-widest font-medium">
-              YouTube • Instagram • TikTok
-            </p>
+          <div className="p-6">
+            <h2 className="text-2xl font-display font-bold text-white mb-8 p-4 text-center">
+              Start your recipe
+            </h2>
+            <UrlInput onExtract={handleExtract} isLoading={isLoading} />
+
+            <div className="mt-10 px-4 py-6 border-t border-white/5">
+              <p className="text-xs text-neutral-500 text-center uppercase tracking-widest font-medium">
+                YouTube • Instagram • TikTok
+              </p>
+            </div>
           </div>
         </MagicCard>
       )}
 
       {recipe && !isEditing && (
         <div className="w-full max-w-2xl">
-           <RecipePreview 
-             recipe={recipe} 
-             onAddToList={handleAddToList} 
-             onAddToPlanner={handleAddToPlanner}
-           />
-           <div className="mt-4 flex justify-center">
-             <button 
-               onClick={() => setIsEditing(true)}
-               className="text-gray-600 hover:text-gray-900 font-medium underline"
-             >
-               Edit Recipe
-             </button>
-           </div>
+          <RecipePreview
+            recipe={recipe}
+            onAddToList={handleAddToList}
+            onAddToPlanner={handleAddToPlanner}
+          />
+          <div className="mt-4 flex justify-center">
+            <button
+              onClick={() => setIsEditing(true)}
+              className="text-gray-600 hover:text-gray-900 font-medium underline"
+            >
+              Edit Recipe
+            </button>
+          </div>
         </div>
       )}
 
       {recipe && isEditing && (
-        <RecipeEditor 
-          recipe={recipe} 
-          onSave={handleSave} 
-          onCancel={() => setIsEditing(false)} 
+        <RecipeEditor
+          recipe={recipe}
+          onSave={handleSave}
+          onCancel={() => setIsEditing(false)}
         />
       )}
 
@@ -264,18 +295,18 @@ export default function Home() {
             <h2 className="text-sm font-sans font-bold uppercase tracking-[0.2em] text-neutral-500">
               Recent Extractions
             </h2>
-            <Link 
-              href="/recipes" 
+            <Link
+              href="/recipes"
               className="text-[10px] font-sans font-bold uppercase tracking-widest text-brand-primary hover:text-brand-primary/80 transition-colors"
             >
               View All
             </Link>
           </div>
-          
+
           <div className="grid grid-cols-1 gap-4">
             {recentRecipes.map((r, i) => (
-              <div 
-                key={r.id || `${r.sourceUrl}-${i}`} 
+              <div
+                key={r.id || `${r.sourceUrl}-${i}`}
                 className="cursor-pointer active:scale-[0.98] transition-transform"
                 onClick={() => setRecipe(r)}
               >

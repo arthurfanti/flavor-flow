@@ -3,7 +3,9 @@
 ## Frontend
 - **Framework:** React (Next.js) - Chosen for its robust ecosystem, SEO capabilities (if needed), and excellent support for building Progressive Web Apps (PWAs).
 - **Styling:** Tailwind CSS - Utility-first CSS for rapid development of a clean, sophisticated, and responsive UI.
-- **Iconography:** Material Symbols (Rounded) - For a modern, consistent, and maintainable icon system.
+- **UI Components:** Magic UI & Framer Motion - For high-impact visual effects (glow, neon, beams) and smooth transitions.
+- **Iconography:** Lucide React & Material Symbols (Rounded) - For a versatile and expressive icon system.
+- **Utilities:** `clsx`, `tailwind-merge` - For safe and efficient class name management.
 - **Notifications:** Sonner - Modern, lightweight toast library for non-blocking feedback.
 - **State Management:** React Query (TanStack Query) - For efficient data fetching, caching, and handling the synchronization between the app and the backend.
 

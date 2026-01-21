@@ -1,18 +1,18 @@
-import React from 'react';
-import { motion, useMotionTemplate, useMotionValue } from 'framer-motion';
-import { cn } from '@/lib/utils';
+import { cn } from "@/lib/utils";
+import { motion, useMotionTemplate, useMotionValue } from "framer-motion";
+import React from "react";
 
 export interface MagicCardProps extends React.HTMLAttributes<HTMLDivElement> {
   gradientColor?: string;
-  variant?: 'default' | 'neon';
+  variant?: "default" | "neon";
   borderSize?: number;
 }
 
 export function MagicCard({
   children,
   className,
-  gradientColor = 'rgba(255, 255, 255, 0.15)',
-  variant = 'default',
+  gradientColor = "rgba(255, 255, 255, 0.15)",
+  variant = "default",
   borderSize = 1,
   ...props
 }: MagicCardProps) {
@@ -31,7 +31,7 @@ export function MagicCard({
       onMouseMove={onMouseMove}
       className={cn(
         "group relative flex size-full flex-col overflow-hidden rounded-xl bg-neutral-900 border border-transparent transition-all duration-300",
-        variant === 'neon' && "shadow-[0_0_20px_-12px_rgba(224,93,68,0.5)]",
+        variant === "neon" && "shadow-[0_0_20px_-12px_rgba(224,93,68,0.5)]",
         className
       )}
       {...props}
@@ -54,9 +54,9 @@ export function MagicCard({
       <div className="relative z-10 flex flex-col h-full bg-[#1A1A1A]/95 m-[1px] rounded-[calc(0.75rem-1px)] overflow-hidden">
         {children}
       </div>
-      
+
       {/* Subtle background glow for neon variant */}
-      {variant === 'neon' && (
+      {variant === "neon" && (
         <div className="absolute inset-0 z-[-1] bg-brand-primary/5 blur-3xl opacity-50" />
       )}
     </div>

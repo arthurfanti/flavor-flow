@@ -1,5 +1,5 @@
-import React from 'react';
-import TabBar from './TabBar';
+import React from "react";
+import TabBar from "./TabBar";
 
 interface MainLayoutProps {
   children: React.ReactNode;
@@ -8,15 +8,28 @@ interface MainLayoutProps {
 export default function MainLayout({ children }: MainLayoutProps) {
   return (
     <div className="min-h-screen w-full relative flex flex-col bg-background text-foreground">
-      <header className="w-full py-6 px-6 bg-background/80 backdrop-blur-xl border-b border-white/10 shadow-[0_4px_30px_rgba(0,0,0,0.1)] sticky top-0 z-50">
-        <div className="max-w-2xl mx-auto flex items-center justify-between">
+      <header className="w-full py-6 px-6 bg-background/80 border-b border-black/10 shadow-[0_12px_24px_-4px_rgba(0,0,0,0.4)] sticky top-0 z-50">
+        <div className="absolute inset-0 w-full bg-linear-to-b from-black/10 to-transparent backdrop-blur-xl mask-b-from-20%" />
+        <div className="absolute inset-0 w-full bg-linear-to-b from-black/20 to-transparent backdrop-blur-md mask-b-from-60%" />
+        <div className="absolute inset-0 w-full bg-linear-to-b from-black/30 to-transparent backdrop-blur-sm mask-b-from-80%" />
+        <div className="relative max-w-2xl mx-auto flex items-center justify-between">
           <h1 className="text-3xl font-display font-bold tracking-tight text-foreground">
             Flavor Flow
           </h1>
           {/* Future slot for user profile/settings */}
           <div className="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 backdrop-blur-sm">
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+            <svg
+              className="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+              />
             </svg>
           </div>
         </div>
