@@ -23,24 +23,21 @@ describe('TabBar', () => {
     render(<TabBar />);
     
     const plannerLink = screen.getByLabelText('Planner');
-    expect(plannerLink).toHaveClass('text-brand-yellow-dark'); 
+    expect(plannerLink).toHaveClass('text-brand-primary'); 
   });
 
-  it('is fixed to the bottom of the screen', () => {
-    (usePathname as jest.Mock).mockReturnValue('/');
+  it('is a floating navigation bar', () => {
     const { container } = render(<TabBar />);
     const nav = container.querySelector('nav');
     expect(nav).toHaveClass('fixed');
-    expect(nav).toHaveClass('bottom-0');
+    expect(nav).toHaveClass('bottom-6');
   });
 
-  it('renders Material Symbols icons for each item', () => {
-    (usePathname as jest.Mock).mockReturnValue('/');
-    render(<TabBar />);
+  it('renders Lucide icons for each item', () => {
+    const { container } = render(<TabBar />);
     
-    expect(screen.getByText('home')).toHaveClass('material-symbols-rounded');
-    expect(screen.getByText('calendar_month')).toHaveClass('material-symbols-rounded');
-    expect(screen.getByText('kitchen')).toHaveClass('material-symbols-rounded');
-    expect(screen.getByText('shopping_bag')).toHaveClass('material-symbols-rounded');
+    // Check for SVGs (Lucide icons render as SVGs)
+    const svgs = container.querySelectorAll('svg');
+    expect(svgs.length).toBe(4);
   });
 });

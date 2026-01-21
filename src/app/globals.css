@@ -14,7 +14,8 @@
 
 :root {
   --background: #0F0F0F;
-  --foreground: #EDEDED;
+  --foreground: #F5F5F5;
+  --muted: #A0A0A0;
 }
 
 body {
@@ -25,8 +26,15 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-h1, h2, h3, h4, .font-serif {
+h1, h2, h3, h4, .font-serif, .font-display {
   font-family: var(--font-serif);
+  color: #FFFFFF;
+}
+
+@layer base {
+  p {
+    @apply text-neutral-400 leading-relaxed;
+  }
 }
 
 @layer utilities {

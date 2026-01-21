@@ -95,10 +95,10 @@ export default function RecipePreview({ recipe, onAddToList, onAddToPlanner }: R
               onClick={handleAddToPlanner}
               disabled={isAddingToPlanner || addedToPlanner}
               variant={addedToPlanner ? "glass" : "default"}
-              className="flex-1 sm:flex-none h-14 bg-white text-black hover:bg-neutral-200 border-none"
+              className="flex-1 sm:flex-none h-14 bg-foreground text-background hover:bg-neutral-200 border-none"
             >
               {isAddingToPlanner ? (
-                <div className="animate-spin h-4 w-4 border-2 border-black border-t-transparent rounded-full" />
+                <div className="animate-spin h-4 w-4 border-2 border-background border-t-transparent rounded-full" />
               ) : addedToPlanner ? (
                 <><Check className="h-4 w-4 text-emerald-600" /> Planned</>
               ) : (
@@ -116,8 +116,8 @@ export default function RecipePreview({ recipe, onAddToList, onAddToPlanner }: R
             </div>
             <ul className="space-y-5">
               {recipe.ingredients.map((ingredient, index) => (
-                <li key={index} className="flex items-start gap-4 text-[15px] leading-relaxed text-neutral-400 group">
-                  <span className="mt-2.5 w-1 h-1 bg-brand-primary/60 rounded-full flex-shrink-0 group-hover:scale-150 transition-transform" />
+                <li key={index} className="flex items-start gap-4 text-[16px] leading-relaxed text-neutral-300 group">
+                  <span className="mt-2.5 w-1 h-1 bg-brand-primary/60 rounded-full flex-shrink-0 group-hover:scale-150 transition-transform shadow-[0_0_8px_rgba(224,93,68,0.4)]" />
                   <span className="group-hover:text-white transition-colors">{ingredient}</span>
                 </li>
               ))}
@@ -129,10 +129,10 @@ export default function RecipePreview({ recipe, onAddToList, onAddToPlanner }: R
             <ol className="space-y-10">
               {recipe.instructions.map((step, index) => (
                 <li key={index} className="flex gap-8 group">
-                  <span className="flex-shrink-0 w-8 h-8 rounded-full border border-brand-primary/20 text-brand-primary font-display font-bold text-sm flex items-center justify-center group-hover:bg-brand-primary group-hover:text-white transition-all duration-500">
+                  <span className="flex-shrink-0 w-8 h-8 rounded-full border border-brand-primary/20 text-brand-primary font-display font-bold text-sm flex items-center justify-center group-hover:bg-brand-primary group-hover:text-white transition-all duration-500 shadow-sm">
                     {index + 1}
                   </span>
-                  <p className="text-[17px] leading-relaxed text-neutral-300 group-hover:text-white transition-colors pt-0.5 text-left font-light">
+                  <p className="text-[18px] leading-relaxed text-neutral-200 group-hover:text-white transition-colors pt-0.5 text-left font-light">
                     {step}
                   </p>
                 </li>

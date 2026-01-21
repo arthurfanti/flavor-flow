@@ -209,20 +209,20 @@ export default function Home() {
       </div>
 
       <header className="text-center mb-12 max-w-lg">
-        <p className="text-2xl text-foreground font-medium leading-relaxed">
+        <p className="text-2xl text-neutral-300 font-medium leading-relaxed">
           Transform your cooking inspiration into actionable lists.
         </p>
-        <div className="w-12 h-1 bg-brand-primary mx-auto mt-6 rounded-full" />
+        <div className="w-12 h-1 bg-brand-primary mx-auto mt-6 rounded-full shadow-[0_0_12px_rgba(224,93,68,0.4)]" />
       </header>
 
       {!recipe && (
-        <MagicCard className="w-full max-w-2xl p-6 md:p-8 border-white/5">
-          <h2 className="text-xl font-display font-semibold text-white mb-6 px-4">Start your recipe</h2>
+        <MagicCard className="w-full max-w-2xl p-6 md:p-10 border-white/5 shadow-2xl">
+          <h2 className="text-2xl font-display font-bold text-white mb-8 px-4 text-center">Start your recipe</h2>
           <UrlInput onExtract={handleExtract} isLoading={isLoading} />
           
-          <div className="mt-8 px-4 py-6 border-t border-white/5">
-            <p className="text-sm text-neutral-500 text-center italic">
-              Paste a link from YouTube, Instagram, or TikTok to begin.
+          <div className="mt-10 px-4 py-6 border-t border-white/5">
+            <p className="text-xs text-neutral-500 text-center uppercase tracking-widest font-medium">
+              YouTube • Instagram • TikTok
             </p>
           </div>
         </MagicCard>
