@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import { normalizeImageUrl } from '@/lib/utils';
+import { MagicCard } from './MagicCard';
+import { MagicButton } from './MagicButton';
+import { ShoppingCart, Calendar, Check, ChefHat } from 'lucide-react';
 
 interface Recipe {
   title: string;
@@ -46,112 +49,90 @@ export default function RecipePreview({ recipe, onAddToList, onAddToPlanner }: R
   };
 
   return (
-    <div className="w-full max-w-3xl bg-white rounded-[2.5rem] shadow-2xl shadow-gray-200/60 mt-8 animate-fade-in border border-gray-50/50 overflow-hidden text-left">
+    <MagicCard className="w-full max-w-3xl mt-8 animate-fade-in border-white/5 overflow-hidden text-left" variant="default">
       {/* Hero Image Section */}
       {recipe.image_url && (
-        <div className="w-full h-64 md:h-80 overflow-hidden relative group">
+        <div className="w-full h-64 md:h-96 overflow-hidden relative group">
           <img 
             src={normalizeImageUrl(recipe.image_url)} 
             alt={recipe.title}
-            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+            className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105 brightness-[0.85]"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#1A1A1A] via-transparent to-transparent" />
+          <div className="absolute top-6 left-6">
+             <div className="glass px-4 py-2 rounded-full flex items-center gap-2">
+                <ChefHat className="h-4 w-4 text-brand-primary" />
+                <span className="text-[10px] font-bold uppercase tracking-widest text-white">AI Kitchen</span>
+             </div>
+          </div>
         </div>
       )}
 
-      <div className="p-8 md:p-12">
-        <div className="flex flex-col gap-8 mb-12">
+      <div className="p-8 md:p-12 -mt-12 relative z-10">
+        <div className="flex flex-col gap-10 mb-16">
           <div className="space-y-4">
-            <span className="text-brand-yellow font-sans font-bold uppercase tracking-[0.3em] text-[10px] block">Freshly Extracted</span>
-            <h2 className="text-4xl md:text-5xl font-serif font-bold text-gray-900 leading-[1.1] tracking-tight">{recipe.title}</h2>
+            <span className="text-brand-primary font-sans font-bold uppercase tracking-[0.3em] text-[10px] block">Premium Recipe</span>
+            <h2 className="text-4xl md:text-6xl font-display font-bold text-white leading-[1.1] tracking-tight">{recipe.title}</h2>
           </div>
           
-          <div className="flex flex-wrap gap-3">
-            <button
+          <div className="flex flex-wrap gap-4">
+            <MagicButton
               onClick={handleAddToList}
               disabled={isAddingToList || addedToList}
-              className={`flex-1 sm:flex-none px-8 py-4 rounded-2xl font-bold uppercase tracking-widest text-[11px] transition-all active:scale-95 flex items-center justify-center gap-2 ${
-                addedToList 
-                ? 'bg-emerald-500 text-white shadow-emerald-200' 
-                : 'bg-brand-yellow text-black hover:bg-brand-yellow-dark shadow-brand-yellow/20'
-              } shadow-xl disabled:opacity-70`}
+              variant={addedToList ? "glass" : "shiny"}
+              className="flex-1 sm:flex-none h-14"
             >
               {isAddingToList ? (
-                <>
-                  <div className="animate-spin h-4 w-4 border-2 border-black border-t-transparent rounded-full" />
-                  Adding...
-                </>
+                <div className="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full" />
               ) : addedToList ? (
-                <>
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" />
-                  </svg>
-                  Added!
-                </>
+                <><Check className="h-4 w-4 text-emerald-400" /> Added</>
               ) : (
-                <>
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                  </svg>
-                  Add to List
-                </>
+                <><ShoppingCart className="h-4 w-4" /> Add to List</>
               )}
-            </button>
-            <button
+            </MagicButton>
+            
+            <MagicButton
               onClick={handleAddToPlanner}
               disabled={isAddingToPlanner || addedToPlanner}
-              className={`flex-1 sm:flex-none px-8 py-4 rounded-2xl font-bold uppercase tracking-widest text-[11px] transition-all active:scale-95 flex items-center justify-center gap-2 ${
-                addedToPlanner
-                ? 'bg-emerald-500 text-white shadow-emerald-200'
-                : 'bg-gray-900 text-white hover:bg-black shadow-gray-900/10'
-              } shadow-xl disabled:opacity-70`}
+              variant={addedToPlanner ? "glass" : "default"}
+              className="flex-1 sm:flex-none h-14 bg-white text-black hover:bg-neutral-200 border-none"
             >
               {isAddingToPlanner ? (
-                <>
-                  <div className="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full" />
-                  Planning...
-                </>
+                <div className="animate-spin h-4 w-4 border-2 border-black border-t-transparent rounded-full" />
               ) : addedToPlanner ? (
-                <>
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" />
-                  </svg>
-                  Planned!
-                </>
+                <><Check className="h-4 w-4 text-emerald-600" /> Planned</>
               ) : (
-                <>
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                  </svg>
-                  Add to Planner
-                </>
+                <><Calendar className="h-4 w-4" /> Add to Planner</>
               )}
-            </button>
+            </MagicButton>
           </div>
         </div>
         
-        <div className="grid md:grid-cols-[1fr_1.5fr] gap-12">
-          <div className="space-y-6">
-            <h3 className="text-xs font-sans font-bold text-gray-400 uppercase tracking-[0.2em] border-b border-gray-100 pb-4 text-left">Ingredients</h3>
-            <ul className="space-y-4">
+        <div className="grid lg:grid-cols-[1fr_1.8fr] gap-16">
+          <div className="space-y-8">
+            <div className="flex items-center gap-3 border-b border-white/5 pb-4">
+               <h3 className="text-[11px] font-sans font-bold text-neutral-500 uppercase tracking-[0.2em]">Ingredients</h3>
+               <span className="text-[10px] bg-white/5 text-neutral-400 px-2 py-0.5 rounded-full">{recipe.ingredients.length}</span>
+            </div>
+            <ul className="space-y-5">
               {recipe.ingredients.map((ingredient, index) => (
-                <li key={index} className="flex items-start gap-4 text-[15px] leading-relaxed text-gray-600 group">
-                  <span className="mt-2 w-1.5 h-1.5 bg-brand-yellow rounded-full flex-shrink-0 group-hover:scale-125 transition-transform" />
-                  <span className="group-hover:text-gray-900 transition-colors">{ingredient}</span>
+                <li key={index} className="flex items-start gap-4 text-[15px] leading-relaxed text-neutral-400 group">
+                  <span className="mt-2.5 w-1 h-1 bg-brand-primary/60 rounded-full flex-shrink-0 group-hover:scale-150 transition-transform" />
+                  <span className="group-hover:text-white transition-colors">{ingredient}</span>
                 </li>
               ))}
             </ul>
           </div>
 
-          <div className="space-y-6">
-            <h3 className="text-xs font-sans font-bold text-gray-400 uppercase tracking-[0.2em] border-b border-gray-100 pb-4 text-left">Instructions</h3>
-            <ol className="space-y-8">
+          <div className="space-y-8">
+            <h3 className="text-[11px] font-sans font-bold text-neutral-500 uppercase tracking-[0.2em] border-b border-white/5 pb-4">Preparation</h3>
+            <ol className="space-y-10">
               {recipe.instructions.map((step, index) => (
-                <li key={index} className="flex gap-6 group">
-                  <span className="flex-shrink-0 w-10 h-10 rounded-2xl bg-gray-50 text-gray-400 font-serif font-bold text-lg flex items-center justify-center group-hover:bg-brand-yellow/10 group-hover:text-brand-yellow-dark transition-colors">
+                <li key={index} className="flex gap-8 group">
+                  <span className="flex-shrink-0 w-8 h-8 rounded-full border border-brand-primary/20 text-brand-primary font-display font-bold text-sm flex items-center justify-center group-hover:bg-brand-primary group-hover:text-white transition-all duration-500">
                     {index + 1}
                   </span>
-                  <p className="text-[16px] leading-relaxed text-gray-600 group-hover:text-gray-900 transition-colors pt-1 text-left">
+                  <p className="text-[17px] leading-relaxed text-neutral-300 group-hover:text-white transition-colors pt-0.5 text-left font-light">
                     {step}
                   </p>
                 </li>
@@ -160,6 +141,6 @@ export default function RecipePreview({ recipe, onAddToList, onAddToPlanner }: R
           </div>
         </div>
       </div>
-    </div>
+    </MagicCard>
   );
 }
