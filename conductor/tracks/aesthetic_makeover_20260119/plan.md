@@ -12,7 +12,7 @@ This plan overhauls the application's visual identity using Magic UI and Airbnb 
     - [ ] Configure `lib/utils.ts` for cn helper if not already optimized.
 - [x] Task: Conductor - User Manual Verification 'Foundation & Design System' (Protocol in workflow.md)
 
-## Phase 2: Component Makeover (TDD)
+## Phase 2: Component Makeover (TDD) [checkpoint: eaf994a]
 
 - [x] Task 1: Core Interactive Elements f0dde50
     - [ ] Write Tests: Verify visual state and accessibility for new components.
