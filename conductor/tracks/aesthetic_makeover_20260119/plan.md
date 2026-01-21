@@ -25,12 +25,6 @@ This plan overhauls the application's visual identity using Magic UI and Airbnb 
 ## Phase 3: Page-Level Overhaul [checkpoint: c6872df]
 
 - [x] Task 1: Immersive Discovery (Home) 7825ec4
-    - [ ] Write Tests: Snapshot tests for the new grid layout.
-    - [ ] Implement: Overhaul Home page with grid-based imagery and Magic UI entry animations.
 - [x] Task 2: Editorial Recipe Detail ed6548e
-    - [ ] Write Tests: Verify translation/locale integration remains functional with new UI.
-    - [ ] Implement: Implement editorial layout with `AnimatedBeam` for AI steps or sophisticated typography.
 - [x] Task 3: Interactive Tooling (Pantry/Planner/List) bfbf12a
-    - [ ] Write Tests: Verify drag-and-drop or list transition logic.
-    - [ ] Implement: Overhaul list views with fluid transitions and Magic UI surface effects.
-- [x] Task: Conductor - User Manual Verification 'Page-Level Overhaul' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Page-Level Overhaul' (Protocol in workflow.md) 5e02f19
