@@ -38,6 +38,9 @@ export default function ShoppingList({ items, onToggle, onRemove }: ShoppingList
           <li key={item.id} className="group flex items-center justify-between py-4 px-2 rounded-xl hover:bg-white/5 transition-all duration-300">
             <div className="flex items-center gap-5">
               <div 
+                role="checkbox"
+                aria-checked={item.bought}
+                aria-label={`Mark ${item.name} as ${item.bought ? 'not bought' : 'bought'}`}
                 className={cn(
                   "w-6 h-6 rounded-lg border-2 flex items-center justify-center cursor-pointer transition-all duration-300",
                   item.bought ? "bg-brand-primary border-brand-primary" : "border-white/10 hover:border-brand-primary/50"
