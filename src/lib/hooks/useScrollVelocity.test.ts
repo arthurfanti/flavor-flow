@@ -75,4 +75,23 @@ describe('useScrollVelocity', () => {
 
     expect(result.current.isFixed).toBe(false);
   });
+
+  it('should unlock (isFixed: false) immediately when any downward scroll starts while fixed', () => {
+    const { result } = renderHook(() => useScrollVelocity());
+    
+    scrollYGet.mockReturnValue(500);
+    
+    // 1. Fix it first
+    act(() => {
+      eventHandler(-1000);
+    });
+    expect(result.current.isFixed).toBe(true);
+
+    // 2. Scroll down even a little bit (positive velocity)
+    act(() => {
+      eventHandler(1); 
+    });
+
+    expect(result.current.isFixed).toBe(false);
+  });
 });
