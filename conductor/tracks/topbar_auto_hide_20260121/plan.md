@@ -14,7 +14,7 @@ This plan implements an intelligent topbar that reveals itself only upon high-ve
 - [x] Task 1: Header Animation Logic 396ddf8
     - [ ] Write Tests: Update `src/components/MainLayout.test.tsx` to verify the header's visibility states based on scroll triggers.
     - [ ] Implement: Refactor the header in `src/components/MainLayout.tsx` to use `framer-motion` for the sliding transition.
-- [ ] Task 2: Natural Flow & Unlocking Logic
+- [x] Task 2: Natural Flow & Unlocking Logic 0ee840d
     - [ ] Write Tests: Verify the transition from "Fixed/Revealed" back to "Natural/Scrolling" when a downward scroll occurs.
     - [ ] Implement: Ensure the header "unlocks" its fixed position correctly when scrolling down.
 - [ ] Task: Conductor - User Manual Verification 'UI & Animation Integration' (Protocol in workflow.md)
