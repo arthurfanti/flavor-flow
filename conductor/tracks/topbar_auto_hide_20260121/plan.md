@@ -7,7 +7,7 @@ This plan implements an intelligent topbar that reveals itself only upon high-ve
 - [x] Task 1: Scroll Velocity Detection 0652d3e
     - [ ] Write Tests: Create `src/lib/hooks/useScrollVelocity.test.ts` to verify velocity calculation and threshold crossing logic.
     - [ ] Implement: Create `useScrollVelocity` hook to track scroll direction and speed.
-- [ ] Task: Conductor - User Manual Verification 'Foundation & Scroll Logic' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Foundation & Scroll Logic' (Protocol in workflow.md)
 
 ## Phase 2: UI & Animation Integration
 
