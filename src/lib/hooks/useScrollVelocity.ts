@@ -3,7 +3,7 @@
 import { useScroll, useVelocity, useMotionValueEvent } from 'framer-motion';
 import { useState } from 'react';
 
-export const VELOCITY_THRESHOLD = 500; 
+export const VELOCITY_THRESHOLD = 800; 
 
 export function useScrollVelocity() {
   const { scrollY } = useScroll();
