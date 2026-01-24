@@ -2,7 +2,7 @@
 
 This plan implements an intelligent topbar that reveals itself only upon high-velocity upward scrolls, optimizing content immersion.
 
-## Phase 1: Foundation & Scroll Logic
+## Phase 1: Foundation & Scroll Logic [checkpoint: 3ab6252]
 
 - [x] Task 1: Scroll Velocity Detection 0652d3e
     - [ ] Write Tests: Create `src/lib/hooks/useScrollVelocity.test.ts` to verify velocity calculation and threshold crossing logic.
