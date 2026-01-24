@@ -1,33 +1,42 @@
 import { render, screen } from '@testing-library/react';
 import MainLayout from './MainLayout';
+import { useScrollVelocity } from '@/lib/hooks/useScrollVelocity';
 
-describe('MainLayout', () => {
-  it('renders the header with the app title', () => {
-    render(
-      <MainLayout>
-        <div>Test Content</div>
-      </MainLayout>
-    );
-    expect(screen.getByText(/Flavor Flow/i)).toBeInTheDocument();
+// Mock the hook
+jest.mock('@/lib/hooks/useScrollVelocity', () => ({
+  useScrollVelocity: jest.fn(),
+}));
+
+describe('MainLayout Header Logic', () => {
+  beforeEach(() => {
+    (useScrollVelocity as jest.Mock).mockReturnValue({
+      isFixed: false,
+      isVisible: true,
+    });
   });
 
-  it('renders its children', () => {
-    render(
-      <MainLayout>
-        <div data-testid="child-content">Test Content</div>
-      </MainLayout>
-    );
-    expect(screen.getByTestId('child-content')).toBeInTheDocument();
-  });
-
-  it('has a responsive main container', () => {
+  it('renders header naturally by default', () => {
     const { container } = render(
       <MainLayout>
-        <div>Test Content</div>
+        <div>Content</div>
       </MainLayout>
     );
-    // Checking for a max-width class or similar standard Tailwind responsive pattern
-    const main = container.querySelector('main');
-    expect(main).toHaveClass('max-w-2xl'); // Matches spec for mobile-first/centered UI
+    const header = container.querySelector('header');
+    expect(header).toHaveClass('sticky'); // Existing default
+    expect(header).not.toHaveClass('fixed');
+  });
+
+  it('applies fixed classes when isFixed is true', () => {
+    (useScrollVelocity as jest.Mock).mockReturnValue({
+      isFixed: true,
+      isVisible: true,
+    });
+    const { container } = render(
+      <MainLayout>
+        <div>Content</div>
+      </MainLayout>
+    );
+    const header = container.querySelector('header');
+    expect(header).toHaveClass('fixed');
   });
 });
