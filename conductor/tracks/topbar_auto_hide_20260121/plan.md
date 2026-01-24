@@ -17,7 +17,7 @@ This plan implements an intelligent topbar that reveals itself only upon high-ve
 - [x] Task 2: Natural Flow & Unlocking Logic 0ee840d
     - [ ] Write Tests: Verify the transition from "Fixed/Revealed" back to "Natural/Scrolling" when a downward scroll occurs.
     - [ ] Implement: Ensure the header "unlocks" its fixed position correctly when scrolling down.
-- [ ] Task: Conductor - User Manual Verification 'UI & Animation Integration' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'UI & Animation Integration' (Protocol in workflow.md)
 
 ## Phase 3: Polish & Refinement
 

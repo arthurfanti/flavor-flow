@@ -68,7 +68,7 @@ export default function MainLayout({ children }: MainLayoutProps) {
         When isFixed is false, this is what the user sees at the top or as they scroll down.
       */}
       <header className={cn(
-        "w-full py-6 px-6 bg-background/80 border-b border-black/10 shadow-[0_12px_24px_-4px_rgba(0,0,0,0.4)] sticky top-0 z-40 transition-opacity duration-300",
+        "w-full py-6 px-6 bg-background/80 border-b border-black/10 shadow-[0_12px_24px_-4px_rgba(0,0,0,0.4)] relative z-40 transition-opacity duration-300",
         isFixed ? "opacity-0 pointer-events-none" : "opacity-100"
       )}>
         <div className="absolute inset-0 w-full bg-linear-to-b from-black/10 to-transparent backdrop-blur-xl mask-b-from-20%" />

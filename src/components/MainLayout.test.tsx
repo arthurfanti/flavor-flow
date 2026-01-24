@@ -22,7 +22,7 @@ describe('MainLayout Header Logic', () => {
       </MainLayout>
     );
     const header = container.querySelector('header');
-    expect(header).toHaveClass('sticky'); // Existing default
+    expect(header).toHaveClass('relative'); // Existing default
     expect(header).not.toHaveClass('fixed');
   });
 
