@@ -11,7 +11,7 @@ This plan implements an intelligent topbar that reveals itself only upon high-ve
 
 ## Phase 2: UI & Animation Integration
 
-- [ ] Task 1: Header Animation Logic
+- [x] Task 1: Header Animation Logic 396ddf8
     - [ ] Write Tests: Update `src/components/MainLayout.test.tsx` to verify the header's visibility states based on scroll triggers.
     - [ ] Implement: Refactor the header in `src/components/MainLayout.tsx` to use `framer-motion` for the sliding transition.
 - [ ] Task 2: Natural Flow & Unlocking Logic
