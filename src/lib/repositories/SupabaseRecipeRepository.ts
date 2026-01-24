@@ -77,6 +77,23 @@ export class SupabaseRecipeRepository implements RecipeRepository {
     return { ...data, translations: data.recipe_translations || [] };
   }
 
+  async updateRecipe(id: number, recipe: any): Promise<any> {
+    const { data, error } = await this.supabase
+      .from('recipes')
+      .update({
+        title: recipe.title,
+        ingredients: recipe.ingredients,
+        instructions: recipe.instructions,
+        image_url: recipe.image_url || recipe.imageUrl,
+      })
+      .eq('id', id)
+      .select()
+      .single();
+
+    if (error) throw error;
+    return data;
+  }
+
   async saveTranslation(recipeId: number, locale: string, translation: any): Promise<void> {
     const { error } = await this.supabase
       .from('recipe_translations')

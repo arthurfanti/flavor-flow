@@ -42,21 +42,6 @@ jest.mock("../lib/repositories/SupabaseRecipeRepository", () => ({
   })),
 }));
 
-const mockAddItem = jest.fn().mockResolvedValue(null);
-const mockAddItems = jest.fn().mockResolvedValue(null);
-jest.mock("../lib/repositories/SupabaseShoppingListRepository", () => ({
-  SupabaseShoppingListRepository: jest.fn().mockImplementation(() => ({
-    addItem: mockAddItem,
-    addItems: mockAddItems,
-  })),
-}));
-
-jest.mock("../lib/repositories/SupabasePlannerRepository", () => ({
-  SupabasePlannerRepository: jest.fn().mockImplementation(() => ({
-    addToQueue: jest.fn().mockResolvedValue(null),
-  })),
-}));
-
 jest.mock("../lib/repositories/SupabasePantryRepository", () => ({
   SupabasePantryRepository: jest.fn().mockImplementation(() => ({
     getItems: jest.fn().mockResolvedValue([
@@ -66,20 +51,18 @@ jest.mock("../lib/repositories/SupabasePantryRepository", () => ({
   })),
 }));
 
-// Mock global fetch for AI Extraction
-global.fetch = jest.fn(() =>
-  Promise.resolve({
-    ok: true,
-    json: () => Promise.resolve({
-      // Supadata response
-      content: 'Mock transcript content',
-      // or OpenRouter response
-      choices: [{ message: { content: JSON.stringify({ title: 'Mock Recipe 1', ingredients: ['Ingredient A'], instructions: ['Step 1'] }) } }]
+jest.mock("../lib/services/VideoAIExtractor", () => ({
+  VideoAIExtractor: jest.fn().mockImplementation(() => ({
+    extractFromUrl: jest.fn().mockResolvedValue({ 
+      id: 123,
+      title: 'Mock Recipe 1', 
+      ingredients: ['Ingredient A'], 
+      instructions: ['Step 1'] 
     }),
-  })
-) as jest.Mock;
+  })),
+}));
 
-describe("Home Pantry Integration", () => {
+describe("Home Page Navigation", () => {
   const originalEnv = process.env;
 
   beforeEach(() => {
@@ -95,72 +78,34 @@ describe("Home Pantry Integration", () => {
     process.env = originalEnv;
   });
 
-  it("filters ingredients against pantry when adding to planner", async () => {
+  it("navigates to the recipe detail page after successful extraction", async () => {
     render(<Home />);
-    
-    // Simulate an extracted recipe being set
-    // We can't easily trigger the internal state from outside without complex mocking
-    // But we can trigger handleExtract and mock its result
-    
-    // Actually, let's just use the 'recipe' state being populated.
-    // We need to trigger handleExtract.
     
     const input = screen.getByPlaceholderText(/Paste video URL/i);
     const button = screen.getByRole('button', { name: /Extract Recipe/i });
 
     fireEvent.change(input, { target: { value: 'https://example.com' } });
-    
-    // Mocking the extractor inside handleExtract is hard because it's instantiated inside.
-    // But we know if process.env.NEXT_PUBLIC_SPOONACULAR_API_KEY is missing, it uses MockRecipeRepository.
-    
     fireEvent.click(button);
 
-    // Wait for recipe preview to appear
-    // The MockRecipeRepository returns a recipe with "Ingredient A"
-    const addPlannerButton = await screen.findByRole('button', { name: /Add to Planner/i });
-    
-    // Now, before clicking, let's ensure we know what the mock recipe ingredients are.
-    // MockRecipe 1 has ['Ingredient A']
-    // Pantry has ['Eggs', 'Butter']
-    // So 'Ingredient A' should be added to shopping list.
-    
-    fireEvent.click(addPlannerButton);
-    
     await waitFor(() => {
-      expect(mockAddItems).toHaveBeenCalledWith([{ name: 'Ingredient A', bought: false }]);
-    });
-    
-    await waitFor(() => {
-      expect(mockPush).toHaveBeenCalledWith('/planner');
+      expect(mockPush).toHaveBeenCalledWith('/recipes/123');
     });
   });
 
-  it("skips ingredients already in pantry", async () => {
-    // Update Pantry Mock for this test
-    require("../lib/repositories/SupabasePantryRepository").SupabasePantryRepository.mockImplementation(() => ({
-        getItems: jest.fn().mockResolvedValue([
-          { id: 1, name: 'Ingredient A', category: 'Test' },
-        ]),
+  it("navigates to the recipe detail page when a recent recipe is clicked", async () => {
+    const mockRecipes = [{ id: 456, title: 'Recent Recipe', ingredients: ['Item 1'] }];
+    
+    // Update Recipe Mock for this test
+    const { SupabaseRecipeRepository } = require("../lib/repositories/SupabaseRecipeRepository");
+    SupabaseRecipeRepository.mockImplementation(() => ({
+      getLatest: jest.fn().mockResolvedValue(mockRecipes),
     }));
 
     render(<Home />);
     
-    const input = screen.getByPlaceholderText(/Paste video URL/i);
-    const button = screen.getByRole('button', { name: /Extract Recipe/i });
-    fireEvent.change(input, { target: { value: 'https://example.com' } });
-    fireEvent.click(button);
+    const recentRecipe = await screen.findByText('Recent Recipe');
+    fireEvent.click(recentRecipe);
 
-    const addPlannerButton = await screen.findByRole('button', { name: /Add to Planner/i });
-    
-    // Clear previous calls
-    mockAddItems.mockClear();
-    
-    fireEvent.click(addPlannerButton);
-    
-    await waitFor(() => {
-      expect(mockPush).toHaveBeenCalledWith('/planner');
-    });
-    
-    expect(mockAddItems).not.toHaveBeenCalled();
+    expect(mockPush).toHaveBeenCalledWith('/recipes/456');
   });
 });

@@ -4,6 +4,7 @@ import { useState, useEffect, useMemo } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import RecipePreview from '@/components/RecipePreview';
+import RecipeEditor from '@/components/RecipeEditor';
 import { SupabaseRecipeRepository } from '@/lib/repositories/SupabaseRecipeRepository';
 import { SupabaseShoppingListRepository } from '@/lib/repositories/SupabaseShoppingListRepository';
 import { SupabasePlannerRepository } from '@/lib/repositories/SupabasePlannerRepository';
@@ -22,6 +23,7 @@ export default function RecipeDetailPage() {
   const { session, loading: authLoading } = useAuth();
   const [recipe, setRecipe] = useState<any | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isEditing, setIsEditing] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const repos = useMemo(() => {
@@ -142,17 +144,50 @@ export default function RecipeDetailPage() {
     }
   };
 
+  const handleSave = async (updatedRecipe: any) => {
+    if (!repos || !id) return;
+    try {
+      await repos.recipe.updateRecipe(Number(id), updatedRecipe);
+      setRecipe(updatedRecipe);
+      setIsEditing(false);
+      toast.success('Recipe updated successfully');
+    } catch (error) {
+      console.error('Failed to update recipe:', error);
+      toast.error('Failed to update recipe');
+    }
+  };
+
   if (isLoading) return <div className="flex justify-center py-20"><div className="animate-spin h-8 w-8 border-4 border-brand-yellow border-t-transparent rounded-full" /></div>;
   if (error) return <div className="p-8 text-center text-red-500 font-medium">{error}</div>;
   if (!recipe) return null;
 
   return (
     <div className="flex flex-col items-center w-full animate-fade-in pb-20">
-       <RecipePreview 
-         recipe={recipe} 
-         onAddToList={handleAddToList} 
-         onAddToPlanner={handleAddToPlanner}
-       />
+      {!isEditing ? (
+        <div className="w-full max-w-3xl flex flex-col items-center">
+          <RecipePreview 
+            recipe={recipe} 
+            onAddToList={handleAddToList} 
+            onAddToPlanner={handleAddToPlanner}
+          />
+          <div className="mt-6 flex justify-center">
+            <button 
+              onClick={() => setIsEditing(true)}
+              className="text-neutral-500 hover:text-white font-medium underline transition-colors"
+            >
+              Edit Recipe
+            </button>
+          </div>
+        </div>
+      ) : (
+        <div className="w-full max-w-3xl">
+          <RecipeEditor 
+            recipe={recipe} 
+            onSave={handleSave} 
+            onCancel={() => setIsEditing(false)} 
+          />
+        </div>
+      )}
     </div>
   );
 }

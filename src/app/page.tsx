@@ -3,9 +3,7 @@
 import AILoadingOverlay, { AIStage } from "@/components/AILoadingOverlay";
 import { useAuth } from "@/components/AuthProvider";
 import { MagicCard } from "@/components/MagicCard";
-import RecipeEditor from "@/components/RecipeEditor";
 import RecipeListItem from "@/components/RecipeListItem";
-import RecipePreview from "@/components/RecipePreview";
 import UrlInput from "@/components/UrlInput";
 import { SupabasePantryRepository } from "@/lib/repositories/SupabasePantryRepository";
 import { SupabasePlannerRepository } from "@/lib/repositories/SupabasePlannerRepository";
@@ -26,8 +24,6 @@ export default function Home() {
   const { session, loading: authLoading } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [aiStage, setAiStage] = useState<AIStage>("idle");
-  const [recipe, setRecipe] = useState<any | null>(null);
-  const [isEditing, setIsEditing] = useState(false);
   const [recentRecipes, setRecentRecipes] = useState<any[]>([]);
   const [configError, setConfigError] = useState<string | null>(null);
 
@@ -107,9 +103,8 @@ export default function Home() {
       const savedRecipe = await repos.recipe.addRecipe(extracted);
       console.log("Flavor Flow: Save successful.");
 
-      setRecipe(savedRecipe);
-      await refreshRecent();
       toast.success("Recipe extracted and saved!");
+      router.push(`/recipes/${savedRecipe.id}`);
     } catch (error: any) {
       console.error(
         "Flavor Flow Error Object:",
@@ -124,76 +119,6 @@ export default function Home() {
     } finally {
       setIsLoading(false);
       setAiStage("idle");
-    }
-  };
-
-  const handleSave = (updatedRecipe: any) => {
-    setRecipe(updatedRecipe);
-    setIsEditing(false);
-    toast.success("Recipe updates saved locally.");
-  };
-
-  const handleAddToList = async (ingredients: string[]) => {
-    if (!repos?.shoppingList) {
-      toast.error("Please sign in to manage your shopping list.");
-      return;
-    }
-    try {
-      console.log("Flavor Flow: Bulk adding items to list...");
-      await repos.shoppingList.addItems(
-        ingredients.map((ing) => ({ name: ing, bought: false }))
-      );
-      // Success feedback handled by RecipePreview button
-    } catch (error) {
-      console.error("Failed to add to shopping list:", error);
-      toast.error("Failed to add items to shopping list.");
-    }
-  };
-
-  const handleAddToPlanner = async (targetRecipe: any) => {
-    if (!repos?.planner || !repos?.pantry || !repos?.shoppingList) {
-      toast.error("Please sign in to use the meal planner.");
-      return;
-    }
-    setIsLoading(true);
-    try {
-      console.log("Flavor Flow: Adding to planner with pantry sync...");
-      // 1. Add to Planner Queue
-      await repos.planner.addToQueue({
-        title: targetRecipe.title,
-        recipe_id: targetRecipe.id,
-        source_url: targetRecipe.source_url || targetRecipe.sourceUrl || "",
-        image_url: targetRecipe.image_url || targetRecipe.imageUrl,
-      });
-
-      // 2. Intelligent Shopping List Sync (Pantry Awareness)
-      const pantryItems = await repos.pantry.getItems();
-      const matcher = new IngredientMatcher();
-
-      const missingIngredients = (targetRecipe.ingredients || []).filter(
-        (ing: string) => {
-          const found = pantryItems.find((p) => matcher.isMatch(p.name, ing));
-          return !found;
-        }
-      );
-
-      // 3. Push missing to shopping list in bulk
-      if (missingIngredients.length > 0) {
-        await repos.shoppingList.addItems(
-          missingIngredients.map((ing: string) => ({
-            name: ing,
-            bought: false,
-          }))
-        );
-      }
-
-      setIsLoading(false);
-      // Success feedback handled by redirection
-      router.push("/planner");
-    } catch (error) {
-      setIsLoading(false);
-      console.error("Failed to add to planner:", error);
-      toast.error("Failed to add to planner. Please try again.");
     }
   };
 
@@ -242,54 +167,26 @@ export default function Home() {
         <div className="w-12 h-1 bg-brand-primary mx-auto mt-6 rounded-full shadow-[0_0_12px_rgba(224,93,68,0.4)]" />
       </header>
 
-      {!recipe && (
-        <MagicCard
-          className="w-full max-w-2xl inset-0 border-white/5 shadow-2xl"
-          gradientColor="#E05D44"
-          variant="neon"
-        >
-          <div className="p-6">
-            <h2 className="text-2xl font-display font-bold text-white mb-8 p-4 text-center">
-              Start your recipe
-            </h2>
-            <UrlInput onExtract={handleExtract} isLoading={isLoading} />
+      <MagicCard
+        className="w-full max-w-2xl inset-0 border-white/5 shadow-2xl"
+        gradientColor="#E05D44"
+        variant="neon"
+      >
+        <div className="p-6">
+          <h2 className="text-2xl font-display font-bold text-white mb-8 p-4 text-center">
+            Start your recipe
+          </h2>
+          <UrlInput onExtract={handleExtract} isLoading={isLoading} />
 
-            <div className="mt-10 px-4 py-6 border-t border-white/5">
-              <p className="text-xs text-neutral-500 text-center uppercase tracking-widest font-medium">
-                YouTube • Instagram • TikTok
-              </p>
-            </div>
-          </div>
-        </MagicCard>
-      )}
-
-      {recipe && !isEditing && (
-        <div className="w-full max-w-2xl">
-          <RecipePreview
-            recipe={recipe}
-            onAddToList={handleAddToList}
-            onAddToPlanner={handleAddToPlanner}
-          />
-          <div className="mt-4 flex justify-center">
-            <button
-              onClick={() => setIsEditing(true)}
-              className="text-gray-600 hover:text-gray-900 font-medium underline"
-            >
-              Edit Recipe
-            </button>
+          <div className="mt-10 px-4 py-6 border-t border-white/5">
+            <p className="text-xs text-neutral-500 text-center uppercase tracking-widest font-medium">
+              YouTube • Instagram • TikTok
+            </p>
           </div>
         </div>
-      )}
+      </MagicCard>
 
-      {recipe && isEditing && (
-        <RecipeEditor
-          recipe={recipe}
-          onSave={handleSave}
-          onCancel={() => setIsEditing(false)}
-        />
-      )}
-
-      {!recipe && !isLoading && recentRecipes.length > 0 && (
+      {!isLoading && recentRecipes.length > 0 && (
         <div className="w-full mt-16 animate-slide-up">
           <div className="flex items-center justify-between mb-8 px-2">
             <h2 className="text-sm font-sans font-bold uppercase tracking-[0.2em] text-neutral-500">
@@ -308,7 +205,7 @@ export default function Home() {
               <div
                 key={r.id || `${r.sourceUrl}-${i}`}
                 className="cursor-pointer active:scale-[0.98] transition-transform"
-                onClick={() => setRecipe(r)}
+                onClick={() => router.push(`/recipes/${r.id}`)}
               >
                 <RecipeListItem recipe={r} />
               </div>

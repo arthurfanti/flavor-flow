@@ -1,8 +1,10 @@
 import { render, screen, fireEvent, waitFor, cleanup } from "@testing-library/react";
 import Home from "./page";
+import RecipeDetailPage from "./recipes/[id]/page";
 import RecipesPage from "./recipes/page";
 import ShoppingListPage from "./shopping-list/page";
 import PlannerPage from "./planner/page";
+import { useParams } from "next/navigation";
 import { MockRecipeRepository } from "../lib/repositories/MockRecipeRepository";
 import { MockShoppingListRepository } from "../lib/repositories/MockShoppingListRepository";
 import { MockPlannerRepository } from "../lib/repositories/MockPlannerRepository";
@@ -14,6 +16,7 @@ jest.mock("next/navigation", () => ({
   useRouter: jest.fn(() => ({
     push: mockPush,
   })),
+  useParams: jest.fn(),
 }));
 
 // Mock Auth
@@ -48,6 +51,11 @@ jest.mock("../lib/repositories/SupabasePlannerRepository", () => ({
 }));
 jest.mock("../lib/repositories/SupabasePantryRepository", () => ({
   SupabasePantryRepository: jest.fn().mockImplementation((supabase, userId) => new MockPantryRepository(supabase, userId))
+}));
+jest.mock("../lib/repositories/SupabaseProfileRepository", () => ({
+  SupabaseProfileRepository: jest.fn().mockImplementation(() => ({
+    getProfile: jest.fn().mockResolvedValue({ preferred_locale: 'en' })
+  }))
 }));
 
 // Mock Supabase Client to succeed
@@ -99,11 +107,18 @@ describe("End-to-End Workflow", () => {
     fireEvent.change(urlInput, { target: { value: 'https://example.com' } });
     fireEvent.click(extractButton);
 
-    const addPlannerButton = await screen.findByRole('button', { name: /Add to Planner/i });
-    // Use getAllByText because it appears in header AND preview
-    expect(screen.getAllByText('Mock Recipe 1').length).toBeGreaterThan(0);
+    // Verify navigation after extraction (MockRecipeRepository clearForTests has 2 initial recipes, so new one is ID 3)
+    await waitFor(() => expect(mockPush).toHaveBeenCalledWith('/recipes/3'));
 
-    // 2. Add to Planner
+    cleanup();
+
+    // 2. Recipe Detail Page: Plan the recipe
+    (useParams as jest.Mock).mockReturnValue({ id: '3' });
+    render(<RecipeDetailPage />);
+    
+    const addPlannerButton = await screen.findByRole('button', { name: /Add to Planner/i });
+    expect(screen.getByText('Mock Recipe 1')).toBeInTheDocument();
+
     fireEvent.click(addPlannerButton);
     await waitFor(() => expect(mockPush).toHaveBeenCalledWith('/planner'));
 

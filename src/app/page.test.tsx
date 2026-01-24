@@ -2,9 +2,10 @@ import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import Home from "./page";
 
 // Mock next/navigation
+const mockPush = jest.fn();
 jest.mock("next/navigation", () => ({
   useRouter: jest.fn(() => ({
-    push: jest.fn(),
+    push: mockPush,
   })),
 }));
 
@@ -45,7 +46,7 @@ jest.mock("../lib/repositories/SupabaseShoppingListRepository", () => ({
 }));
 
 const mockGetLatest = jest.fn().mockResolvedValue([]);
-const mockAddRecipe = jest.fn().mockResolvedValue(null);
+const mockAddRecipe = jest.fn().mockImplementation((r) => Promise.resolve({ id: 123, ...r }));
 jest.mock("../lib/repositories/SupabaseRecipeRepository", () => ({
   SupabaseRecipeRepository: jest.fn().mockImplementation(() => ({
     getLatest: mockGetLatest,
@@ -116,12 +117,6 @@ describe("Home", () => {
     expect(screen.getByPlaceholderText(/Paste video URL/i)).toBeInTheDocument();
   });
 
-  it("does not render RecipePreview initially", () => {
-    render(<Home />);
-    expect(screen.queryByText(/Ingredients/i)).not.toBeInTheDocument();
-    expect(screen.queryByText(/Edit Recipe/i)).not.toBeInTheDocument();
-  });
-
   it("renders Recent Extractions section if recipes exist", async () => {
     const mockRecipes = [{ title: 'Recent Recipe', image_url: '', ingredients: [] }];
     mockGetLatest.mockResolvedValue(mockRecipes);
@@ -136,38 +131,21 @@ describe("Home", () => {
     expect(viewAllLink).toHaveAttribute('href', '/recipes');
   });
 
-  it("calls addRecipe and refreshes list on successful extraction", async () => {
-    // Reset mocks for this test
-    mockGetLatest.mockResolvedValue([]);
-    mockAddRecipe.mockResolvedValue(null);
-
+  it("calls addRecipe and navigates to detail on successful extraction", async () => {
     render(<Home />);
     
     const input = screen.getByPlaceholderText(/Paste video URL/i);
     const button = screen.getByRole('button', { name: /Extract Recipe/i });
 
-    // Type a URL
     fireEvent.change(input, { target: { value: 'https://example.com/recipe' } });
-    
-    // Click extract
     fireEvent.click(button);
 
-    // Wait for the async actions
-    // Since handleExtract is async, we need to wait for something to change or use waitFor
-    // The component sets state 'recipe' on success, which renders RecipePreview
-    // RecipePreview usually shows the title
-    
-    // Note: handleExtract logic might use Mock repository if API key is missing. 
-    // We can assume it tries to save regardless of source (Mock or API).
-    
-    // waitFor expecting addRecipe to be called
     await waitFor(() => {
       expect(mockAddRecipe).toHaveBeenCalled();
     });
     
-    // Verify getLatest was called
     await waitFor(() => {
-       expect(mockGetLatest).toHaveBeenCalled(); 
+       expect(mockPush).toHaveBeenCalledWith('/recipes/123'); 
     });
   });
 });
