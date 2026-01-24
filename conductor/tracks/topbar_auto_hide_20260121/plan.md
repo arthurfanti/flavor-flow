@@ -19,7 +19,7 @@ This plan implements an intelligent topbar that reveals itself only upon high-ve
     - [ ] Implement: Ensure the header "unlocks" its fixed position correctly when scrolling down.
 - [x] Task: Conductor - User Manual Verification 'UI & Animation Integration' (Protocol in workflow.md)
 
-## Phase 3: Polish & Refinement
+## Phase 3: Polish & Refinement [checkpoint: 94fa6e4]
 
 - [x] Task 1: Threshold Calibration 2f3245c
     - [ ] Implement: Fine-tune the velocity constant based on real-world "flick" behavior on mobile and desktop.
