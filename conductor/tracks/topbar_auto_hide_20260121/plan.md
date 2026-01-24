@@ -21,6 +21,6 @@ This plan implements an intelligent topbar that reveals itself only upon high-ve
 
 ## Phase 3: Polish & Refinement
 
-- [ ] Task 1: Threshold Calibration
+- [x] Task 1: Threshold Calibration 2f3245c
     - [ ] Implement: Fine-tune the velocity constant based on real-world "flick" behavior on mobile and desktop.
 - [ ] Task: Conductor - User Manual Verification 'Polish & Refinement' (Protocol in workflow.md)
