@@ -1,3 +1,5 @@
+"use client";
+
 import { useScroll, useVelocity, useMotionValueEvent } from 'framer-motion';
 import { useState } from 'react';
 
