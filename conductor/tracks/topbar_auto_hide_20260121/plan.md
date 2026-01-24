@@ -9,7 +9,7 @@ This plan implements an intelligent topbar that reveals itself only upon high-ve
     - [ ] Implement: Create `useScrollVelocity` hook to track scroll direction and speed.
 - [x] Task: Conductor - User Manual Verification 'Foundation & Scroll Logic' (Protocol in workflow.md)
 
-## Phase 2: UI & Animation Integration
+## Phase 2: UI & Animation Integration [checkpoint: 2f58c90]
 
 - [x] Task 1: Header Animation Logic 396ddf8
     - [ ] Write Tests: Update `src/components/MainLayout.test.tsx` to verify the header's visibility states based on scroll triggers.
