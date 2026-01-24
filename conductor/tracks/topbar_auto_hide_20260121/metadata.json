@@ -1,8 +1,0 @@
-{
-  "track_id": "topbar_auto_hide_20260121",
-  "type": "feature",
-  "status": "new",
-  "created_at": "2026-01-21T12:55:00Z",
-  "updated_at": "2026-01-21T12:55:00Z",
-  "description": "implement auto show/hide behaviour on topbar. On load it is shown, on scroll down it follows to content and scroll until hidden, on scroll up it appears again. It might be a good idea to define a scroll speed limit, under which the topbar do not appears while scrolling up, if the speed increases above the treshold then it appears"
-}
