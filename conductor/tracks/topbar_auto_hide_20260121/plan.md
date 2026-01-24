@@ -23,4 +23,4 @@ This plan implements an intelligent topbar that reveals itself only upon high-ve
 
 - [x] Task 1: Threshold Calibration 2f3245c
     - [ ] Implement: Fine-tune the velocity constant based on real-world "flick" behavior on mobile and desktop.
-- [ ] Task: Conductor - User Manual Verification 'Polish & Refinement' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Polish & Refinement' (Protocol in workflow.md)
