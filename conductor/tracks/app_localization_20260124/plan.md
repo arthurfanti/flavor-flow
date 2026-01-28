@@ -2,7 +2,7 @@
 
 This plan outlines the steps to integrate `next-intl` for UI localization and update the repository layer to ensure all recipe lists display translated content based on the user's preferred locale.
 
-## Phase 1: Localization Infrastructure & Setup
+## Phase 1: Localization Infrastructure & Setup [checkpoint: 51e2e26]
 - [x] Task: Install and configure `next-intl`
     - [x] Install `next-intl` dependency.
     - [x] Set up the dynamic `[locale]` dynamic segment in `src/app`.
@@ -11,21 +11,21 @@ This plan outlines the steps to integrate `next-intl` for UI localization and up
 - [x] Task: Sync User Profile with App Locale
     - [x] **Write Tests**: Verify that the locale switcher correctly updates the `preferred_locale` in Supabase.
     - [x] **Implement**: Logic to update the app's active locale when the user's profile is updated.
-- [~] Task: Conductor - User Manual Verification 'Localization Infrastructure & Setup' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Localization Infrastructure & Setup' (Protocol in workflow.md) 51e2e26
 
 ## Phase 2: Static UI Localization (Eliminating Hardcoded Strings)
 - [ ] Task: Localize Core Layout & Navigation
     - [ ] **Write Tests**: Check that `TabBar` and `MainLayout` render labels in the active locale.
     - [ ] **Implement**: Move strings from `TabBar`, `MainLayout`, and common headers to JSON messages.
-- [ ] Task: Localize Home Page & Extraction UI
-    - [ ] **Write Tests**: Verify "Discover", "Start your recipe", and "Recent Extractions" are localized.
-    - [ ] **Implement**: Update `src/app/page.tsx` and `UrlInput` to use `useTranslations`.
+- [x] Task: Localize Home Page & Extraction UI 51e2e26
+    - [x] **Write Tests**: Verify "Discover", "Start your recipe", and "Recent Extractions" are localized.
+    - [x] **Implement**: Update `src/app/page.tsx` and `UrlInput` to use `useTranslations`.
 - [ ] Task: Localize Recipe Detail & Editor
     - [ ] **Write Tests**: Ensure buttons like "Add to List", "Edit Recipe", and labels in `RecipeEditor` are localized.
     - [ ] **Implement**: Update `RecipePreview` and `RecipeEditor` components.
-- [ ] Task: Localize Planner, Shopping List & Pantry
-    - [ ] **Write Tests**: Verify all headers and empty state messages are localized.
-    - [ ] **Implement**: Update `PlannerQueue`, `ShoppingList`, and `PantryList` views.
+- [~] Task: Localize Planner, Shopping List & Pantry
+    - [x] **Write Tests**: Verify all headers and empty state messages are localized.
+    - [x] **Implement**: Update `PlannerQueue`, `ShoppingList`, and `PantryList` views.
 - [ ] Task: Localize Profile & Authentication
     - [ ] **Write Tests**: Check that profile settings and login forms are localized.
     - [ ] **Implement**: Update `Profile` and `Login` pages.
