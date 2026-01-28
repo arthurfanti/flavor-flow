@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useMemo } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter } from '@/navigation';
 import { useAuth } from '@/components/AuthProvider';
 import { createSupabaseClient } from '@/lib/supabase/client';
 import { SupabaseProfileRepository } from '@/lib/repositories/SupabaseProfileRepository';
@@ -10,8 +10,11 @@ import { MagicInput } from '@/components/MagicInput';
 import { MagicButton } from '@/components/MagicButton';
 import { User, Languages, Save } from 'lucide-react';
 import { toast } from 'sonner';
+import { useTranslations } from 'next-intl';
 
 export default function ProfilePage() {
+  const t = useTranslations('Profile');
+  const tc = useTranslations('Common');
   const router = useRouter();
   const { session, loading: authLoading } = useAuth();
   const [displayName, setDisplayName] = useState('');
@@ -84,7 +87,7 @@ export default function ProfilePage() {
     <div className="max-w-2xl mx-auto p-6 pb-24 animate-fade-in">
       <header className="mb-12">
         <span className="text-brand-primary font-sans font-bold uppercase tracking-[0.3em] text-[10px] block mb-2">Preferences</span>
-        <h1 className="text-4xl font-display font-bold text-white tracking-tight">Profile Settings</h1>
+        <h1 className="text-4xl font-display font-bold text-white tracking-tight">{t('title')}</h1>
         <p className="text-neutral-400 mt-3 text-lg">Manage your account preferences and language.</p>
       </header>
 
@@ -112,7 +115,7 @@ export default function ProfilePage() {
           <div className="space-y-4">
             <label htmlFor="locale" className="flex items-center gap-2 text-sm font-bold text-neutral-300 uppercase tracking-widest">
               <Languages className="h-4 w-4 text-brand-primary" />
-              Preferred Language
+              {t('language')}
             </label>
             <div className="relative">
               <select
@@ -153,7 +156,7 @@ export default function ProfilePage() {
               ) : (
                 <span className="flex items-center gap-2">
                   <Save className="h-4 w-4" />
-                  Save Profile
+                  {tc('save')}
                 </span>
               )}
             </MagicButton>

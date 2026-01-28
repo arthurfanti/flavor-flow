@@ -10,7 +10,7 @@ jest.mock("@/components/AuthProvider", () => ({
 }));
 
 // Mock Supabase and Repositories
-jest.mock("../../lib/supabase/client", () => ({
+jest.mock("@/lib/supabase/client", () => ({
   createSupabaseClient: jest.fn(() => ({
     from: jest.fn().mockReturnThis(),
     select: jest.fn().mockReturnThis(),
@@ -18,7 +18,7 @@ jest.mock("../../lib/supabase/client", () => ({
   })),
 }));
 
-jest.mock("../../lib/repositories/SupabaseRecipeRepository", () => ({
+jest.mock("@/lib/repositories/SupabaseRecipeRepository", () => ({
   SupabaseRecipeRepository: jest.fn().mockImplementation(() => ({
     getAll: jest.fn().mockResolvedValue([
       { id: 1, title: 'Test Recipe 1', image_url: '' },
@@ -30,7 +30,7 @@ jest.mock("../../lib/repositories/SupabaseRecipeRepository", () => ({
 describe("RecipesPage", () => {
   it("renders the heading 'My Recipes'", async () => {
     render(<RecipesPage />);
-    const heading = await screen.findByRole('heading', { name: /My Recipes/i, level: 1 });
+    const heading = await screen.findByRole('heading', { name: /title/i, level: 1 });
     expect(heading).toBeInTheDocument();
   });
 
@@ -46,14 +46,14 @@ describe("RecipesPage", () => {
 
   it("renders empty state when no recipes found", async () => {
     // @ts-ignore
-    require("../../lib/repositories/SupabaseRecipeRepository").SupabaseRecipeRepository.mockImplementation(() => ({
+    require("@/lib/repositories/SupabaseRecipeRepository").SupabaseRecipeRepository.mockImplementation(() => ({
       getAll: jest.fn().mockResolvedValue([]),
     }));
 
     render(<RecipesPage />);
     
     await waitFor(() => {
-      expect(screen.getByText(/Your recipe list is empty/i)).toBeInTheDocument();
+      expect(screen.getByText(/empty/i)).toBeInTheDocument();
     });
   });
 });

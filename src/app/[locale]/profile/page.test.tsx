@@ -81,7 +81,7 @@ describe('ProfilePage', () => {
     const nameInput = screen.getByLabelText(/Display Name/i);
     fireEvent.change(nameInput, { target: { value: 'New Name' } });
 
-    const saveButton = screen.getByRole('button', { name: /Save Profile/i });
+    const saveButton = screen.getByRole('button', { name: /save/i });
     fireEvent.click(saveButton);
 
     await waitFor(() => {

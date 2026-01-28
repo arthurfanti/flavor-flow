@@ -1,28 +1,31 @@
 import { render, screen } from '@testing-library/react';
 import TabBar from './TabBar';
-import { usePathname } from 'next/navigation';
 
-// Mock next/navigation
-jest.mock('next/navigation', () => ({
-  usePathname: jest.fn(),
+// Mock @/navigation
+const mockUsePathname = jest.fn();
+jest.mock('@/navigation', () => ({
+  usePathname: () => mockUsePathname(),
+  Link: ({ children, href, className, 'aria-label': ariaLabel }: any) => (
+    <a href={href} className={className} aria-label={ariaLabel}>{children}</a>
+  ),
 }));
 
 describe('TabBar', () => {
   it('renders all four navigation links with aria-labels', () => {
-    (usePathname as jest.Mock).mockReturnValue('/');
+    mockUsePathname.mockReturnValue('/');
     render(<TabBar />);
     
-    expect(screen.getByLabelText('Home')).toBeInTheDocument();
-    expect(screen.getByLabelText('Planner')).toBeInTheDocument();
-    expect(screen.getByLabelText('Pantry')).toBeInTheDocument();
-    expect(screen.getByLabelText('Shopping')).toBeInTheDocument();
+    expect(screen.getByLabelText('home')).toBeInTheDocument();
+    expect(screen.getByLabelText('planner')).toBeInTheDocument();
+    expect(screen.getByLabelText('pantry')).toBeInTheDocument();
+    expect(screen.getByLabelText('shoppingList')).toBeInTheDocument();
   });
 
   it('highlights the active link based on pathname', () => {
-    (usePathname as jest.Mock).mockReturnValue('/planner');
+    mockUsePathname.mockReturnValue('/planner');
     render(<TabBar />);
     
-    const plannerLink = screen.getByLabelText('Planner');
+    const plannerLink = screen.getByLabelText('planner');
     expect(plannerLink).toHaveClass('text-brand-primary'); 
   });
 

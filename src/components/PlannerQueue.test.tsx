@@ -18,7 +18,8 @@ describe('PlannerQueue', () => {
     const onRemove = jest.fn();
     render(<PlannerQueue recipes={mockRecipes} onRemove={onRemove} />);
     
-    const removeButtons = screen.getAllByRole('button', { name: /Remove/i });
+    // In our jest mock, useTranslations returns the key name
+    const removeButtons = screen.getAllByRole('button', { name: 'remove' });
     fireEvent.click(removeButtons[0]);
     
     expect(onRemove).toHaveBeenCalledWith(1);
@@ -26,6 +27,7 @@ describe('PlannerQueue', () => {
 
   it('shows empty state message', () => {
     render(<PlannerQueue recipes={[]} onRemove={jest.fn()} />);
-    expect(screen.getByText(/Your planner is empty/i)).toBeInTheDocument();
+    // In our jest mock, useTranslations returns the key name
+    expect(screen.getByText('empty')).toBeInTheDocument();
   });
 });

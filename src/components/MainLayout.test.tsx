@@ -7,6 +7,14 @@ jest.mock('@/lib/hooks/useScrollVelocity', () => ({
   useScrollVelocity: jest.fn(),
 }));
 
+// Mock @/navigation
+jest.mock('@/navigation', () => ({
+  usePathname: jest.fn(() => '/'),
+  Link: ({ children, href, className, 'aria-label': ariaLabel }: any) => (
+    <a href={href} className={className} aria-label={ariaLabel}>{children}</a>
+  ),
+}));
+
 describe('MainLayout Header Logic', () => {
   beforeEach(() => {
     (useScrollVelocity as jest.Mock).mockReturnValue({

@@ -7,9 +7,11 @@ import PantryList from '@/components/PantryList';
 import PantryItemForm from '@/components/PantryItemForm';
 import { PantryItem } from '@/lib/repositories/PantryRepository';
 import { useAuth } from '@/components/AuthProvider';
-import { useRouter } from 'next/navigation';
+import { useRouter } from '@/navigation';
+import { useTranslations } from 'next-intl';
 
 export default function PantryPage() {
+  const t = useTranslations('Pantry');
   const router = useRouter();
   const { session, loading: authLoading } = useAuth();
   const [items, setItems] = useState<PantryItem[]>([]);
@@ -108,9 +110,9 @@ export default function PantryPage() {
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
         <div className="absolute bottom-8 left-8">
-          <span className="text-brand-yellow font-sans font-bold uppercase tracking-[0.2em] text-[10px] mb-2 block">Inventory</span>
+          <span className="text-brand-yellow font-sans font-bold uppercase tracking-[0.2em] text-[10px] mb-2 block">{t('subtitle')}</span>
           <h1 className="text-4xl font-bold text-white tracking-tight">
-            My Pantry
+            {t('title')}
           </h1>
         </div>
       </div>
@@ -120,7 +122,7 @@ export default function PantryPage() {
           <header className="mb-10 flex items-center justify-between px-2">
             <div>
               <p className="text-gray-500 font-medium italic">
-                Keep track of your kitchen staples.
+                {t('description')}
               </p>
             </div>
             <button 
@@ -150,8 +152,8 @@ export default function PantryPage() {
       {isAdding && (
         <div className="w-full max-w-lg mx-auto py-4">
           <header className="mb-10 text-center">
-            <h2 className="text-3xl font-serif font-bold text-gray-900 mb-2">Add New Item</h2>
-            <p className="text-gray-400 italic">Expand your kitchen inventory</p>
+            <h2 className="text-3xl font-serif font-bold text-gray-900 mb-2">{t('addItemTitle')}</h2>
+            <p className="text-gray-400 italic">{t('addItemDescription')}</p>
           </header>
           <PantryItemForm onSave={handleSaveItem} onCancel={() => setIsAdding(false)} />
         </div>

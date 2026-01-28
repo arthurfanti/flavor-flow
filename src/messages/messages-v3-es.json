@@ -1,0 +1,88 @@
+{
+  "Common": {
+    "title": "Flavor Flow",
+    "loading": "Cargando...",
+    "error": "Error",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "edit": "Editar",
+    "remove": "Eliminar",
+    "add": "Añadir",
+    "configurationError": "Error de Configuración",
+    "checkEnvVars": "Por favor, verifica tus variables de entorno.",
+    "missingKeys": "Faltan las claves de extracción de IA (Supadata/OpenRouter).",
+    "extractorNotInitialized": "El extractor de IA o los repositorios no están inicializados. Verifica tus claves API.",
+    "networkError": "Error de red: No se pudo conectar al servidor. Por favor, verifica tu conexión a internet o la configuración de Supabase.",
+    "unexpectedError": "Ocurrió un error inesperado."
+  },
+  "Navigation": {
+    "home": "Inicio",
+    "planner": "Planificador",
+    "pantry": "Despensa",
+    "shoppingList": "Lista de Compras",
+    "profile": "Perfil"
+  },
+  "Home": {
+    "discover": "Descubrir",
+    "description": "Transforma tu inspiración culinaria en listas prácticas.",
+    "startRecipe": "Comienza tu receta",
+    "recentExtractions": "Extracciones Recientes",
+    "viewAll": "Ver Todo",
+    "premiumKitchen": "Cocina Premium",
+    "socialSources": "YouTube • Instagram • TikTok",
+    "extractionSuccess": "¡Receta extraída y guardada!",
+    "extractionErrorPrefix": "Error de extracción: {message}"
+  },
+  "Planner": {
+    "title": "Próximas Comidas",
+    "subtitle": "Planificación",
+    "description": "Tu lista personalizada de próximas aventuras culinarias.",
+    "empty": "Tu planificador está vacío. ¡Empieza por añadir algunas recetas!",
+    "plannedMeal": "Comida Planeada",
+    "remove": "Eliminar receta"
+  },
+  "Recipes": {
+    "title": "Mis Recetas",
+    "subtitle": "Biblioteca",
+    "description": "Tu archivo personal de inspiración culinaria.",
+    "empty": "Tu lista de recetas está vacía."
+  },
+  "Pantry": {
+    "title": "Mi Despensa",
+    "subtitle": "Inventario",
+    "description": "Lleva el control de tus productos básicos de cocina.",
+    "addItemTitle": "Añadir Nuevo Artículo",
+    "addItemDescription": "Amplía tu inventario de cocina"
+  },
+  "ShoppingList": {
+    "title": "Lista de Compras",
+    "subtitle": "Mercado",
+    "description": "Todo lo que necesitas para tus próximas creaciones culinarias."
+  },
+  "RecipeDetail": {
+    "editRecipe": "Editar Receta",
+    "addToList": "Añadir a la Lista",
+    "addToPlanner": "Añadir al Planificador",
+    "added": "Añadido",
+    "planned": "Planeado",
+    "ingredients": "Ingredientes",
+    "preparation": "Preparación",
+    "premiumRecipe": "Receta Premium"
+  },
+  "RecipeEditor": {
+    "title": "Editar Receta",
+    "recipeTitle": "Título de la Receta",
+    "recipeTitlePlaceholder": "Introduzca el nombre de la receta",
+    "ingredients": "Ingredientes",
+    "ingredientsPlaceholder": "Un ingrediente por línea",
+    "instructions": "Instrucciones",
+    "instructionsPlaceholder": "Un paso por línea",
+    "saving": "Guardando..."
+  },
+  "Profile": {
+    "title": "Configuración del Perfil",
+    "language": "Idioma de Preferencia",
+    "signOut": "Cerrar Sesión",
+    "saving": "Guardando..."
+  }
+}

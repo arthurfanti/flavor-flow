@@ -1,7 +1,8 @@
 'use client';
 
 import { useState, useEffect, useMemo } from 'react';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
+import { useRouter } from '@/navigation';
 import { toast } from 'sonner';
 import RecipePreview from '@/components/RecipePreview';
 import RecipeEditor from '@/components/RecipeEditor';
@@ -15,8 +16,10 @@ import { IngredientMatcher } from '@/lib/services/IngredientMatcher';
 import { useAuth } from '@/components/AuthProvider';
 import { TranslationService } from '@/lib/services/TranslationService';
 import { OpenRouterService } from '@/lib/services/OpenRouterService';
+import { useTranslations } from 'next-intl';
 
 export default function RecipeDetailPage() {
+  const t = useTranslations('RecipeDetail');
   const params = useParams();
   const id = params?.id as string;
   const router = useRouter();
@@ -175,7 +178,7 @@ export default function RecipeDetailPage() {
               onClick={() => setIsEditing(true)}
               className="text-neutral-500 hover:text-white font-medium underline transition-colors"
             >
-              Edit Recipe
+              {t('editRecipe')}
             </button>
           </div>
         </div>

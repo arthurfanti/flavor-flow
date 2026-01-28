@@ -1,0 +1,88 @@
+{
+  "Common": {
+    "title": "Flavor Flow",
+    "loading": "Loading...",
+    "error": "Error",
+    "save": "Save",
+    "cancel": "Cancel",
+    "edit": "Edit",
+    "remove": "Remove",
+    "add": "Add",
+    "configurationError": "Configuration Error",
+    "checkEnvVars": "Please check your environment variables.",
+    "missingKeys": "AI Extraction keys (Supadata/OpenRouter) are missing.",
+    "extractorNotInitialized": "AI Extractor or Repositories not initialized. Check your API keys.",
+    "networkError": "Network error: Could not reach the server. Please check your internet connection or Supabase settings.",
+    "unexpectedError": "An unexpected error occurred."
+  },
+  "Navigation": {
+    "home": "Home",
+    "planner": "Planner",
+    "pantry": "Pantry",
+    "shoppingList": "Shopping List",
+    "profile": "Profile"
+  },
+  "Home": {
+    "discover": "Discover",
+    "description": "Transform your cooking inspiration into actionable lists.",
+    "startRecipe": "Start your recipe",
+    "recentExtractions": "Recent Extractions",
+    "viewAll": "View All",
+    "premiumKitchen": "Premium Kitchen",
+    "socialSources": "YouTube • Instagram • TikTok",
+    "extractionSuccess": "Recipe extracted and saved!",
+    "extractionErrorPrefix": "Extraction Error: {message}"
+  },
+  "Planner": {
+    "title": "Next Meals",
+    "subtitle": "Meal Planning",
+    "description": "Your curated queue of upcoming culinary adventures.",
+    "empty": "Your planner is empty. Start by adding some recipes!",
+    "plannedMeal": "Planned Meal",
+    "remove": "Remove recipe"
+  },
+  "Recipes": {
+    "title": "My Recipes",
+    "subtitle": "Library",
+    "description": "Your personal archive of culinary inspiration.",
+    "empty": "Your recipe list is empty."
+  },
+  "Pantry": {
+    "title": "My Pantry",
+    "subtitle": "Inventory",
+    "description": "Keep track of your kitchen staples.",
+    "addItemTitle": "Add New Item",
+    "addItemDescription": "Expand your kitchen inventory"
+  },
+  "ShoppingList": {
+    "title": "Shopping List",
+    "subtitle": "Market",
+    "description": "Everything you need for your upcoming culinary creations."
+  },
+  "RecipeDetail": {
+    "editRecipe": "Edit Recipe",
+    "addToList": "Add to List",
+    "addToPlanner": "Add to Planner",
+    "added": "Added",
+    "planned": "Planned",
+    "ingredients": "Ingredients",
+    "preparation": "Preparation",
+    "premiumRecipe": "Premium Recipe"
+  },
+  "RecipeEditor": {
+    "title": "Edit Recipe",
+    "recipeTitle": "Recipe Title",
+    "recipeTitlePlaceholder": "Enter recipe name",
+    "ingredients": "Ingredients",
+    "ingredientsPlaceholder": "One ingredient per line",
+    "instructions": "Instructions",
+    "instructionsPlaceholder": "One step per line",
+    "saving": "Saving..."
+  },
+  "Profile": {
+    "title": "Profile Settings",
+    "language": "Preferred Language",
+    "signOut": "Sign Out",
+    "saving": "Saving..."
+  }
+}

@@ -1,13 +1,16 @@
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import Home from "./page";
+import Home from "./[locale]/page";
 import { toast } from "sonner";
+import { NextIntlClientProvider } from "next-intl";
+import messages from "../messages/messages-v3-en.json";
 
-// Mock next/navigation
+// Mock @/navigation
 const mockPush = jest.fn();
-jest.mock("next/navigation", () => ({
+jest.mock("@/navigation", () => ({
   useRouter: jest.fn(() => ({
     push: mockPush,
   })),
+  Link: ({ children, href }: any) => <a href={href}>{children}</a>,
 }));
 
 // Mock Auth
@@ -72,6 +75,14 @@ jest.mock("../lib/services/VideoAIExtractor", () => ({
   })),
 }));
 
+const renderHome = () => {
+  return render(
+    <NextIntlClientProvider locale="en" messages={messages}>
+      <Home />
+    </NextIntlClientProvider>
+  );
+};
+
 describe("Home Notifications", () => {
   const originalEnv = process.env;
 
@@ -95,7 +106,7 @@ describe("Home Notifications", () => {
       extractFromUrl: mockExtract,
     }));
 
-    render(<Home />);
+    renderHome();
     
     const input = screen.getByPlaceholderText(/Paste video URL/i);
     const button = screen.getByRole('button', { name: /Extract Recipe/i });
@@ -104,7 +115,7 @@ describe("Home Notifications", () => {
     fireEvent.click(button);
 
     await waitFor(() => {
-      expect(toast.error).toHaveBeenCalledWith(expect.stringContaining("Network error"));
+      expect(toast.error).toHaveBeenCalledWith(expect.stringContaining("extractionErrorPrefix"));
     });
   });
 
@@ -115,7 +126,7 @@ describe("Home Notifications", () => {
       extractFromUrl: mockExtract,
     }));
 
-    render(<Home />);
+    renderHome();
     
     const input = screen.getByPlaceholderText(/Paste video URL/i);
     const button = screen.getByRole('button', { name: /Extract Recipe/i });
@@ -124,7 +135,7 @@ describe("Home Notifications", () => {
     fireEvent.click(button);
 
     await waitFor(() => {
-      expect(toast.success).toHaveBeenCalledWith(expect.stringContaining("Recipe extracted"));
+      expect(toast.success).toHaveBeenCalledWith(expect.stringContaining("extractionSuccess"));
     });
   });
 });

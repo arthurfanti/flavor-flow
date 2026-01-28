@@ -3,6 +3,7 @@
 import { PlannedRecipe } from "@/lib/repositories/PlannerRepository";
 import { normalizeImageUrl } from "@/lib/utils";
 import { Trash2 } from "lucide-react";
+import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { MagicCard } from "./MagicCard";
 
@@ -12,6 +13,8 @@ interface PlannerQueueProps {
 }
 
 export default function PlannerQueue({ recipes, onRemove }: PlannerQueueProps) {
+  const t = useTranslations("Planner");
+
   if (recipes.length === 0) {
     return (
       <MagicCard
@@ -20,7 +23,7 @@ export default function PlannerQueue({ recipes, onRemove }: PlannerQueueProps) {
         className="w-full py-12 text-center"
       >
         <p className="text-neutral-500 font-medium italic">
-          Your planner is empty.
+          {t('empty')}
         </p>
       </MagicCard>
     );
@@ -54,7 +57,7 @@ export default function PlannerQueue({ recipes, onRemove }: PlannerQueueProps) {
 
       <div className="flex-grow p-6 flex flex-col justify-center overflow-hidden">
         <span className="text-[10px] font-sans font-bold uppercase tracking-[0.2em] text-brand-primary mb-2 block">
-          Planned Meal
+          {t('plannedMeal')}
         </span>
         <h3 className="text-2xl font-display font-bold text-white leading-tight line-clamp-2 group-hover:text-brand-primary transition-colors">
           {recipe.title}
@@ -91,7 +94,7 @@ export default function PlannerQueue({ recipes, onRemove }: PlannerQueueProps) {
               <button
                 onClick={() => onRemove(recipe.id!)}
                 className="w-12 h-12 rounded-2xl text-neutral-500 hover:text-red-400 hover:bg-red-400/10 flex items-center justify-center transition-all active:scale-90"
-                aria-label="Remove recipe"
+                aria-label={t('remove')}
               >
                 <Trash2 className="h-5 w-5" />
               </button>

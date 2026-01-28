@@ -33,23 +33,44 @@ export class SupabaseRecipeRepository implements RecipeRepository {
     return data;
   }
 
-  async getLatest(count: number): Promise<any[]> {
-    const { data, error } = await this.supabase
-      .from('recipes')
-      .select('*')
+  async getLatest(count: number, locale?: string): Promise<any[]> {
+    let query = this.supabase.from('recipes').select(locale ? '*, recipe_translations(title)' : '*');
+    
+    if (locale) {
+      query = query.eq('recipe_translations.locale', locale);
+    }
+
+    const { data, error } = await query
       .order('created_at', { ascending: false })
       .limit(count);
+
     if (error) throw error;
-    return data || [];
+
+    return (data || []).map(recipe => {
+      if (locale && recipe.recipe_translations && recipe.recipe_translations.length > 0) {
+        return { ...recipe, title: recipe.recipe_translations[0].title };
+      }
+      return recipe;
+    });
   }
 
-  async getAll(): Promise<any[]> {
-    const { data, error } = await this.supabase
-      .from('recipes')
-      .select('*')
-      .order('title', { ascending: true });
+  async getAll(locale?: string): Promise<any[]> {
+    let query = this.supabase.from('recipes').select(locale ? '*, recipe_translations(title)' : '*');
+    
+    if (locale) {
+      query = query.eq('recipe_translations.locale', locale);
+    }
+
+    const { data, error } = await query.order('title', { ascending: true });
+
     if (error) throw error;
-    return data || [];
+
+    return (data || []).map(recipe => {
+      if (locale && recipe.recipe_translations && recipe.recipe_translations.length > 0) {
+        return { ...recipe, title: recipe.recipe_translations[0].title };
+      }
+      return recipe;
+    });
   }
 
   async getById(id: string, locale?: string): Promise<any | null> {

@@ -19,13 +19,13 @@ describe('RecipePreview', () => {
 
   it('renders ingredients list', () => {
     render(<RecipePreview recipe={mockRecipe} onAddToList={jest.fn()} onAddToPlanner={jest.fn()} />);
-    expect(screen.getByText('Ingredients')).toBeInTheDocument();
+    expect(screen.getByText('ingredients')).toBeInTheDocument();
     expect(screen.getByText('1 cup flour')).toBeInTheDocument();
   });
 
   it('renders instructions list', () => {
     render(<RecipePreview recipe={mockRecipe} onAddToList={jest.fn()} onAddToPlanner={jest.fn()} />);
-    expect(screen.getByText('Preparation')).toBeInTheDocument();
+    expect(screen.getByText('preparation')).toBeInTheDocument();
     expect(screen.getByText('Mix ingredients')).toBeInTheDocument();
   });
 
@@ -33,7 +33,7 @@ describe('RecipePreview', () => {
     const onAddToList = jest.fn();
     render(<RecipePreview recipe={mockRecipe} onAddToList={onAddToList} onAddToPlanner={jest.fn()} />);
     
-    const button = screen.getByRole('button', { name: /Add to List/i });
+    const button = screen.getByRole('button', { name: /addToList/i });
     fireEvent.click(button);
     
     expect(onAddToList).toHaveBeenCalledWith(mockRecipe.ingredients);
@@ -43,7 +43,7 @@ describe('RecipePreview', () => {
     const onAddToPlanner = jest.fn();
     render(<RecipePreview recipe={mockRecipe} onAddToList={jest.fn()} onAddToPlanner={onAddToPlanner} />);
     
-    const button = screen.getByRole('button', { name: /Add to Planner/i });
+    const button = screen.getByRole('button', { name: /addToPlanner/i });
     fireEvent.click(button);
     
     expect(onAddToPlanner).toHaveBeenCalledWith(mockRecipe);

@@ -1,0 +1,88 @@
+{
+  "Common": {
+    "title": "Flavor Flow",
+    "loading": "Carregando...",
+    "error": "Erro",
+    "save": "Salvar",
+    "cancel": "Cancelar",
+    "edit": "Editar",
+    "remove": "Remover",
+    "add": "Adicionar",
+    "configurationError": "Erro de Configuração",
+    "checkEnvVars": "Por favor, verifique suas variáveis de ambiente.",
+    "missingKeys": "Chaves de extração de IA (Supadata/OpenRouter) estão faltando.",
+    "extractorNotInitialized": "Extrator de IA ou Repositórios não inicializados. Verifique suas chaves de API.",
+    "networkError": "Erro de rede: Não foi possível conectar ao servidor. Verifique sua conexão ou configurações do Supabase.",
+    "unexpectedError": "Ocorreu um erro inesperado."
+  },
+  "Navigation": {
+    "home": "Início",
+    "planner": "Planejador",
+    "pantry": "Despensa",
+    "shoppingList": "Lista de Compras",
+    "profile": "Perfil"
+  },
+  "Home": {
+    "discover": "Descobrir",
+    "description": "Transforme sua inspiração culinária em listas práticas.",
+    "startRecipe": "Comece sua receita",
+    "recentExtractions": "Extrações Recentes",
+    "viewAll": "Ver Tudo",
+    "premiumKitchen": "Cozinha Premium",
+    "socialSources": "YouTube • Instagram • TikTok",
+    "extractionSuccess": "Receita extraída e salva!",
+    "extractionErrorPrefix": "Erro na Extração: {message}"
+  },
+  "Planner": {
+    "title": "Próximas Refeições",
+    "subtitle": "Planejamento",
+    "description": "Sua fila personalizada de aventuras culinárias.",
+    "empty": "Seu planejador está vazio. Comece adicionando algumas receitas!",
+    "plannedMeal": "Refeição Planejada",
+    "remove": "Remover receita"
+  },
+  "Recipes": {
+    "title": "Minhas Receitas",
+    "subtitle": "Biblioteca",
+    "description": "Seu arquivo pessoal de inspiração culinária.",
+    "empty": "Sua lista de receitas está vazia."
+  },
+  "Pantry": {
+    "title": "Minha Despensa",
+    "subtitle": "Inventário",
+    "description": "Mantenha o controle dos seus itens básicos de cozinha.",
+    "addItemTitle": "Adicionar Novo Item",
+    "addItemDescription": "Amplie seu estoque de cozinha"
+  },
+  "ShoppingList": {
+    "title": "Lista de Compras",
+    "subtitle": "Mercado",
+    "description": "Tudo o que você precisa para suas próximas criações culinárias."
+  },
+  "RecipeDetail": {
+    "editRecipe": "Editar Receita",
+    "addToList": "Adicionar à Lista",
+    "addToPlanner": "Adicionar ao Planejador",
+    "added": "Adicionado",
+    "planned": "Planejado",
+    "ingredients": "Ingredientes",
+    "preparation": "Preparação",
+    "premiumRecipe": "Receita Premium"
+  },
+  "RecipeEditor": {
+    "title": "Editar Receita",
+    "recipeTitle": "Título da Receita",
+    "recipeTitlePlaceholder": "Digite o nome da receita",
+    "ingredients": "Ingredientes",
+    "ingredientsPlaceholder": "Um ingrediente por linha",
+    "instructions": "Instruções",
+    "instructionsPlaceholder": "Um passo por linha",
+    "saving": "Salvando..."
+  },
+  "Profile": {
+    "title": "Configurações do Perfil",
+    "language": "Idioma de Preferência",
+    "signOut": "Sair",
+    "saving": "Salvando..."
+  }
+}

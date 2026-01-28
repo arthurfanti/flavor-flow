@@ -5,9 +5,11 @@ import { createSupabaseClient } from '@/lib/supabase/client';
 import { SupabaseShoppingListRepository } from '@/lib/repositories/SupabaseShoppingListRepository';
 import ShoppingList from '@/components/ShoppingList';
 import { useAuth } from '@/components/AuthProvider';
-import { useRouter } from 'next/navigation';
+import { useRouter } from '@/navigation';
+import { useTranslations } from 'next-intl';
 
 export default function ShoppingListPage() {
+  const t = useTranslations('ShoppingList');
   const router = useRouter();
   const { session, loading: authLoading } = useAuth();
   const [items, setItems] = useState<any[]>([]);
@@ -102,16 +104,16 @@ export default function ShoppingListPage() {
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
         <div className="absolute bottom-8 left-8">
-          <span className="text-brand-yellow font-sans font-bold uppercase tracking-[0.2em] text-[10px] mb-2 block">Market</span>
+          <span className="text-brand-yellow font-sans font-bold uppercase tracking-[0.2em] text-[10px] mb-2 block">{t('subtitle')}</span>
           <h1 className="text-4xl font-bold text-white tracking-tight">
-            Shopping List
+            {t('title')}
           </h1>
         </div>
       </div>
 
       <header className="mb-10 text-center">
         <p className="text-xl text-gray-500 font-medium italic leading-relaxed max-w-sm mx-auto">
-          Everything you need for your upcoming culinary creations.
+          {t('description')}
         </p>
       </header>
 

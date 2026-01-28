@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import Link from "next/link";
+import { Link } from "@/navigation";
 import TabBar from "./TabBar";
 import { useScrollVelocity } from "@/lib/hooks/useScrollVelocity";
 import { motion, AnimatePresence } from "framer-motion";

@@ -14,12 +14,15 @@ import { OpenRouterService } from "@/lib/services/OpenRouterService";
 import { SupadataService } from "@/lib/services/SupadataService";
 import { VideoAIExtractor } from "@/lib/services/VideoAIExtractor";
 import { createSupabaseClient } from "@/lib/supabase/client";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { Link, useRouter } from "@/navigation";
+import { useTranslations, useLocale } from "next-intl";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 
 export default function Home() {
+  const t = useTranslations("Home");
+  const tCommon = useTranslations("Common");
+  const locale = useLocale();
   const router = useRouter();
   const { session, loading: authLoading } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
@@ -73,12 +76,12 @@ export default function Home() {
   const refreshRecent = useCallback(async () => {
     if (!repos?.recipe) return;
     try {
-      const latest = await repos.recipe.getLatest(3);
+      const latest = await repos.recipe.getLatest(3, locale);
       setRecentRecipes(latest);
     } catch (error) {
       console.error("Failed to fetch recent recipes:", error);
     }
-  }, [repos?.recipe]);
+  }, [repos?.recipe, locale]);
 
   useEffect(() => {
     refreshRecent();
@@ -87,7 +90,7 @@ export default function Home() {
   const handleExtract = async (url: string) => {
     if (!repos || !extractor) {
       toast.error(
-        "AI Extractor or Repositories not initialized. Check your API keys."
+        tCommon("extractorNotInitialized")
       );
       return;
     }
@@ -103,7 +106,7 @@ export default function Home() {
       const savedRecipe = await repos.recipe.addRecipe(extracted);
       console.log("Flavor Flow: Save successful.");
 
-      toast.success("Recipe extracted and saved!");
+      toast.success(t("extractionSuccess"));
       router.push(`/recipes/${savedRecipe.id}`);
     } catch (error: any) {
       console.error(
@@ -113,9 +116,9 @@ export default function Home() {
       // More user-friendly error message
       const msg =
         error.message === "Failed to fetch"
-          ? "Network error: Could not reach the server. Please check your internet connection or Supabase settings."
-          : error.message || "An unexpected error occurred.";
-      toast.error(`Extraction Error: ${msg}`);
+          ? tCommon("networkError")
+          : error.message || tCommon("unexpectedError");
+      toast.error(t("extractionErrorPrefix", { message: msg }));
     } finally {
       setIsLoading(false);
       setAiStage("idle");
@@ -126,11 +129,11 @@ export default function Home() {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen p-4 text-center">
         <h1 className="text-2xl font-bold text-red-600 mb-4">
-          Configuration Error
+          {tCommon("configurationError")}
         </h1>
         <p className="text-gray-700">{configError}</p>
         <p className="text-sm text-gray-500 mt-4">
-          Please check your environment variables.
+          {tCommon("checkEnvVars")}
         </p>
       </div>
     );
@@ -152,17 +155,17 @@ export default function Home() {
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
         <div className="absolute bottom-8 left-8">
           <span className="text-brand-primary font-sans font-bold uppercase tracking-[0.2em] text-[10px] mb-2 block">
-            Premium Kitchen
+            {t("premiumKitchen")}
           </span>
           <h1 className="text-4xl font-display font-bold text-white tracking-tight">
-            Discover
+            {t("discover")}
           </h1>
         </div>
       </div>
 
       <header className="text-center mb-12 max-w-lg">
         <p className="text-2xl text-neutral-300 font-medium leading-relaxed">
-          Transform your cooking inspiration into actionable lists.
+          {t("description")}
         </p>
         <div className="w-12 h-1 bg-brand-primary mx-auto mt-6 rounded-full shadow-[0_0_12px_rgba(224,93,68,0.4)]" />
       </header>
@@ -174,13 +177,13 @@ export default function Home() {
       >
         <div className="p-6">
           <h2 className="text-2xl font-display font-bold text-white mb-8 p-4 text-center">
-            Start your recipe
+            {t("startRecipe")}
           </h2>
           <UrlInput onExtract={handleExtract} isLoading={isLoading} />
 
           <div className="mt-10 px-4 py-6 border-t border-white/5">
             <p className="text-xs text-neutral-500 text-center uppercase tracking-widest font-medium">
-              YouTube • Instagram • TikTok
+              {t("socialSources")}
             </p>
           </div>
         </div>
@@ -190,13 +193,13 @@ export default function Home() {
         <div className="w-full mt-16 animate-slide-up">
           <div className="flex items-center justify-between mb-8 px-2">
             <h2 className="text-sm font-sans font-bold uppercase tracking-[0.2em] text-neutral-500">
-              Recent Extractions
+              {t("recentExtractions")}
             </h2>
             <Link
               href="/recipes"
               className="text-[10px] font-sans font-bold uppercase tracking-widest text-brand-primary hover:text-brand-primary/80 transition-colors"
             >
-              View All
+              {t("viewAll")}
             </Link>
           </div>
 

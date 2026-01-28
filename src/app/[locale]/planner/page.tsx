@@ -6,9 +6,12 @@ import { SupabasePlannerRepository } from '@/lib/repositories/SupabasePlannerRep
 import PlannerQueue from '@/components/PlannerQueue';
 import { PlannedRecipe } from '@/lib/repositories/PlannerRepository';
 import { useAuth } from '@/components/AuthProvider';
-import { useRouter } from 'next/navigation';
+import { useRouter } from '@/navigation';
+import { useTranslations } from 'next-intl';
 
 export default function PlannerPage() {
+  const t = useTranslations('Planner');
+  const tCommon = useTranslations('Common');
   const router = useRouter();
   const { session, loading: authLoading } = useAuth();
   const [recipes, setRecipes] = useState<PlannedRecipe[]>([]);
@@ -67,9 +70,9 @@ export default function PlannerPage() {
   if (configError) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen p-4 text-center">
-        <h1 className="text-2xl font-bold text-red-600 mb-4">Configuration Error</h1>
+        <h1 className="text-2xl font-bold text-red-600 mb-4">{tCommon('configurationError')}</h1>
         <p className="text-gray-700">{configError}</p>
-        <p className="text-sm text-gray-500 mt-4">Please check your environment variables.</p>
+        <p className="text-sm text-gray-500 mt-4">{tCommon('checkEnvVars')}</p>
       </div>
     );
   }
@@ -87,16 +90,16 @@ export default function PlannerPage() {
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
         <div className="absolute bottom-8 left-8">
-          <span className="text-brand-yellow font-sans font-bold uppercase tracking-[0.2em] text-[10px] mb-2 block">Meal Planning</span>
+          <span className="text-brand-yellow font-sans font-bold uppercase tracking-[0.2em] text-[10px] mb-2 block">{t('subtitle')}</span>
           <h1 className="text-4xl font-bold text-white tracking-tight">
-            Next Meals
+            {t('title')}
           </h1>
         </div>
       </div>
 
       <header className="mb-10 text-center">
         <p className="text-xl text-gray-500 font-medium italic leading-relaxed max-w-sm mx-auto">
-          Your curated queue of upcoming culinary adventures.
+          {t('description')}
         </p>
       </header>
 

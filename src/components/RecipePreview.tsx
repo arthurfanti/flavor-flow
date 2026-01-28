@@ -3,6 +3,7 @@ import { normalizeImageUrl } from '@/lib/utils';
 import { MagicCard } from './MagicCard';
 import { MagicButton } from './MagicButton';
 import { ShoppingCart, Calendar, Check, ChefHat } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 interface Recipe {
   title: string;
@@ -19,6 +20,7 @@ interface RecipePreviewProps {
 }
 
 export default function RecipePreview({ recipe, onAddToList, onAddToPlanner }: RecipePreviewProps) {
+  const t = useTranslations('RecipeDetail');
   const [isAddingToList, setIsAddingToList] = useState(false);
   const [isAddingToPlanner, setIsAddingToPlanner] = useState(false);
   const [addedToList, setAddedToList] = useState(false);
@@ -75,7 +77,7 @@ export default function RecipePreview({ recipe, onAddToList, onAddToPlanner }: R
       <div className="p-8 md:p-12 -mt-12 relative z-10">
         <div className="flex flex-col gap-10 mb-16">
           <div className="space-y-4">
-            <span className="text-brand-primary font-sans font-bold uppercase tracking-[0.3em] text-[10px] block">Premium Recipe</span>
+            <span className="text-brand-primary font-sans font-bold uppercase tracking-[0.3em] text-[10px] block">{t('premiumRecipe')}</span>
             <h2 className="text-4xl md:text-6xl font-display font-bold text-white leading-[1.1] tracking-tight">{recipe.title}</h2>
           </div>
           
@@ -89,9 +91,9 @@ export default function RecipePreview({ recipe, onAddToList, onAddToPlanner }: R
               {isAddingToList ? (
                 <div className="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full" />
               ) : addedToList ? (
-                <><Check className="h-4 w-4 text-emerald-400" /> Added</>
+                <><Check className="h-4 w-4 text-emerald-400" /> {t('added')}</>
               ) : (
-                <><ShoppingCart className="h-4 w-4" /> Add to List</>
+                <><ShoppingCart className="h-4 w-4" /> {t('addToList')}</>
               )}
             </MagicButton>
             
@@ -104,9 +106,9 @@ export default function RecipePreview({ recipe, onAddToList, onAddToPlanner }: R
               {isAddingToPlanner ? (
                 <div className="animate-spin h-4 w-4 border-2 border-background border-t-transparent rounded-full" />
               ) : addedToPlanner ? (
-                <><Check className="h-4 w-4 text-emerald-600" /> Planned</>
+                <><Check className="h-4 w-4 text-emerald-600" /> {t('planned')}</>
               ) : (
-                <><Calendar className="h-4 w-4" /> Add to Planner</>
+                <><Calendar className="h-4 w-4" /> {t('addToPlanner')}</>
               )}
             </MagicButton>
           </div>
@@ -115,7 +117,7 @@ export default function RecipePreview({ recipe, onAddToList, onAddToPlanner }: R
         <div className="grid lg:grid-cols-[1fr_1.8fr] gap-16">
           <div className="space-y-8">
             <div className="flex items-center gap-3 border-b border-white/5 pb-4">
-               <h3 className="text-[11px] font-sans font-bold text-neutral-500 uppercase tracking-[0.2em]">Ingredients</h3>
+               <h3 className="text-[11px] font-sans font-bold text-neutral-500 uppercase tracking-[0.2em]">{t('ingredients')}</h3>
                <span className="text-[10px] bg-white/5 text-neutral-400 px-2 py-0.5 rounded-full">{recipe.ingredients.length}</span>
             </div>
             <ul className="space-y-5">
@@ -129,7 +131,7 @@ export default function RecipePreview({ recipe, onAddToList, onAddToPlanner }: R
           </div>
 
           <div className="space-y-8">
-            <h3 className="text-[11px] font-sans font-bold text-neutral-500 uppercase tracking-[0.2em] border-b border-white/5 pb-4">Preparation</h3>
+            <h3 className="text-[11px] font-sans font-bold text-neutral-500 uppercase tracking-[0.2em] border-b border-white/5 pb-4">{t('preparation')}</h3>
             <ol className="space-y-10">
               {recipe.instructions.map((step, index) => (
                 <li key={index} className="flex gap-8 group">

@@ -1,13 +1,15 @@
 'use client';
 
 import React, { useState, useEffect, useMemo } from 'react';
-import Link from 'next/link';
+import { Link } from '@/navigation';
 import { createSupabaseClient } from '@/lib/supabase/client';
 import { SupabaseRecipeRepository } from '@/lib/repositories/SupabaseRecipeRepository';
 import RecipeListItem from '@/components/RecipeListItem';
 import { useAuth } from '@/components/AuthProvider';
+import { useTranslations } from 'next-intl';
 
 export default function RecipesPage() {
+  const t = useTranslations('Recipes');
   const { session, loading: authLoading } = useAuth();
   const [recipes, setRecipes] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -59,16 +61,16 @@ export default function RecipesPage() {
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
         <div className="absolute bottom-8 left-8">
-          <span className="text-brand-yellow font-sans font-bold uppercase tracking-[0.2em] text-[10px] mb-2 block">Library</span>
+          <span className="text-brand-yellow font-sans font-bold uppercase tracking-[0.2em] text-[10px] mb-2 block">{t('subtitle')}</span>
           <h1 className="text-4xl font-bold text-white tracking-tight">
-            My Recipes
+            {t('title')}
           </h1>
         </div>
       </div>
 
       <header className="mb-8 px-2">
         <p className="text-xl text-gray-500 font-medium italic leading-relaxed">
-          Your personal archive of culinary inspiration.
+          {t('description')}
         </p>
       </header>
 
@@ -78,7 +80,7 @@ export default function RecipesPage() {
         </div>
       ) : recipes.length === 0 ? (
         <div className="w-full py-12 text-center bg-white rounded-3xl border border-ui-border shadow-sm">
-          <p className="text-gray-400 font-medium italic">Your recipe list is empty.</p>
+          <p className="text-gray-400 font-medium italic">{t('empty')}</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 gap-4">
