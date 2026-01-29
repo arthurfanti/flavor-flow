@@ -40,12 +40,12 @@ This plan outlines the steps to integrate `next-intl` for UI localization and up
     - [x] **Implement**: Update `RecipeListItem` and `PlannerQueue` to prioritize translation data.
 - [x] Task: Conductor - User Manual Verification 'Localized Dynamic Content' (Protocol in workflow.md) 4ba08b8
 
-## Phase 4: Quality Assurance & Final Polish
+## Phase 4: Quality Assurance & Final Polish [checkpoint: 129c006]
 - [x] Task: Verify 100% Localization Coverage 246852b
     - [x] Scan entire `src/` directory for remaining hardcoded English strings.
     - [x] Ensure all error messages and toast notifications are localized.
-- [ ] Task: Final Quality Gates
-    - [ ] Run full test suite with `CI=true`.
-    - [ ] Verify responsive behavior across all locales (handling longer strings).
-    - [ ] Ensure >80% coverage for new localization logic.
-- [ ] Task: Conductor - User Manual Verification 'Quality Assurance & Final Polish' (Protocol in workflow.md)
+- [x] Task: Final Quality Gates 4ba08b8
+    - [x] Run full test suite with `CI=true`.
+    - [x] Verify responsive behavior across all locales (handling longer strings).
+    - [x] Ensure >80% coverage for new localization logic.
+- [x] Task: Conductor - User Manual Verification 'Quality Assurance & Final Polish' (Protocol in workflow.md) 129c006
