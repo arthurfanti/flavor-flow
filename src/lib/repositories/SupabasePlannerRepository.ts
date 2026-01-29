@@ -4,15 +4,26 @@ import { PlannerRepository, PlannedRecipe } from './PlannerRepository';
 export class SupabasePlannerRepository implements PlannerRepository {
   constructor(private supabase: SupabaseClient, private userId: string) {}
 
-  async getQueue(): Promise<PlannedRecipe[]> {
-    const { data, error } = await this.supabase
+  async getQueue(locale?: string): Promise<PlannedRecipe[]> {
+    let query = this.supabase
       .from('planned_recipes')
-      .select('*')
-      .eq('user_id', this.userId)
-      .order('order', { ascending: true });
+      .select(locale ? '*, recipe_translations(title)' : '*')
+      .eq('user_id', this.userId);
+
+    if (locale) {
+      query = query.eq('recipe_translations.locale', locale);
+    }
+    
+    const { data, error } = await query.order('order', { ascending: true });
     
     if (error) throw error;
-    return data || [];
+
+    return (data || []).map((item: any) => {
+      if (locale && item.recipe_translations && item.recipe_translations.length > 0) {
+        return { ...item, title: item.recipe_translations[0].title };
+      }
+      return item;
+    });
   }
 
   async addToQueue(recipe: Partial<PlannedRecipe>): Promise<void> {

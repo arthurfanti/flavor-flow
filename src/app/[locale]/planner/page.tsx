@@ -7,11 +7,12 @@ import PlannerQueue from '@/components/PlannerQueue';
 import { PlannedRecipe } from '@/lib/repositories/PlannerRepository';
 import { useAuth } from '@/components/AuthProvider';
 import { useRouter } from '@/navigation';
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 
 export default function PlannerPage() {
   const t = useTranslations('Planner');
   const tCommon = useTranslations('Common');
+  const locale = useLocale();
   const router = useRouter();
   const { session, loading: authLoading } = useAuth();
   const [recipes, setRecipes] = useState<PlannedRecipe[]>([]);
@@ -33,7 +34,7 @@ export default function PlannerPage() {
     if (!plannerRepo) return;
     setIsLoading(true);
     try {
-      const data = await plannerRepo.getQueue();
+      const data = await plannerRepo.getQueue(locale);
       setRecipes(data);
       localStorage.setItem('plannedRecipes', JSON.stringify(data));
     } catch (error) {
@@ -53,7 +54,7 @@ export default function PlannerPage() {
 
   useEffect(() => {
     refreshQueue();
-  }, [!!plannerRepo]);
+  }, [!!plannerRepo, locale]);
 
   const handleRemove = async (id: number) => {
     if (!plannerRepo) return;

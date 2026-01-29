@@ -6,10 +6,11 @@ import { createSupabaseClient } from '@/lib/supabase/client';
 import { SupabaseRecipeRepository } from '@/lib/repositories/SupabaseRecipeRepository';
 import RecipeListItem from '@/components/RecipeListItem';
 import { useAuth } from '@/components/AuthProvider';
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 
 export default function RecipesPage() {
   const t = useTranslations('Recipes');
+  const locale = useLocale();
   const { session, loading: authLoading } = useAuth();
   const [recipes, setRecipes] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -30,7 +31,7 @@ export default function RecipesPage() {
     const fetchRecipes = async () => {
       if (!recipeRepo) return;
       try {
-        const data = await recipeRepo.getAll();
+        const data = await recipeRepo.getAll(locale);
         setRecipes(data);
       } catch (error) {
         console.error('Failed to fetch recipes:', error);
@@ -39,7 +40,7 @@ export default function RecipesPage() {
       }
     };
     fetchRecipes();
-  }, [!!recipeRepo]);
+  }, [!!recipeRepo, locale]);
 
   if (configError) {
     return (
