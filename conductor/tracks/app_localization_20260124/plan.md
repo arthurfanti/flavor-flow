@@ -20,10 +20,10 @@ This plan outlines the steps to integrate `next-intl` for UI localization and up
 - [x] Task: Localize Home Page & Extraction UI 51e2e26
     - [x] **Write Tests**: Verify "Discover", "Start your recipe", and "Recent Extractions" are localized.
     - [x] **Implement**: Update `src/app/page.tsx` and `UrlInput` to use `useTranslations`.
-- [ ] Task: Localize Recipe Detail & Editor
+- [x] Task: Localize Recipe Detail & Editor 6553aa5
     - [ ] **Write Tests**: Ensure buttons like "Add to List", "Edit Recipe", and labels in `RecipeEditor` are localized.
     - [ ] **Implement**: Update `RecipePreview` and `RecipeEditor` components.
-- [~] Task: Localize Planner, Shopping List & Pantry
+- [x] Task: Localize Planner, Shopping List & Pantry
     - [x] **Write Tests**: Verify all headers and empty state messages are localized.
     - [x] **Implement**: Update `PlannerQueue`, `ShoppingList`, and `PantryList` views.
 - [ ] Task: Localize Profile & Authentication
