@@ -68,7 +68,7 @@ export default function RecipePreview({ recipe, onAddToList, onAddToPlanner }: R
           <div className="absolute top-6 left-6">
              <div className="glass px-4 py-2 rounded-full flex items-center gap-2">
                 <ChefHat className="h-4 w-4 text-brand-primary" />
-                <span className="text-[10px] font-bold uppercase tracking-widest text-white">AI Kitchen</span>
+                <span className="text-[10px] font-bold uppercase tracking-widest text-white">{t('aiKitchen')}</span>
              </div>
           </div>
         </div>

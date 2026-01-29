@@ -108,10 +108,12 @@
     "planned": "Planned",
     "ingredients": "Ingredients",
     "preparation": "Preparation",
-    "premiumRecipe": "Premium Recipe"
+    "premiumRecipe": "Premium Recipe",
+    "aiKitchen": "AI Kitchen"
   },
   "RecipeEditor": {
     "title": "Edit Recipe",
+    "editingMode": "Editing Mode",
     "recipeTitle": "Recipe Title",
     "recipeTitlePlaceholder": "Enter recipe name",
     "ingredients": "Ingredients",

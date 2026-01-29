@@ -39,7 +39,7 @@ export default function RecipeEditor({ recipe, onSave, onCancel }: RecipeEditorP
   return (
     <div className="w-full max-w-2xl bg-white/10 rounded-[2rem] shadow-xl shadow-cyan-300/10 p-8 md:p-10 mt-8 animate-fade-in border border-white/20 backdrop-blur-md text-gray-900">
       <header className="mb-10">
-        <span className="text-brand-yellow font-sans font-bold uppercase tracking-[0.2em] text-[10px] mb-2 block">Editing Mode</span>
+        <span className="text-brand-yellow font-sans font-bold uppercase tracking-[0.2em] text-[10px] mb-2 block">{t('editingMode')}</span>
         <h2 className="text-4xl font-serif font-bold text-gray-900 tracking-tight">{t('title')}</h2>
       </header>
       
