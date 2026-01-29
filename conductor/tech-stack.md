@@ -8,6 +8,7 @@
 - **Utilities:** `clsx`, `tailwind-merge` - For safe and efficient class name management.
 - **Notifications:** Sonner - Modern, lightweight toast library for non-blocking feedback.
 - **State Management:** React Query (TanStack Query) - For efficient data fetching, caching, and handling the synchronization between the app and the backend.
+- **Localization:** `next-intl` - Robust framework for managing internationalization and multilingual content.
 
 ## Backend & Infrastructure
 - **BaaS (Backend as a Service):** Supabase - Provides a fast foundation for authentication (Supabase Auth), real-time database (PostgreSQL), and storage. 
