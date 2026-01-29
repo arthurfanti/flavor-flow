@@ -6,6 +6,7 @@ import TabBar from "./TabBar";
 import { useScrollVelocity } from "@/lib/hooks/useScrollVelocity";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { useTranslations } from "next-intl";
 
 interface MainLayoutProps {
   children: React.ReactNode;
@@ -13,18 +14,20 @@ interface MainLayoutProps {
 
 export default function MainLayout({ children }: MainLayoutProps) {
   const { isFixed } = useScrollVelocity();
+  const t = useTranslations('Common');
+  const tNav = useTranslations('Navigation');
 
   const headerContent = (
     <div className="relative max-w-2xl mx-auto flex items-center justify-between">
       <Link href="/">
         <h1 className="text-3xl font-display font-bold tracking-tight text-foreground hover:text-brand-primary transition-colors cursor-pointer">
-          Flavor Flow
+          {t('title')}
         </h1>
       </Link>
       <Link 
         href="/profile"
         className="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 backdrop-blur-sm hover:bg-white/10 hover:text-white transition-all active:scale-95"
-        aria-label="User Profile"
+        aria-label={tNav('profile')}
       >
         <svg
           className="w-5 h-5"
