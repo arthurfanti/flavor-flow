@@ -1,0 +1,8 @@
+{
+  "track_id": "app_localization_20260124",
+  "type": "feature",
+  "status": "new",
+  "created_at": "2026-01-24T12:00:00Z",
+  "updated_at": "2026-01-24T12:00:00Z",
+  "description": "we have implemented the translations table, which is being used by the recipe detail view, but all other views are not translated - including app's texts and recipes titles in lists. We need to implement translation in all views, so no more hardcoded texts"
+}
