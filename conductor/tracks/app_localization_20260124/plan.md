@@ -13,23 +13,23 @@ This plan outlines the steps to integrate `next-intl` for UI localization and up
     - [x] **Implement**: Logic to update the app's active locale when the user's profile is updated.
 - [x] Task: Conductor - User Manual Verification 'Localization Infrastructure & Setup' (Protocol in workflow.md) 51e2e26
 
-## Phase 2: Static UI Localization (Eliminating Hardcoded Strings)
+## Phase 2: Static UI Localization (Eliminating Hardcoded Strings) [checkpoint: cf5b9a1]
 - [x] Task: Localize Core Layout & Navigation 061fd22
-    - [ ] **Write Tests**: Check that `TabBar` and `MainLayout` render labels in the active locale.
-    - [ ] **Implement**: Move strings from `TabBar`, `MainLayout`, and common headers to JSON messages.
+    - [x] **Write Tests**: Check that `TabBar` and `MainLayout` render labels in the active locale.
+    - [x] **Implement**: Move strings from `TabBar`, `MainLayout`, and common headers to JSON messages.
 - [x] Task: Localize Home Page & Extraction UI 51e2e26
     - [x] **Write Tests**: Verify "Discover", "Start your recipe", and "Recent Extractions" are localized.
     - [x] **Implement**: Update `src/app/page.tsx` and `UrlInput` to use `useTranslations`.
 - [x] Task: Localize Recipe Detail & Editor 6553aa5
-    - [ ] **Write Tests**: Ensure buttons like "Add to List", "Edit Recipe", and labels in `RecipeEditor` are localized.
-    - [ ] **Implement**: Update `RecipePreview` and `RecipeEditor` components.
+    - [x] **Write Tests**: Ensure buttons like "Add to List", "Edit Recipe", and labels in `RecipeEditor` are localized.
+    - [x] **Implement**: Update `RecipePreview` and `RecipeEditor` components.
 - [x] Task: Localize Planner, Shopping List & Pantry a94856f
     - [x] **Write Tests**: Verify all headers and empty state messages are localized.
     - [x] **Implement**: Update `PlannerQueue`, `ShoppingList`, and `PantryList` views.
 - [x] Task: Localize Profile & Authentication a94856f
-    - [ ] **Write Tests**: Check that profile settings and login forms are localized.
-    - [ ] **Implement**: Update `Profile` and `Login` pages.
-- [ ] Task: Conductor - User Manual Verification 'Static UI Localization' (Protocol in workflow.md)
+    - [x] **Write Tests**: Check that profile settings and login forms are localized.
+    - [x] **Implement**: Update `Profile` and `Login` pages.
+- [x] Task: Conductor - User Manual Verification 'Static UI Localization' (Protocol in workflow.md) cf5b9a1
 
 ## Phase 3: Localized Dynamic Content (Recipe Lists)
 - [ ] Task: Update Recipe Repository for List Translations
