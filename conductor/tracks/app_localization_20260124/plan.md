@@ -23,10 +23,10 @@ This plan outlines the steps to integrate `next-intl` for UI localization and up
 - [x] Task: Localize Recipe Detail & Editor 6553aa5
     - [ ] **Write Tests**: Ensure buttons like "Add to List", "Edit Recipe", and labels in `RecipeEditor` are localized.
     - [ ] **Implement**: Update `RecipePreview` and `RecipeEditor` components.
-- [x] Task: Localize Planner, Shopping List & Pantry
+- [x] Task: Localize Planner, Shopping List & Pantry a94856f
     - [x] **Write Tests**: Verify all headers and empty state messages are localized.
     - [x] **Implement**: Update `PlannerQueue`, `ShoppingList`, and `PantryList` views.
-- [ ] Task: Localize Profile & Authentication
+- [x] Task: Localize Profile & Authentication a94856f
     - [ ] **Write Tests**: Check that profile settings and login forms are localized.
     - [ ] **Implement**: Update `Profile` and `Login` pages.
 - [ ] Task: Conductor - User Manual Verification 'Static UI Localization' (Protocol in workflow.md)
