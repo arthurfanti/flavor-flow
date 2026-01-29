@@ -19,7 +19,9 @@ describe('SupabasePlannerRepository Locale Support', () => {
       {
         id: 1,
         title: 'Original Title',
-        recipe_translations: [{ title: 'Translated Title' }]
+        recipes: {
+          recipe_translations: [{ title: 'Translated Title' }]
+        }
       }
     ];
 
@@ -43,7 +45,9 @@ describe('SupabasePlannerRepository Locale Support', () => {
       {
         id: 1,
         title: 'Original Title',
-        recipe_translations: []
+        recipes: {
+          recipe_translations: []
+        }
       }
     ];
 

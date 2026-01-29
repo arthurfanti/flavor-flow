@@ -5,13 +5,18 @@ export class SupabasePlannerRepository implements PlannerRepository {
   constructor(private supabase: SupabaseClient, private userId: string) {}
 
   async getQueue(locale?: string): Promise<PlannedRecipe[]> {
+    // Join through recipes table to get translations
+    const selectStr = locale 
+      ? '*, recipes:recipe_id(recipe_translations(title))' 
+      : '*';
+
     let query = this.supabase
       .from('planned_recipes')
-      .select(locale ? '*, recipe_translations(title)' : '*')
+      .select(selectStr)
       .eq('user_id', this.userId);
 
     if (locale) {
-      query = query.eq('recipe_translations.locale', locale);
+      query = query.eq('recipes.recipe_translations.locale', locale);
     }
     
     const { data, error } = await query.order('order', { ascending: true });
@@ -19,8 +24,14 @@ export class SupabasePlannerRepository implements PlannerRepository {
     if (error) throw error;
 
     return (data || []).map((item: any) => {
-      if (locale && item.recipe_translations && item.recipe_translations.length > 0) {
-        return { ...item, title: item.recipe_translations[0].title };
+      // Robust extraction of translation from recipes -> recipe_translations
+      const joinedRecipes = item.recipes;
+      const recipeObj = Array.isArray(joinedRecipes) ? joinedRecipes[0] : joinedRecipes;
+      const translations = recipeObj?.recipe_translations;
+      const translation = Array.isArray(translations) ? translations[0]?.title : null;
+      
+      if (locale && translation) {
+        return { ...item, title: translation };
       }
       return item;
     });
