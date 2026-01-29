@@ -14,7 +14,7 @@ This plan outlines the steps to integrate `next-intl` for UI localization and up
 - [x] Task: Conductor - User Manual Verification 'Localization Infrastructure & Setup' (Protocol in workflow.md) 51e2e26
 
 ## Phase 2: Static UI Localization (Eliminating Hardcoded Strings)
-- [ ] Task: Localize Core Layout & Navigation
+- [x] Task: Localize Core Layout & Navigation 061fd22
     - [ ] **Write Tests**: Check that `TabBar` and `MainLayout` render labels in the active locale.
     - [ ] **Implement**: Move strings from `TabBar`, `MainLayout`, and common headers to JSON messages.
 - [x] Task: Localize Home Page & Extraction UI 51e2e26
