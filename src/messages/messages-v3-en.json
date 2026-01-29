@@ -17,7 +17,8 @@
     "unexpectedError": "An unexpected error occurred.",
     "loadProfileError": "Failed to load profile",
     "saveProfileSuccess": "Profile saved successfully",
-    "saveProfileError": "Failed to save profile"
+    "saveProfileError": "Failed to save profile",
+    "ingredientsCount": "{count} Ingredients"
   },
   "Navigation": {
     "home": "Home",

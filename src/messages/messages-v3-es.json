@@ -17,7 +17,8 @@
     "unexpectedError": "Ocurrió un inesperado.",
     "loadProfileError": "Error al cargar el perfil",
     "saveProfileSuccess": "Perfil guardado correctamente",
-    "saveProfileError": "Error al guardar el perfil"
+    "saveProfileError": "Error al guardar el perfil",
+    "ingredientsCount": "{count} Ingredientes"
   },
   "Navigation": {
     "home": "Inicio",
