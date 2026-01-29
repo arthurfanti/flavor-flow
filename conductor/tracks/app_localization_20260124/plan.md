@@ -31,14 +31,14 @@ This plan outlines the steps to integrate `next-intl` for UI localization and up
     - [x] **Implement**: Update `Profile` and `Login` pages.
 - [x] Task: Conductor - User Manual Verification 'Static UI Localization' (Protocol in workflow.md) cf5b9a1
 
-## Phase 3: Localized Dynamic Content (Recipe Lists)
-- [ ] Task: Update Recipe Repository for List Translations
-    - [ ] **Write Tests**: Verify `getLatest` and `getAll` return translated titles when a locale is provided.
-    - [ ] **Implement**: Update `SupabaseRecipeRepository` to perform a left join on `recipe_translations` for list-based queries.
-- [ ] Task: Localize List Components
-    - [ ] **Write Tests**: Ensure `RecipeListItem` displays the translated title if available.
-    - [ ] **Implement**: Update `RecipeListItem` and `PlannerQueue` to prioritize translation data.
-- [ ] Task: Conductor - User Manual Verification 'Localized Dynamic Content' (Protocol in workflow.md)
+## Phase 3: Localized Dynamic Content (Recipe Lists) [checkpoint: 4ba08b8]
+- [x] Task: Update Recipe Repository for List Translations
+    - [x] **Write Tests**: Verify `getLatest` and `getAll` return translated titles when a locale is provided.
+    - [x] **Implement**: Update `SupabaseRecipeRepository` to perform a left join on `recipe_translations` for list-based queries.
+- [x] Task: Localize List Components
+    - [x] **Write Tests**: Ensure `RecipeListItem` displays the translated title if available.
+    - [x] **Implement**: Update `RecipeListItem` and `PlannerQueue` to prioritize translation data.
+- [x] Task: Conductor - User Manual Verification 'Localized Dynamic Content' (Protocol in workflow.md) 4ba08b8
 
 ## Phase 4: Quality Assurance & Final Polish
 - [ ] Task: Verify 100% Localization Coverage
