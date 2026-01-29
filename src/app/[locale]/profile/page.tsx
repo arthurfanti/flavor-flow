@@ -44,7 +44,7 @@ export default function ProfilePage() {
         }
       } catch (error) {
         console.error('Failed to load profile:', error);
-        toast.error('Failed to load profile');
+        toast.error(tc('loadProfileError'));
       } finally {
         setIsLoading(false);
       }
@@ -53,7 +53,7 @@ export default function ProfilePage() {
     if (profileRepo) {
       loadProfile();
     }
-  }, [!!profileRepo, session?.user?.id]);
+  }, [!!profileRepo, session?.user?.id, tc]);
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -66,10 +66,10 @@ export default function ProfilePage() {
         display_name: displayName,
         preferred_locale: locale,
       });
-      toast.success('Profile saved successfully');
+      toast.success(tc('saveProfileSuccess'));
     } catch (error) {
       console.error('Failed to save profile:', error);
-      toast.error('Failed to save profile');
+      toast.error(tc('saveProfileError'));
     } finally {
       setIsSaving(false);
     }
@@ -86,9 +86,9 @@ export default function ProfilePage() {
   return (
     <div className="max-w-2xl mx-auto p-6 pb-24 animate-fade-in">
       <header className="mb-12">
-        <span className="text-brand-primary font-sans font-bold uppercase tracking-[0.3em] text-[10px] block mb-2">Preferences</span>
+        <span className="text-brand-primary font-sans font-bold uppercase tracking-[0.3em] text-[10px] block mb-2">{t('subtitle')}</span>
         <h1 className="text-4xl font-display font-bold text-white tracking-tight">{t('title')}</h1>
-        <p className="text-neutral-400 mt-3 text-lg">Manage your account preferences and language.</p>
+        <p className="text-neutral-400 mt-3 text-lg">{t('description')}</p>
       </header>
 
       <MagicCard 
@@ -100,14 +100,14 @@ export default function ProfilePage() {
           <div className="space-y-4">
             <label htmlFor="displayName" className="flex items-center gap-2 text-sm font-bold text-neutral-300 uppercase tracking-widest">
               <User className="h-4 w-4 text-brand-primary" />
-              Display Name
+              {t('displayName')}
             </label>
             <MagicInput
               type="text"
               id="displayName"
               value={displayName}
               onChange={(e) => setDisplayName(e.target.value)}
-              placeholder="Your Name"
+              placeholder={t('displayNamePlaceholder')}
               className="h-14"
             />
           </div>
@@ -124,14 +124,14 @@ export default function ProfilePage() {
                 onChange={(e) => setLocale(e.target.value)}
                 className="w-full h-14 px-4 py-2 border border-white/10 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-primary/50 bg-glass-surface text-foreground appearance-none backdrop-blur-sm transition-all cursor-pointer"
               >
-                <option value="en">English</option>
-                <option value="es">Spanish</option>
-                <option value="fr">French</option>
-                <option value="de">German</option>
-                <option value="it">Italian</option>
-                <option value="pt">Portuguese</option>
-                <option value="ja">Japanese</option>
-                <option value="zh">Chinese</option>
+                <option value="en">{t('languages.en')}</option>
+                <option value="es">{t('languages.es')}</option>
+                <option value="fr">{t('languages.fr')}</option>
+                <option value="de">{t('languages.de')}</option>
+                <option value="it">{t('languages.it')}</option>
+                <option value="pt">{t('languages.pt')}</option>
+                <option value="ja">{t('languages.ja')}</option>
+                <option value="zh">{t('languages.zh')}</option>
               </select>
               <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-neutral-500">
                 <svg className="h-4 w-4 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
@@ -140,7 +140,7 @@ export default function ProfilePage() {
               </div>
             </div>
             <p className="text-xs text-neutral-500 italic mt-2">
-              Recipes will be automatically translated to this language when viewed.
+              {t('translationAuto')}
             </p>
           </div>
 

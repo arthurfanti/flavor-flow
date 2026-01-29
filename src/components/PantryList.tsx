@@ -4,6 +4,7 @@ import React from 'react';
 import { PantryItem, PantryCategory } from '@/lib/repositories/PantryRepository';
 import { MagicCard } from './MagicCard';
 import { Trash2, AlertTriangle, CheckCircle2 } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 interface PantryListProps {
   items: PantryItem[];
@@ -12,6 +13,8 @@ interface PantryListProps {
 }
 
 export default function PantryList({ items, onDelete, onToggleLowStock }: PantryListProps) {
+  const t = useTranslations('Pantry');
+
   if (items.length === 0) {
     return (
       <MagicCard 
@@ -19,7 +22,7 @@ export default function PantryList({ items, onDelete, onToggleLowStock }: Pantry
         gradientColor="#E05D44"
         variant="neon"
       >
-        <p className="text-neutral-500 font-medium italic">Your pantry is empty.</p>
+        <p className="text-neutral-500 font-medium italic">{t('empty')}</p>
       </MagicCard>
     );
   }
@@ -42,7 +45,7 @@ export default function PantryList({ items, onDelete, onToggleLowStock }: Pantry
         >
           <div className="flex items-center gap-4 mb-6 px-2">
             <h3 className="text-[11px] font-sans font-bold uppercase tracking-[0.2em] text-neutral-500">
-              {category}
+              {t(`categories.${category}`)}
             </h3>
             <div className="h-px bg-white/5 flex-grow" />
           </div>
@@ -62,7 +65,7 @@ export default function PantryList({ items, onDelete, onToggleLowStock }: Pantry
                       <div className="flex items-center gap-1.5 text-brand-primary">
                         <AlertTriangle className="h-3 w-3" />
                         <span className="text-[9px] font-bold uppercase tracking-wider">
-                          Low Stock
+                          {t('lowStock')}
                         </span>
                       </div>
                     )}
@@ -75,14 +78,14 @@ export default function PantryList({ items, onDelete, onToggleLowStock }: Pantry
                         "p-2 rounded-lg transition-all",
                         item.is_low_stock ? "text-emerald-400 hover:bg-emerald-400/10" : "text-neutral-500 hover:bg-white/5 hover:text-white"
                       )}
-                      title={item.is_low_stock ? "Mark as in stock" : "Mark as low stock"}
+                      title={item.is_low_stock ? t('markInStock') : t('markLowStock')}
                     >
                       {item.is_low_stock ? <CheckCircle2 className="h-5 w-5" /> : <AlertTriangle className="h-5 w-5" />}
                     </button>
                     <button 
                       onClick={() => onDelete(item.id!)}
                       className="p-2 text-neutral-500 hover:text-red-400 hover:bg-red-400/10 rounded-lg transition-all"
-                      title="Remove item"
+                      title={t('removeItem')}
                     >
                       <Trash2 className="h-5 w-5" />
                     </button>

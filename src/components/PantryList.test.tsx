@@ -11,11 +11,11 @@ const mockItems: PantryItem[] = [
 describe('PantryList', () => {
   it('renders category headings', () => {
     render(<PantryList items={mockItems} onDelete={jest.fn()} onToggleLowStock={jest.fn()} />);
-    expect(screen.getByText('Produce')).toBeInTheDocument();
-    expect(screen.getByText('Pantry Staples')).toBeInTheDocument();
+    expect(screen.getByText('categories.Produce')).toBeInTheDocument();
+    expect(screen.getByText('categories.Pantry Staples')).toBeInTheDocument();
   });
 
-  it('renders items under their categories', () => {
+  it('renders items in correct categories', () => {
     render(<PantryList items={mockItems} onDelete={jest.fn()} onToggleLowStock={jest.fn()} />);
     expect(screen.getByText('Apples')).toBeInTheDocument();
     expect(screen.getByText('Garlic')).toBeInTheDocument();
@@ -24,20 +24,20 @@ describe('PantryList', () => {
 
   it('highlights low stock items', () => {
     render(<PantryList items={mockItems} onDelete={jest.fn()} onToggleLowStock={jest.fn()} />);
-    const lowStockIndicator = screen.getByText(/Low Stock/i);
+    const lowStockIndicator = screen.getByText(/lowStock/i);
     expect(lowStockIndicator).toBeInTheDocument();
   });
 
   it('shows empty state message', () => {
     render(<PantryList items={[]} onDelete={jest.fn()} onToggleLowStock={jest.fn()} />);
-    expect(screen.getByText(/Your pantry is empty/i)).toBeInTheDocument();
+    expect(screen.getByText(/empty/i)).toBeInTheDocument();
   });
 
   it('calls onDelete when delete button is clicked', () => {
     const onDelete = jest.fn();
     render(<PantryList items={mockItems} onDelete={onDelete} onToggleLowStock={jest.fn()} />);
     
-    const deleteButtons = screen.getAllByTitle(/Remove item/i);
+    const deleteButtons = screen.getAllByTitle(/removeItem/i);
     fireEvent.click(deleteButtons[0]);
     
     expect(onDelete).toHaveBeenCalledWith(1);
@@ -47,7 +47,7 @@ describe('PantryList', () => {
     const onToggleLowStock = jest.fn();
     render(<PantryList items={mockItems} onDelete={jest.fn()} onToggleLowStock={onToggleLowStock} />);
     
-    const toggleButtons = screen.getAllByTitle(/Mark as/i);
+    const toggleButtons = screen.getAllByTitle(/markLowStock/i);
     fireEvent.click(toggleButtons[0]);
     
     expect(onToggleLowStock).toHaveBeenCalledWith(1, false);

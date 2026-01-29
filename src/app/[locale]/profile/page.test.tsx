@@ -62,7 +62,7 @@ describe('ProfilePage', () => {
 
     await waitFor(() => {
       expect(screen.getByDisplayValue('Test User')).toBeInTheDocument();
-      expect(screen.getByDisplayValue('French')).toBeInTheDocument(); // Assuming select uses labels
+      expect(screen.getByDisplayValue('languages.fr')).toBeInTheDocument(); // Mock returns key name
     });
   });
 
@@ -78,10 +78,10 @@ describe('ProfilePage', () => {
 
     await waitFor(() => screen.getByDisplayValue('Old Name'));
 
-    const nameInput = screen.getByLabelText(/Display Name/i);
+    const nameInput = screen.getByLabelText('displayName');
     fireEvent.change(nameInput, { target: { value: 'New Name' } });
 
-    const saveButton = screen.getByRole('button', { name: /save/i });
+    const saveButton = screen.getByRole('button', { name: 'save' });
     fireEvent.click(saveButton);
 
     await waitFor(() => {

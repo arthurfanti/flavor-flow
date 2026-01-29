@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { PantryItem, PantryCategory } from '@/lib/repositories/PantryRepository';
+import { useTranslations } from 'next-intl';
 
 interface PantryItemFormProps {
   initialData?: Partial<PantryItem>;
@@ -12,6 +13,8 @@ interface PantryItemFormProps {
 const categories: PantryCategory[] = ['Produce', 'Spices', 'Pantry Staples', 'Dairy', 'Meat', 'Other'];
 
 export default function PantryItemForm({ initialData, onSave, onCancel }: PantryItemFormProps) {
+  const t = useTranslations('Pantry');
+  const tCommon = useTranslations('Common');
   const [name, setName] = useState(initialData?.name || '');
   const [category, setCategory] = useState<PantryCategory>(initialData?.category || 'Pantry Staples');
   const [isLowStock, setIsLowStock] = useState(initialData?.is_low_stock || false);
@@ -26,21 +29,21 @@ export default function PantryItemForm({ initialData, onSave, onCancel }: Pantry
       <div className="space-y-6">
         <div>
           <label className="block text-sm font-sans font-bold uppercase tracking-widest text-gray-400 mb-2">
-            Item Name
+            {t('itemName', { defaultValue: 'Item Name' })}
           </label>
           <input
             type="text"
             required
             value={name}
             onChange={(e) => setName(e.target.value)}
-            placeholder="e.g. Olive Oil"
+            placeholder={t('itemNamePlaceholder', { defaultValue: 'e.g. Olive Oil' })}
             className="w-full p-5 rounded-2xl border border-gray-100 focus:outline-none focus:ring-4 focus:ring-brand-yellow/20 bg-white shadow-sm transition-all text-lg font-medium text-gray-700"
           />
         </div>
 
         <div>
           <label htmlFor="pantry-category" className="block text-sm font-sans font-bold uppercase tracking-widest text-gray-400 mb-2">
-            Category
+            {t('category', { defaultValue: 'Category' })}
           </label>
           <select
             id="pantry-category"
@@ -49,13 +52,13 @@ export default function PantryItemForm({ initialData, onSave, onCancel }: Pantry
             className="w-full p-5 rounded-2xl border border-gray-100 focus:outline-none focus:ring-4 focus:ring-brand-yellow/20 bg-white shadow-sm transition-all text-lg font-medium text-gray-700 appearance-none"
           >
             {categories.map(cat => (
-              <option key={cat} value={cat}>{cat}</option>
+              <option key={cat} value={cat}>{t(`categories.${cat}`)}</option>
             ))}
           </select>
         </div>
 
         <div className="flex items-center justify-between p-5 bg-white rounded-2xl border border-gray-50 shadow-sm">
-          <span className="text-lg font-medium text-gray-700">Mark as Low Stock</span>
+          <span className="text-lg font-medium text-gray-700">{t('markLowStock')}</span>
           <button
             type="button"
             onClick={() => setIsLowStock(!isLowStock)}
@@ -72,13 +75,13 @@ export default function PantryItemForm({ initialData, onSave, onCancel }: Pantry
           onClick={onCancel}
           className="flex-1 p-5 rounded-2xl font-bold uppercase tracking-widest text-xs text-gray-400 bg-white border border-gray-100 hover:bg-gray-50 transition-all"
         >
-          Cancel
+          {tCommon('cancel')}
         </button>
         <button
           type="submit"
           className="flex-1 p-5 rounded-2xl font-bold uppercase tracking-widest text-xs bg-brand-yellow text-black hover:bg-brand-yellow-dark shadow-lg shadow-brand-yellow/10 transition-all active:scale-95"
         >
-          Save Item
+          {t('saveItem', { defaultValue: 'Save Item' })}
         </button>
       </div>
     </form>

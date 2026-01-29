@@ -1,6 +1,7 @@
 import React from 'react';
 import { MagicCard } from './MagicCard';
 import { Trash2, ShoppingBag, Check } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 interface ShoppingListItem {
   id?: number;
@@ -15,6 +16,8 @@ interface ShoppingListProps {
 }
 
 export default function ShoppingList({ items, onToggle, onRemove }: ShoppingListProps) {
+  const t = useTranslations('ShoppingList');
+
   if (items.length === 0) {
     return (
       <MagicCard 
@@ -25,7 +28,7 @@ export default function ShoppingList({ items, onToggle, onRemove }: ShoppingList
         <div className="text-neutral-700 mb-4">
           <ShoppingBag className="w-16 h-16 mx-auto opacity-20" />
         </div>
-        <p className="text-neutral-500 font-medium">Your shopping list is empty</p>
+        <p className="text-neutral-500 font-medium">{t('empty')}</p>
       </MagicCard>
     );
   }
@@ -37,8 +40,8 @@ export default function ShoppingList({ items, onToggle, onRemove }: ShoppingList
       gradientColor="#E05D44"
     >
       <div className="flex flex-col gap-1 mb-10 px-1">
-        <span className="text-[10px] font-sans font-bold uppercase tracking-[0.2em] text-brand-primary block">Inventory</span>
-        <h2 className="text-4xl font-display font-bold text-white">Shopping List</h2>
+        <span className="text-[10px] font-sans font-bold uppercase tracking-[0.2em] text-brand-primary block">{t('inventory')}</span>
+        <h2 className="text-4xl font-display font-bold text-white">{t('shoppingList')}</h2>
       </div>
       
       <ul className="space-y-1">
@@ -48,7 +51,7 @@ export default function ShoppingList({ items, onToggle, onRemove }: ShoppingList
               <div 
                 role="checkbox"
                 aria-checked={item.bought}
-                aria-label={`Mark ${item.name} as ${item.bought ? 'not bought' : 'bought'}`}
+                aria-label={item.bought ? t('markNotBought', { name: item.name }) : t('markBought', { name: item.name })}
                 className={cn(
                   "w-6 h-6 rounded-lg border-2 flex items-center justify-center cursor-pointer transition-all duration-300",
                   item.bought ? "bg-brand-primary border-brand-primary" : "border-white/10 hover:border-brand-primary/50"
@@ -67,7 +70,7 @@ export default function ShoppingList({ items, onToggle, onRemove }: ShoppingList
             <button
               onClick={() => onRemove(item.id!)}
               className="text-neutral-600 hover:text-red-400 opacity-0 group-hover:opacity-100 transition-all p-2 hover:bg-red-400/10 rounded-lg"
-              aria-label="Remove item"
+              aria-label={t('removeItem')}
             >
               <Trash2 className="h-5 w-5" />
             </button>

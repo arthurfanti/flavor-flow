@@ -1,11 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/navigation";
 import { toast } from "sonner";
 import { createSupabaseClient } from "@/lib/supabase/client";
+import { useTranslations } from "next-intl";
 
 export default function LoginPage() {
+  const t = useTranslations("Auth");
   const [isSignUp, setIsSignUp] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -26,7 +28,7 @@ export default function LoginPage() {
       });
 
       if (!error) {
-        toast.success("Check your email for the confirmation link!");
+        toast.success(t("checkEmail"));
         setIsSignUp(false);
       } else {
         setError(error.message);
@@ -38,7 +40,7 @@ export default function LoginPage() {
       });
 
       if (!error) {
-        toast.success("Welcome back!");
+        toast.success(t("welcomeBack"));
         router.push("/");
       } else {
         setError(error.message);
@@ -52,12 +54,12 @@ export default function LoginPage() {
       <div className="w-full max-w-md p-6 space-y-6 bg-white rounded-2xl shadow-sm border border-gray-100">
         <div className="space-y-2 text-center">
           <h2 className="text-3xl font-bold tracking-tight text-gray-900">
-            {isSignUp ? "Create Account" : "Sign In"}
+            {isSignUp ? t("signUp") : t("signIn")}
           </h2>
           <p className="text-sm text-gray-500">
             {isSignUp 
-              ? "Join Flavor Flow to manage your recipes" 
-              : "Enter your credentials to access your recipes"}
+              ? t("signUpDescription") 
+              : t("signInDescription")}
           </p>
         </div>
         
@@ -70,7 +72,7 @@ export default function LoginPage() {
 
           <div className="space-y-1.5">
             <label htmlFor="email" className="text-sm font-medium text-gray-700 ml-1">
-              Email
+              {t("email")}
             </label>
             <input
               id="email"
@@ -78,14 +80,14 @@ export default function LoginPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              placeholder="you@example.com"
+              placeholder={t("emailPlaceholder")}
               className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
             />
           </div>
 
           <div className="space-y-1.5">
             <label htmlFor="password" className="text-sm font-medium text-gray-700 ml-1">
-              Password
+              {t("password")}
             </label>
             <input
               id="password"
@@ -109,10 +111,10 @@ export default function LoginPage() {
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                 </svg>
-                {isSignUp ? "Creating Account..." : "Signing In..."}
+                {isSignUp ? t("signingUp") : t("signingIn")}
               </span>
             ) : (
-              isSignUp ? "Create Account" : "Sign In"
+              isSignUp ? t("signUp") : t("signIn")
             )}
           </button>
         </form>
@@ -126,8 +128,8 @@ export default function LoginPage() {
             className="text-sm text-blue-600 hover:underline focus:outline-none"
           >
             {isSignUp 
-              ? "Already have an account? Sign In" 
-              : "Don't have an account? Create one"}
+              ? t("alreadyHaveAccount") 
+              : t("dontHaveAccount")}
           </button>
         </div>
       </div>

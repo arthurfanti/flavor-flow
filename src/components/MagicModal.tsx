@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { X } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 interface MagicModalProps {
   isOpen: boolean;
@@ -12,6 +13,7 @@ interface MagicModalProps {
 }
 
 export function MagicModal({ isOpen, onClose, children, className, title }: MagicModalProps) {
+  const t = useTranslations('Common');
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
@@ -56,7 +58,7 @@ export function MagicModal({ isOpen, onClose, children, className, title }: Magi
                 className="rounded-full p-2 text-neutral-400 hover:bg-white/10 hover:text-white transition-colors"
               >
                 <X className="h-4 w-4" />
-                <span className="sr-only">Close</span>
+                <span className="sr-only">{t('close')}</span>
               </button>
             </div>
 
