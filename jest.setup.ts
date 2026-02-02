@@ -1,3 +1,4 @@
+import './jest.polyfill.tsx'
 import '@testing-library/jest-dom'
 
 // TypeScript declarations for Jest

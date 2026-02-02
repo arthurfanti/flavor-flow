@@ -14,4 +14,6 @@
    - All new work must be performed in `feature/<description>` branches.
    - Use `chore/`, `fix/`, or `refactor/` prefixes for non-feature branches.
    - Always merge features into `develop` first.
+6. **Context7 Usage**:
+   - Always use Context7 MCP when library/API documentation, code generation, setup, or configuration steps are needed, without requiring explicit user request.
 

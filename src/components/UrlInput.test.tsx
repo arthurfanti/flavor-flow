@@ -23,7 +23,7 @@ describe('UrlInput', () => {
 
   it('shows loading state', () => {
     render(<UrlInput onExtract={jest.fn()} isLoading={true} />);
-    expect(screen.getByText(/Extracting/i)).toBeInTheDocument();
+    expect(screen.getByText(/Processing/i)).toBeInTheDocument();
     expect(screen.getByRole('button')).toBeDisabled();
   });
 });

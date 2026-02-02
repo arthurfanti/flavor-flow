@@ -8,6 +8,7 @@
 4. **High Code Coverage:** Aim for >80% code coverage for all modules
 5. **User Experience First:** Every decision should prioritize user experience
 6. **Non-Interactive & CI-Aware:** Prefer non-interactive commands. Use `CI=true` for watch-mode tools (tests, linters) to ensure single execution.
+7. **GitFlow Mandate:** Adhere strictly to the GitFlow branching strategy. Perform all new work in `feature/`, `chore/`, `fix/`, or `refactor/` branches. Merge into `develop` for integration. NEVER commit directly to `main` or `develop`.
 
 ## Task Workflow
 
@@ -17,7 +18,10 @@ All tasks follow a strict lifecycle:
 
 1. **Select Task:** Choose the next available task from `plan.md` in sequential order
 
-2. **Mark In Progress:** Before beginning work, edit `plan.md` and change the task from `[ ]` to `[~]`
+2. **Mark In Progress & Branch:** 
+   - Before beginning work, edit `plan.md` and change the task from `[ ]` to `[~]`.
+   - Create and switch to a new specialized branch from `develop`: `git checkout -b <prefix>/<task-description> develop`. 
+   - Use prefixes: `feature/` for new features, `fix/` for bugs, `chore/` for maintenance, `refactor/` for refactoring.
 
 3. **Write Failing Tests (Red Phase):**
    - Create a new test file for the feature or bug fix.
@@ -62,9 +66,12 @@ All tasks follow a strict lifecycle:
     - **Step 10.1: Update Plan:** Read `plan.md`, find the line for the completed task, update its status from `[~]` to `[x]`, and append the first 7 characters of the *just-completed commit's* commit hash.
     - **Step 10.2: Write Plan:** Write the updated content back to `plan.md`.
 
-11. **Commit Plan Update:**
+11. **Commit Plan Update & Merge:**
     - **Action:** Stage the modified `plan.md` file.
     - **Action:** Commit this change with a descriptive message (e.g., `conductor(plan): Mark task 'Create user model' as complete`).
+    - **Action:** Switch back to `develop`: `git checkout develop`.
+    - **Action:** Merge the task branch: `git merge <task-branch>`.
+    - **Action:** Delete the local task branch: `git branch -d <task-branch>`.
 
 ### Phase Completion Verification and Checkpointing Protocol
 

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Flavor Flow | The Editorial Kitchen</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,900;1,6..96,900&amp;family=Nunito:wght@200;300;400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#df5d43", // Terracotta
+                        "accent": "#FFBF00", // Neon Amber
+                        "background-dark": "#0F0F0F", 
+                        "surface-dark": "#121212",
+                        "text-silver": "#A0A0A0",
+                    },
+                    fontFamily: {
+                        "display": ["'Bodoni Moda'", "serif"],
+                        "body": ["'Nunito'", "sans-serif"],
+                    },
+                },
+            },
+        }
+    </script>
+<style type="text/tailwindcss">
+        @layer base {
+            body {
+                @apply bg-background-dark text-white font-body selection:bg-primary selection:text-white;
+                letter-spacing: 0.05em;
+            }
+            h1, h2, h3 {
+                @apply font-display uppercase italic tracking-tighter;
+                line-height: 0.85;
+            }
+        }
+        .liquid-glass {
+            background: rgba(223, 93, 67, 0.15);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+        .step-number {
+            -webkit-text-stroke: 1px rgba(255, 255, 255, 0.2);
+            color: transparent;
+            font-size: 12rem;
+            line-height: 1;
+        }.grid-line-v {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            width: 1px;
+            background: rgba(255, 255, 255, 0.03);
+            z-index: 0;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="antialiased overflow-x-hidden">
+<div class="grid-line-v left-5"></div>
+<div class="grid-line-v right-5"></div>
+<div class="fixed bottom-8 left-1/2 -translate-x-1/2 z-[100] w-[calc(100%-40px)] max-w-md">
+<button class="liquid-glass w-full py-6 px-8 rounded-full flex items-center justify-between group transition-all duration-500 hover:scale-[1.02] active:scale-95">
+<span class="font-display italic text-2xl text-white">Start Cooking</span>
+<div class="w-12 h-12 rounded-full bg-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-white">arrow_outward</span>
+</div>
+</button>
+</div>
+<nav class="fixed top-0 w-full z-50 bg-background-dark/80 backdrop-blur-md">
+<div class="max-w-md mx-auto px-5 h-20 flex items-center justify-between border-b border-white/5">
+<div class="flex items-center gap-2">
+<span class="font-display font-black text-2xl italic tracking-tighter">FF.</span>
+</div>
+<span class="material-symbols-outlined text-text-silver font-light">menu</span>
+</div>
+</nav>
+<main class="w-full max-w-md mx-auto relative z-10">
+<header class="pt-40 pb-32 px-5 flex flex-col gap-12">
+<div class="flex flex-col gap-2">
+<span class="text-accent text-xs font-bold tracking-[0.3em] uppercase">AI Powered Kitchen</span>
+<h1 class="text-[7.5rem] leading-[0.8] mb-8">
+                    From <br/>
+                    Screen <br/>
+<span class="text-primary italic">To Table.</span>
+</h1>
+</div>
+<div class="pl-2 border-l-2 border-primary">
+<p class="text-text-silver text-xl font-light leading-relaxed max-w-[280px]">
+                    Turn your favorite food videos into cookable recipes instantly with our AI-powered kitchen companion.
+                </p>
+</div>
+</header>
+<section class="px-5 py-24 flex flex-col gap-20">
+<div class="border-t border-white/10 pt-8">
+<h2 class="text-6xl italic mb-6">The Features</h2>
+<p class="text-text-silver text-sm max-w-[240px]">Experience the culinary magic with tools designed for the modern chef.</p>
+</div>
+<div class="flex flex-col gap-24">
+<div class="flex flex-col gap-6">
+<span class="font-display text-primary text-4xl italic">01</span>
+<h3 class="text-4xl">AI Extraction</h3>
+<p class="text-text-silver text-lg font-light leading-relaxed">
+                        Watch it, then cook it. Our AI extracts ingredients and steps from any video instantly. No transcription needed.
+                    </p>
+</div>
+<div class="flex flex-col gap-6">
+<span class="font-display text-primary text-4xl italic">02</span>
+<h3 class="text-4xl">Smart Pantry</h3>
+<p class="text-text-silver text-lg font-light leading-relaxed">
+                        We know what you have. We suggest what to make. Reduce waste and discover new favorites.
+                    </p>
+</div>
+<div class="flex flex-col gap-6">
+<span class="font-display text-primary text-4xl italic">03</span>
+<h3 class="text-4xl">Meal Planner</h3>
+<p class="text-text-silver text-lg font-light leading-relaxed">
+                        Organize your culinary week with drag-and-drop ease. Auto-generated shopping lists included.
+                    </p>
+</div>
+</div>
+</section>
+<section class="px-5 py-32 bg-white text-background-dark -mx-5 px-10">
+<div class="mb-24">
+<span class="text-primary text-xs font-bold tracking-[0.3em] uppercase">The Guide</span>
+<h2 class="text-6xl mt-4 italic">Installation Made Simple</h2>
+<p class="mt-8 text-zinc-500 font-light text-lg">
+                    Flavor Flow is a <strong class="text-background-dark font-medium">Progressive Web App (PWA)</strong>. Get the full native experience directly from your browser.
+                </p>
+</div>
+<div class="flex flex-col gap-32 relative">
+<div class="relative">
+<div class="step-number absolute -top-16 -left-4 opacity-10 pointer-events-none select-none">01</div>
+<div class="relative z-10 flex flex-col gap-6 pt-10">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-4xl text-primary">ios_share</span>
+<h3 class="text-4xl">Step 01</h3>
+</div>
+<h4 class="text-2xl font-display italic">Tap the Share Icon</h4>
+<p class="text-zinc-600 font-light leading-relaxed">Locate the square icon with an arrow in your Safari toolbar.</p>
+</div>
+</div>
+<div class="h-20 flex justify-center py-4">
+<svg fill="none" height="80" viewBox="0 0 40 80" width="40">
+<path d="M20 0C20 40 2 40 2 80" stroke="#FFBF00" stroke-dasharray="4 4" stroke-width="1.5"></path>
+</svg>
+</div>
+<div class="relative">
+<div class="step-number absolute -top-16 -left-4 opacity-10 pointer-events-none select-none">02</div>
+<div class="relative z-10 flex flex-col gap-6 pt-10">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-4xl text-primary">add_box</span>
+<h3 class="text-4xl">Step 02</h3>
+</div>
+<h4 class="text-2xl font-display italic">Add to Home Screen</h4>
+<p class="text-zinc-600 font-light leading-relaxed">Scroll down the menu options and select "Add to Home Screen".</p>
+</div>
+</div>
+</div>
+</section>
+<section class="px-5 py-40 flex flex-col items-start gap-12">
+<h2 class="text-7xl leading-[0.85] italic">
+                Elevate <br/>Your Home <br/>Cooking <br/><span class="text-primary">Today.</span>
+</h2>
+<p class="text-text-silver text-xl font-light leading-relaxed max-w-[300px]">
+                Join thousands of home chefs using Flavor Flow to bridge the gap between inspiration and dinner.
+            </p>
+<div class="mt-8 opacity-40">
+<p class="text-xs uppercase tracking-widest">Cancel anytime within 14 days.</p>
+</div>
+</section>
+<footer class="px-5 py-20 border-t border-white/5 flex flex-col gap-12 bg-background-dark pb-48">
+<div class="flex flex-col gap-6">
+<span class="font-display font-black text-4xl italic tracking-tighter">FF.</span>
+<p class="text-text-silver text-sm max-w-[200px]">The modern editorial experience for the digital chef.</p>
+</div>
+<div class="flex flex-col gap-8">
+<div class="flex gap-10">
+<a class="text-text-silver" href="#"><span class="material-symbols-outlined">photo_camera</span></a>
+<a class="text-text-silver" href="#"><span class="material-symbols-outlined">flutter_dash</span></a>
+<a class="text-text-silver" href="#"><span class="material-symbols-outlined">music_note</span></a>
+</div>
+<p class="text-text-silver/30 text-[10px] uppercase tracking-widest">
+                    © 2024 Flavor Flow. All rights reserved.
+                </p>
+</div>
+</footer>
+</main>
+
+</body></html>

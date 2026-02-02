@@ -5,13 +5,14 @@
 - **Sophisticated yet Accessible:** While the tone is welcoming, it remains professional and refined, catering to adults who value a well-organized kitchen.
 
 ## Visual Identity
-- **Vibrant & Appetizing Palette:** We use bold, energetic colors inspired by fresh ingredients (citrus, greens, deep reds). The palette is sophisticated, using vibrant accents against clean backgrounds to ensure the interface doesn't feel cluttered or childish.
+- **Premium Dark Mode Aesthetic:** A high-contrast, immersive environment using deep blacks (#0F0F0F) and dark surfaces (#1A1A1A) paired with vibrant "Premium Kitchen" accents (Terracotta #E05D44, Sage #8A9A5B).
+- **Magic Glow & Glass:** Strategic use of glass morphism (blur), neon gradient borders, and mouse-following lighting effects to guide focus and provide feedback.
 - **Adult Aesthetic:** The design avoids overly playful or "cartoonish" elements, opting instead for high-quality imagery, clean lines, and a professional layout.
 
 ## Typography
-- **Editorial Elegance:** We utilize elegant serif typefaces for headings and recipe titles to provide a high-end, editorial feel, reminiscent of a premium cookbook.
-- **Friendly Readability:** These are paired with high-quality, readable sans-serif fonts for body text, occasionally incorporating softer or slightly rounded typefaces for UI labels and encouraging microcopy to maintain a welcoming atmosphere.
+- **Editorial Elegance:** **Playfair Display** (Serif) for headings and recipe titles to provide a high-end cookbook feel.
+- **Modern Precision:** **Inter** (Sans-Serif) for body text and UI labels, ensuring clarity and modern functional appeal.
 
 ## Layout and UX
-- **Comfortable Spacing:** The interface prioritizes clarity and focus. We use generous white space and "breathing room" to ensure that dense information (like ingredient lists or multi-step recipes) is easy to digest without feeling overwhelming.
+- **Airbnb-Inspired Spacing:** Generous, intentional padding and card-based layouts following an 8pt grid system to ensure focus and clarity.
 - **Visual-First Strategy:** Since the inspiration comes from video, the app emphasizes large, appetizing imagery and clear video embeds wherever possible.

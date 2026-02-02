@@ -15,7 +15,7 @@ describe('RecipeListItem', () => {
 
   it('renders the ingredient count', () => {
     render(<RecipeListItem recipe={mockRecipe} />);
-    expect(screen.getByText(/2 Ingredients/i)).toBeInTheDocument();
+    expect(screen.getByText('ingredientsCount')).toBeInTheDocument();
   });
 
   it('renders a placeholder if no image_url is provided', () => {

@@ -3,36 +3,112 @@
 @theme {
   --font-serif: var(--font-playfair), serif;
   --font-sans: var(--font-inter), sans-serif;
-  
-  --color-brand-yellow: #FACC15;
-  --color-brand-yellow-dark: #EAB308;
-  --color-app-bg: #FDFDFD;
-  --color-ui-border: #F3F4F6;
+  --font-landing-display: "Bodoni Moda", serif;
+
+  --color-brand-primary: #e05d44;
+  --color-brand-secondary: #8a9a5b;
+  --color-brand-neutral: #a0a0a0;
+  --color-glass-surface: rgba(255, 255, 255, 0.05);
+  --color-magic-amber: #ffbf00;
+  --color-magic-blue: #00f0ff;
 }
 
 :root {
-  --background: #FDFDFD;
-  --foreground: #111827;
+  --background: #0f0f0f;
+  --foreground: #f5f5f5;
+  --muted: #a0a0a0;
 }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: var(--font-sans);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
+@layer base {
+  body {
+    color: var(--foreground);
+    background: var(--background);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
 
-h1, h2, h3, h4, .font-serif {
-  font-family: var(--font-serif);
+  h1,
+  h2,
+  h3,
+  h4,
+  .font-serif,
+  .font-display {
+    font-family: var(--font-serif);
+    color: #ffffff;
+  }
+
+  p {
+    @apply text-neutral-400 leading-relaxed;
+  }
 }
 
 @layer utilities {
   .animate-fade-in {
     animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   }
+
   .animate-slide-up {
     animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  /* Magic UI Utils */
+  .glass {
+    background: var(--color-glass-surface);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .landing-liquid-glass {
+    background: rgba(224, 93, 68, 0.15);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  }
+
+  .landing-step-number {
+    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.2);
+    color: transparent;
+    font-size: 12rem;
+    line-height: 1;
+  }
+
+  .landing-grid-line {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: rgba(255, 255, 255, 0.03);
+    z-index: 0;
+  }
+
+  .landing-glass-card {
+    background: rgba(20, 20, 20, 0.6);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+  }
+
+  .landing-step-number-small {
+    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.2);
+    color: transparent;
+    font-size: 8rem;
+    line-height: 1;
+    font-family: var(--font-landing-display);
+    font-style: italic;
+  }
+
+  .landing-step-number-guide {
+    -webkit-text-stroke: 1px rgba(15, 15, 15, 0.15);
+    color: transparent;
+    font-size: 10rem;
+    line-height: 1;
+  }
+
+  .animate-marquee {
+    animation: marquee 25s linear infinite;
   }
 }
 
@@ -41,6 +117,7 @@ h1, h2, h3, h4, .font-serif {
     opacity: 0;
     transform: translateY(12px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -52,8 +129,19 @@ h1, h2, h3, h4, .font-serif {
     opacity: 0;
     transform: translateY(30px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-50%);
   }
 }

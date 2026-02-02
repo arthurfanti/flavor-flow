@@ -1,0 +1,162 @@
+{
+  "Common": {
+    "title": "Flavor Flow",
+    "loading": "Cargando...",
+    "error": "Error",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "close": "Cerrar",
+    "edit": "Editar",
+    "remove": "Eliminar",
+    "add": "Añadir",
+    "configurationError": "Error de Configuración",
+    "checkEnvVars": "Por favor, verifica tus variables de entorno.",
+    "missingKeys": "Faltan las claves de extracción de IA (Supadata/OpenRouter).",
+    "extractorNotInitialized": "El extractor de IA o los repositorios no están inicializados. Verifica tus claves API.",
+    "networkError": "Error de red: No se pudo conectar al servidor. Por favor, verifica tu conexión a internet o la configuración de Supabase.",
+    "unexpectedError": "Ocurrió un inesperado.",
+    "loadProfileError": "Error al cargar el perfil",
+    "saveProfileSuccess": "Perfil guardado correctamente",
+    "saveProfileError": "Error al guardar el perfil",
+    "ingredientsCount": "{count} Ingredientes"
+  },
+  "Navigation": {
+    "home": "Inicio",
+    "planner": "Planificador",
+    "pantry": "Despensa",
+    "shoppingList": "Lista de Compras",
+    "profile": "Perfil"
+  },
+  "Auth": {
+    "signIn": "Iniciar Sesión",
+    "signUp": "Crear Cuenta",
+    "email": "Correo Electrónico",
+    "password": "Contraseña",
+    "emailPlaceholder": "tu@ejemplo.com",
+    "signInDescription": "Introduce tus credenciales para acceder a tus recetas",
+    "signUpDescription": "Únete a Flavor Flow para gestionar tu recetas",
+    "signingIn": "Iniciando Sesión...",
+    "signingUp": "Creando Cuenta...",
+    "alreadyHaveAccount": "¿Ya tienes una cuenta? Iniciar Sesión",
+    "dontHaveAccount": "¿No tienes una cuenta? Crear una",
+    "checkEmail": "¡Revisa tu correo electrónico para ver el enlace de confirmación!",
+    "welcomeBack": "¡Bienvenido de nuevo!"
+  },
+  "Home": {
+    "discover": "Descubrir",
+    "description": "Transforma tu inspiración culinaria en listas prácticas.",
+    "startRecipe": "Comienza tu receta",
+    "recentExtractions": "Extracciones Recientes",
+    "viewAll": "Ver Todo",
+    "premiumKitchen": "Cocina Premium",
+    "socialSources": "YouTube • Instagram • TikTok",
+    "extractionSuccess": "¡Receta extraída y guardada!",
+    "extractionErrorPrefix": "Error de extracción: {message}"
+  },
+  "Planner": {
+    "title": "Próximas Comidas",
+    "subtitle": "Planificación",
+    "description": "Tu lista personalizada de próximas aventuras culinarias.",
+    "empty": "Tu planificador está vacío. ¡Empieza por añadir algunas recetas!",
+    "plannedMeal": "Comida Planeada",
+    "remove": "Eliminar receta"
+  },
+  "Recipes": {
+    "title": "Mis Recetas",
+    "subtitle": "Biblioteca",
+    "description": "Tu archivo personal de inspiración culinaria.",
+    "empty": "Tu lista de recetas está vacía."
+  },
+  "Pantry": {
+    "title": "Mi Despensa",
+    "subtitle": "Inventario",
+    "description": "Lleva el control de tus productos básicos de cocina.",
+    "addItemTitle": "Añadir Nuevo Artículo",
+    "addItemDescription": "Amplía tu inventario de cocina",
+    "empty": "Tu despensa está vacía.",
+    "itemName": "Nombre del Artículo",
+    "itemNamePlaceholder": "ej: Aceite de Oliva",
+    "category": "Categoría",
+    "saveItem": "Guardar Artículo",
+    "lowStock": "Stock Bajo",
+    "markInStock": "Marcar como en stock",
+    "markLowStock": "Marcar como stock bajo",
+    "removeItem": "Eliminar artículo",
+    "categories": {
+      "Produce": "Frutas y Verduras",
+      "Spices": "Especias",
+      "Pantry Staples": "Básicos de Despensa",
+      "Dairy": "Lácteos",
+      "Meat": "Carnes",
+      "Other": "Otros"
+    }
+  },
+  "ShoppingList": {
+    "title": "Lista de Compras",
+    "subtitle": "Mercado",
+    "description": "Todo lo que necesitas para tus próximas creaciones culinarias.",
+    "empty": "Tu lista de la compra está vacía",
+    "inventory": "Inventario",
+    "shoppingList": "Lista de Compras",
+    "markBought": "Marcar {name} como comprado",
+    "markNotBought": "Marcar {name} como no comprado",
+    "removeItem": "Eliminar artículo"
+  },
+  "RecipeDetail": {
+    "editRecipe": "Editar Receta",
+    "addToList": "Añadir a la Lista",
+    "addToPlanner": "Añadir al Planificador",
+    "added": "Añadido",
+    "planned": "Planeado",
+    "ingredients": "Ingredientes",
+    "preparation": "Preparación",
+    "premiumRecipe": "Receta Premium",
+    "aiKitchen": "Cocina IA"
+  },
+  "RecipeEditor": {
+    "title": "Editar Receta",
+    "editingMode": "Modo Edición",
+    "recipeTitle": "Título de la Receta",
+    "recipeTitlePlaceholder": "Introduzca el nombre de la receta",
+    "ingredients": "Ingredientes",
+    "ingredientsPlaceholder": "Un ingrediente por linha",
+    "instructions": "Instrucciones",
+    "instructionsPlaceholder": "Un passo por linha",
+    "saving": "Guardando..."
+  },
+  "Profile": {
+    "title": "Configuración del Perfil",
+    "subtitle": "Preferencias",
+    "description": "Gestiona tus preferencias de cuenta e idioma.",
+    "language": "Idioma de Preferencia",
+    "displayName": "Nombre de Mostrar",
+    "displayNamePlaceholder": "Tu Nombre",
+    "translationAuto": "Las recetas se traducirán automáticamente a este idioma cuando las veas.",
+    "signOut": "Cerrar Sesión",
+    "saving": "Guardando...",
+    "languages": {
+      "en": "Inglés",
+      "es": "Español",
+      "fr": "Francés",
+      "de": "Alemán",
+      "it": "Italiano",
+      "pt": "Portugués",
+      "ja": "Japonés",
+      "zh": "Chino"
+    }
+  },
+  "Extraction": {
+    "transcribing": {
+      "title": "Transcribiendo Audio",
+      "subtitle": "Extrayendo cada palabra del video..."
+    },
+    "analyzing": {
+      "title": "Analizando con IA",
+      "subtitle": "MiniMax está identificando ingredientes y pasos..."
+    },
+    "finalizing": {
+      "title": "Finalizando Receta",
+      "subtitle": "Puliendo tus instrucciones de estilo editorial..."
+    }
+  }
+}

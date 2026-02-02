@@ -5,34 +5,35 @@ const mockRecipe = {
   title: 'Test Recipe',
   ingredients: ['1 cup flour', '2 eggs'],
   instructions: ['Mix ingredients', 'Bake at 350F'],
-  sourceUrl: 'https://example.com'
+  sourceUrl: 'https://example.com',
+  image_url: '/test.png'
 };
 
 describe('RecipePreview', () => {
-  it('renders recipe title with serif font', () => {
+  it('renders recipe title with display font', () => {
     render(<RecipePreview recipe={mockRecipe} onAddToList={jest.fn()} onAddToPlanner={jest.fn()} />);
     const title = screen.getByRole('heading', { name: /Test Recipe/i, level: 2 });
     expect(title).toBeInTheDocument();
-    expect(title).toHaveClass('font-serif');
+    expect(title).toHaveClass('font-display');
   });
 
   it('renders ingredients list', () => {
     render(<RecipePreview recipe={mockRecipe} onAddToList={jest.fn()} onAddToPlanner={jest.fn()} />);
+    expect(screen.getByText('ingredients')).toBeInTheDocument();
     expect(screen.getByText('1 cup flour')).toBeInTheDocument();
-    expect(screen.getByText('2 eggs')).toBeInTheDocument();
   });
 
   it('renders instructions list', () => {
     render(<RecipePreview recipe={mockRecipe} onAddToList={jest.fn()} onAddToPlanner={jest.fn()} />);
+    expect(screen.getByText('preparation')).toBeInTheDocument();
     expect(screen.getByText('Mix ingredients')).toBeInTheDocument();
-    expect(screen.getByText('Bake at 350F')).toBeInTheDocument();
   });
 
   it('calls onAddToList when button is clicked', () => {
     const onAddToList = jest.fn();
     render(<RecipePreview recipe={mockRecipe} onAddToList={onAddToList} onAddToPlanner={jest.fn()} />);
     
-    const button = screen.getByRole('button', { name: /Add to List/i });
+    const button = screen.getByRole('button', { name: /addToList/i });
     fireEvent.click(button);
     
     expect(onAddToList).toHaveBeenCalledWith(mockRecipe.ingredients);
@@ -42,7 +43,7 @@ describe('RecipePreview', () => {
     const onAddToPlanner = jest.fn();
     render(<RecipePreview recipe={mockRecipe} onAddToList={jest.fn()} onAddToPlanner={onAddToPlanner} />);
     
-    const button = screen.getByRole('button', { name: /Add to Planner/i });
+    const button = screen.getByRole('button', { name: /addToPlanner/i });
     fireEvent.click(button);
     
     expect(onAddToPlanner).toHaveBeenCalledWith(mockRecipe);

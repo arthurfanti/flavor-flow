@@ -4,15 +4,37 @@ import { PlannerRepository, PlannedRecipe } from './PlannerRepository';
 export class SupabasePlannerRepository implements PlannerRepository {
   constructor(private supabase: SupabaseClient, private userId: string) {}
 
-  async getQueue(): Promise<PlannedRecipe[]> {
-    const { data, error } = await this.supabase
+  async getQueue(locale?: string): Promise<PlannedRecipe[]> {
+    // Join through recipes table to get translations
+    const selectStr = locale 
+      ? '*, recipes:recipe_id(recipe_translations(title))' 
+      : '*';
+
+    let query = this.supabase
       .from('planned_recipes')
-      .select('*')
-      .eq('user_id', this.userId)
-      .order('order', { ascending: true });
+      .select(selectStr)
+      .eq('user_id', this.userId);
+
+    if (locale) {
+      query = query.eq('recipes.recipe_translations.locale', locale);
+    }
+    
+    const { data, error } = await query.order('order', { ascending: true });
     
     if (error) throw error;
-    return data || [];
+
+    return (data || []).map((item: any) => {
+      // Robust extraction of translation from recipes -> recipe_translations
+      const joinedRecipes = item.recipes;
+      const recipeObj = Array.isArray(joinedRecipes) ? joinedRecipes[0] : joinedRecipes;
+      const translations = recipeObj?.recipe_translations;
+      const translation = Array.isArray(translations) ? translations[0]?.title : null;
+      
+      if (locale && translation) {
+        return { ...item, title: translation };
+      }
+      return item;
+    });
   }
 
   async addToQueue(recipe: Partial<PlannedRecipe>): Promise<void> {

@@ -73,4 +73,57 @@ describe('SupabaseRecipeRepository Locale Support', () => {
       title: 'Original Title',
     }));
   });
+
+  it('getLatest should fetch translations if locale is provided', async () => {
+    const repo = new SupabaseRecipeRepository(mockSupabase);
+    const mockRecipes = [
+      {
+        id: 1,
+        title: 'Original Title',
+        recipe_translations: [{ title: 'Translated Title' }]
+      }
+    ];
+
+    const mockLimit = jest.fn().mockResolvedValue({ data: mockRecipes, error: null });
+    const mockOrder = jest.fn().mockReturnValue({ limit: mockLimit });
+    const mockEq = jest.fn().mockReturnValue({ order: mockOrder });
+    const mockSelect = jest.fn().mockReturnValue({ eq: mockEq });
+
+    (mockSupabase.from as jest.Mock).mockReturnValue({
+      select: mockSelect,
+    });
+
+    const result = await repo.getLatest(10, 'fr');
+
+    expect(mockSupabase.from).toHaveBeenCalledWith('recipes');
+    expect(mockSelect).toHaveBeenCalledWith('*, recipe_translations(title)');
+    expect(mockEq).toHaveBeenCalledWith('recipe_translations.locale', 'fr');
+    expect(result[0].title).toBe('Translated Title');
+  });
+
+  it('getAll should fetch translations if locale is provided', async () => {
+    const repo = new SupabaseRecipeRepository(mockSupabase);
+    const mockRecipes = [
+      {
+        id: 1,
+        title: 'Original Title',
+        recipe_translations: [{ title: 'Translated Title' }]
+      }
+    ];
+
+    const mockOrder = jest.fn().mockResolvedValue({ data: mockRecipes, error: null });
+    const mockEq = jest.fn().mockReturnValue({ order: mockOrder });
+    const mockSelect = jest.fn().mockReturnValue({ eq: mockEq });
+
+    (mockSupabase.from as jest.Mock).mockReturnValue({
+      select: mockSelect,
+    });
+
+    const result = await repo.getAll('fr');
+
+    expect(mockSupabase.from).toHaveBeenCalledWith('recipes');
+    expect(mockSelect).toHaveBeenCalledWith('*, recipe_translations(title)');
+    expect(mockEq).toHaveBeenCalledWith('recipe_translations.locale', 'fr');
+    expect(result[0].title).toBe('Translated Title');
+  });
 });

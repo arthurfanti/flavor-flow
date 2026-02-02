@@ -1,23 +1,41 @@
-import { render, screen, fireEvent, waitFor, cleanup } from "@testing-library/react";
-import Home from "./page";
-import RecipesPage from "./recipes/page";
-import ShoppingListPage from "./shopping-list/page";
-import PlannerPage from "./planner/page";
+import {
+  cleanup,
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+} from "@testing-library/react";
+import { NextIntlClientProvider } from "next-intl";
+import { useParams } from "next/navigation";
+import { MockPantryRepository } from "../lib/repositories/MockPantryRepository";
+import { MockPlannerRepository } from "../lib/repositories/MockPlannerRepository";
 import { MockRecipeRepository } from "../lib/repositories/MockRecipeRepository";
 import { MockShoppingListRepository } from "../lib/repositories/MockShoppingListRepository";
-import { MockPlannerRepository } from "../lib/repositories/MockPlannerRepository";
-import { MockPantryRepository } from "../lib/repositories/MockPantryRepository";
+import messages from "../messages/messages-v3-en.json";
+import AppHome from "./[locale]/app/page";
+import PlannerPage from "./[locale]/app/planner/page";
+import RecipeDetailPage from "./[locale]/app/recipes/[id]/page";
+import RecipesPage from "./[locale]/app/recipes/page";
+import ShoppingListPage from "./[locale]/app/shopping-list/page";
 
 // Mock next/navigation
-const mockPush = jest.fn();
 jest.mock("next/navigation", () => ({
+  useParams: jest.fn(),
+  useRouter: jest.fn(),
+}));
+
+// Mock @/navigation
+const mockPush = jest.fn();
+jest.mock("@/navigation", () => ({
   useRouter: jest.fn(() => ({
     push: mockPush,
   })),
+  usePathname: jest.fn(),
+  Link: ({ children, href }: any) => <a href={href}>{children}</a>,
 }));
 
 // Mock Auth
-const mockSession = { user: { id: 'user-123' } };
+const mockSession = { user: { id: "user-123" } };
 const mockAuthContext = {
   session: mockSession,
   loading: false,
@@ -37,17 +55,58 @@ jest.mock("sonner", () => ({
 }));
 
 // Swap Supabase Repos with Mock Repos for E2E testing logic
-jest.mock("../lib/repositories/SupabaseRecipeRepository", () => ({
-  SupabaseRecipeRepository: jest.fn().mockImplementation((supabase, userId) => new MockRecipeRepository(supabase, userId))
-}));
-jest.mock("../lib/repositories/SupabaseShoppingListRepository", () => ({
-  SupabaseShoppingListRepository: jest.fn().mockImplementation((supabase, userId) => new MockShoppingListRepository(supabase, userId))
-}));
-jest.mock("../lib/repositories/SupabasePlannerRepository", () => ({
-  SupabasePlannerRepository: jest.fn().mockImplementation((supabase, userId) => new MockPlannerRepository(supabase, userId))
-}));
-jest.mock("../lib/repositories/SupabasePantryRepository", () => ({
-  SupabasePantryRepository: jest.fn().mockImplementation((supabase, userId) => new MockPantryRepository(supabase, userId))
+jest.mock("../lib/repositories/SupabaseRecipeRepository", () => {
+  const {
+    MockRecipeRepository,
+  } = require("../lib/repositories/MockRecipeRepository");
+  return {
+    SupabaseRecipeRepository: jest
+      .fn()
+      .mockImplementation(
+        (supabase, userId) => new MockRecipeRepository(supabase, userId),
+      ),
+  };
+});
+jest.mock("../lib/repositories/SupabaseShoppingListRepository", () => {
+  const {
+    MockShoppingListRepository,
+  } = require("../lib/repositories/MockShoppingListRepository");
+  return {
+    SupabaseShoppingListRepository: jest
+      .fn()
+      .mockImplementation(
+        (supabase, userId) => new MockShoppingListRepository(supabase, userId),
+      ),
+  };
+});
+jest.mock("../lib/repositories/SupabasePlannerRepository", () => {
+  const {
+    MockPlannerRepository,
+  } = require("../lib/repositories/MockPlannerRepository");
+  return {
+    SupabasePlannerRepository: jest
+      .fn()
+      .mockImplementation(
+        (supabase, userId) => new MockPlannerRepository(supabase, userId),
+      ),
+  };
+});
+jest.mock("../lib/repositories/SupabasePantryRepository", () => {
+  const {
+    MockPantryRepository,
+  } = require("../lib/repositories/MockPantryRepository");
+  return {
+    SupabasePantryRepository: jest
+      .fn()
+      .mockImplementation(
+        (supabase, userId) => new MockPantryRepository(supabase, userId),
+      ),
+  };
+});
+jest.mock("../lib/repositories/SupabaseProfileRepository", () => ({
+  SupabaseProfileRepository: jest.fn().mockImplementation(() => ({
+    getProfile: jest.fn().mockResolvedValue({ preferred_locale: "en" }),
+  })),
 }));
 
 // Mock Supabase Client to succeed
@@ -55,18 +114,25 @@ jest.mock("../lib/supabase/client", () => ({
   createSupabaseClient: jest.fn(() => ({})),
 }));
 
-// Mock global fetch for AI Extraction
-global.fetch = jest.fn(() =>
-  Promise.resolve({
-    ok: true,
-    json: () => Promise.resolve({
-      // Supadata response
-      content: 'Mock transcript content',
-      // or OpenRouter response
-      choices: [{ message: { content: JSON.stringify({ title: 'Mock Recipe 1', ingredients: ['Ingredient A'], instructions: ['Step 1'] }) } }]
+// Mock VideoAIExtractor
+jest.mock("../lib/services/VideoAIExtractor", () => ({
+  VideoAIExtractor: jest.fn().mockImplementation(() => ({
+    extractFromUrl: jest.fn().mockResolvedValue({
+      title: "Mock Recipe 1",
+      ingredients: ["Ingredient A"],
+      instructions: ["Step 1"],
+      sourceUrl: "https://example.com",
     }),
-  })
-) as jest.Mock;
+  })),
+}));
+
+const renderLocalized = (ui: React.ReactElement) => {
+  return render(
+    <NextIntlClientProvider locale="en" messages={messages}>
+      {ui}
+    </NextIntlClientProvider>,
+  );
+};
 
 describe("End-to-End Workflow", () => {
   const originalEnv = process.env;
@@ -77,10 +143,10 @@ describe("End-to-End Workflow", () => {
     MockPlannerRepository.clearForTests();
     MockPantryRepository.clearForTests();
     jest.clearAllMocks();
-    process.env = { 
-      ...originalEnv, 
-      NEXT_PUBLIC_SUPADATA_API_KEY: 'valid-key',
-      NEXT_PUBLIC_OPENROUTER_API_KEY: 'valid-key'
+    process.env = {
+      ...originalEnv,
+      NEXT_PUBLIC_SUPADATA_API_KEY: "valid-key",
+      NEXT_PUBLIC_OPENROUTER_API_KEY: "valid-key",
     };
   });
 
@@ -91,42 +157,55 @@ describe("End-to-End Workflow", () => {
 
   it("should complete the full flow: Extract -> Save -> Plan -> Shop", async () => {
     // 1. Home Page: Extract a recipe
-    render(<Home />);
-    
-    const urlInput = screen.getByPlaceholderText(/Paste video URL/i);
-    const extractButton = screen.getByRole('button', { name: /Extract Recipe/i });
+    renderLocalized(<AppHome />);
 
-    fireEvent.change(urlInput, { target: { value: 'https://example.com' } });
+    const urlInput = screen.getByPlaceholderText(/Paste video URL/i);
+    const extractButton = screen.getByRole("button", {
+      name: /Extract Recipe/i,
+    });
+
+    fireEvent.change(urlInput, { target: { value: "https://example.com" } });
     fireEvent.click(extractButton);
 
-    const addPlannerButton = await screen.findByRole('button', { name: /Add to Planner/i });
-    // Use getAllByText because it appears in header AND preview
-    expect(screen.getAllByText('Mock Recipe 1').length).toBeGreaterThan(0);
+    // Verify navigation after extraction (MockRecipeRepository clearForTests has 2 initial recipes, so new one is ID 3)
+    await waitFor(() => expect(mockPush).toHaveBeenCalledWith("/app/recipes/3"));
 
-    // 2. Add to Planner
+    cleanup();
+
+    // 2. Recipe Detail Page: Plan the recipe
+    (useParams as jest.Mock).mockReturnValue({ id: "3" });
+    renderLocalized(<RecipeDetailPage />);
+
+    const addPlannerButton = await screen.findByRole("button", {
+      name: /addToPlanner/i,
+    });
+    expect(screen.getByText("Mock Recipe 1")).toBeInTheDocument();
+
     fireEvent.click(addPlannerButton);
-    await waitFor(() => expect(mockPush).toHaveBeenCalledWith('/planner'));
+    await waitFor(() => expect(mockPush).toHaveBeenCalledWith("/app/planner"));
 
     cleanup();
 
     // 3. Recipes Page
-    render(<RecipesPage />);
+    renderLocalized(<RecipesPage />);
     await waitFor(() => {
-      expect(screen.getAllByText('Mock Recipe 1').length).toBeGreaterThan(0);
+      expect(screen.getAllByText("Mock Recipe 1").length).toBeGreaterThan(0);
     });
 
     cleanup();
 
     // 4. Planner Page
-    render(<PlannerPage />);
+    renderLocalized(<PlannerPage />);
     await waitFor(() => {
-      expect(screen.getAllByText('Mock Recipe 1').length).toBeGreaterThan(0);
+      expect(screen.getAllByText("Mock Recipe 1").length).toBeGreaterThan(0);
     });
 
     cleanup();
 
     // 5. Shopping List
-    render(<ShoppingListPage />);
-    expect(await screen.findByText('Ingredient A', {}, { timeout: 3000 })).toBeInTheDocument();
+    renderLocalized(<ShoppingListPage />);
+    expect(
+      await screen.findByText("Ingredient A", {}, { timeout: 3000 }),
+    ).toBeInTheDocument();
   });
 });

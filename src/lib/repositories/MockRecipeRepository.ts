@@ -29,6 +29,14 @@ export class MockRecipeRepository implements RecipeRepository {
     return MockRecipeRepository.recipes.find(r => r.id.toString() === id) || null;
   }
 
+  async updateRecipe(id: number, recipe: any): Promise<any> {
+    const index = MockRecipeRepository.recipes.findIndex(r => r.id === id);
+    if (index === -1) throw new Error('Recipe not found');
+    const updated = { ...MockRecipeRepository.recipes[index], ...recipe };
+    MockRecipeRepository.recipes[index] = updated;
+    return updated;
+  }
+
   async saveTranslation(recipeId: number, locale: string, translation: any): Promise<void> {
     // Mock save
   }

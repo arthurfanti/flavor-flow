@@ -1,12 +1,14 @@
 import React from 'react';
 import { ExtractedRecipe } from '@/lib/services/RecipeExtractor';
 import { normalizeImageUrl } from '@/lib/utils';
+import { useTranslations } from 'next-intl';
 
 interface RecipeListItemProps {
   recipe: any;
 }
 
 export default function RecipeListItem({ recipe }: RecipeListItemProps) {
+  const t = useTranslations('Common');
   return (
     <div className="flex items-center gap-4 p-3 bg-white/10 rounded-2xl border border-white/20 shadow-[0_2px_8px_rgba(255,255,255,0.06)] hover:bg-white/20 transition-shadow group text-gray-900 backdrop-blur-md">
       <div className="w-14 h-14 rounded-xl overflow-hidden flex-shrink-0 bg-gray-100">
@@ -29,7 +31,7 @@ export default function RecipeListItem({ recipe }: RecipeListItemProps) {
           {recipe.title}
         </h3>
         <p className="text-xs text-gray-400 font-sans uppercase tracking-widest mt-1">
-          {recipe.ingredients?.length || 0} Ingredients
+          {t('ingredientsCount', { count: recipe.ingredients?.length || 0 })}
         </p>
       </div>
       <div className="flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity pr-2">

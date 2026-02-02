@@ -16,7 +16,7 @@ const config: Config = {
   preset: 'ts-jest',
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
   transform: {
-    '^.+\\.(ts|tsx)$': 'ts-jest',
+    '^.+\.(ts|tsx)$': 'ts-jest',
   },
   testMatch: [
     '**/__tests__/**/*.(ts|tsx|js)',
@@ -25,6 +25,7 @@ const config: Config = {
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
   },
+  transformIgnorePatterns: [],
 }
 
 // createJestConfig is exported this way to ensure that next/jest can load the Next.js config which is async

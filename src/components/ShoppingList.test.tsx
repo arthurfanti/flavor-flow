@@ -27,7 +27,7 @@ describe('ShoppingList', () => {
     const onRemove = jest.fn();
     render(<ShoppingList items={mockItems} onToggle={jest.fn()} onRemove={onRemove} />);
     
-    const deleteButtons = screen.getAllByRole('button', { name: /Remove/i });
+    const deleteButtons = screen.getAllByRole('button', { name: 'removeItem' });
     fireEvent.click(deleteButtons[0]);
     
     expect(onRemove).toHaveBeenCalledWith(1);
@@ -35,6 +35,6 @@ describe('ShoppingList', () => {
 
   it('shows empty state message', () => {
     render(<ShoppingList items={[]} onToggle={jest.fn()} onRemove={jest.fn()} />);
-    expect(screen.getByText(/Your shopping list is empty/i)).toBeInTheDocument();
+    expect(screen.getByText('empty')).toBeInTheDocument();
   });
 });

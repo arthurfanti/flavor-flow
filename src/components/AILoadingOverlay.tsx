@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslations } from 'next-intl';
 
 export type AIStage = 'idle' | 'transcribing' | 'analyzing' | 'finalizing';
 
@@ -7,12 +8,14 @@ interface AILoadingOverlayProps {
 }
 
 export default function AILoadingOverlay({ stage }: AILoadingOverlayProps) {
+  const t = useTranslations('Extraction');
+
   if (stage === 'idle') return null;
 
   const stages = {
     transcribing: {
-      title: 'Transcribing Audio',
-      subtitle: 'Extracting every word from the video...',
+      title: t('transcribing.title'),
+      subtitle: t('transcribing.subtitle'),
       icon: (
         <div className="relative w-32 h-32 flex items-center justify-center">
           <div className="absolute inset-0 bg-brand-yellow/20 rounded-[2.5rem] blur-2xl animate-pulse" />
@@ -27,8 +30,8 @@ export default function AILoadingOverlay({ stage }: AILoadingOverlayProps) {
       )
     },
     analyzing: {
-      title: 'Analyzing with AI',
-      subtitle: 'MiniMax is identifying ingredients and steps...',
+      title: t('analyzing.title'),
+      subtitle: t('analyzing.subtitle'),
       icon: (
         <div className="relative w-32 h-32 flex items-center justify-center">
           <div className="absolute inset-0 bg-indigo-200/40 rounded-[2.5rem] blur-2xl animate-pulse" />
@@ -44,8 +47,8 @@ export default function AILoadingOverlay({ stage }: AILoadingOverlayProps) {
       )
     },
     finalizing: {
-      title: 'Finalizing Recipe',
-      subtitle: 'Polishing your editorial-style instructions...',
+      title: t('finalizing.title'),
+      subtitle: t('finalizing.subtitle'),
       icon: (
         <div className="relative w-32 h-32 flex items-center justify-center">
           <div className="absolute inset-0 bg-emerald-200/40 rounded-[2.5rem] blur-2xl animate-pulse" />
