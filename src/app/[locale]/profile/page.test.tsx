@@ -1,5 +1,5 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import ProfilePage from './page';
+import ProfilePage from '../app/profile/page';
 import { toast } from 'sonner';
 
 // Mock Auth
@@ -11,7 +11,7 @@ jest.mock('@/components/AuthProvider', () => ({
 }));
 
 // Mock Navigation
-jest.mock('next/navigation', () => ({
+jest.mock('@/navigation', () => ({
   useRouter: jest.fn(() => ({
     push: jest.fn(),
   })),

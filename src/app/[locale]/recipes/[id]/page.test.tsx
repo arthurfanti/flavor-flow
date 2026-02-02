@@ -1,5 +1,5 @@
 import { render, screen, waitFor } from '@testing-library/react';
-import RecipeDetailPage from './page';
+import RecipeDetailPage from '../../app/recipes/[id]/page';
 import { useParams } from 'next/navigation';
 import { useAuth } from '@/components/AuthProvider';
 import { SupabaseRecipeRepository } from '@/lib/repositories/SupabaseRecipeRepository';
@@ -9,6 +9,9 @@ import { TranslationService } from '@/lib/services/TranslationService';
 // Mocks
 jest.mock('next/navigation', () => ({
   useParams: jest.fn(),
+}));
+
+jest.mock('@/navigation', () => ({
   useRouter: jest.fn(() => ({ push: jest.fn() })),
 }));
 

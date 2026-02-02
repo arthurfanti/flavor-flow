@@ -9,22 +9,22 @@ import { useTranslations } from 'next-intl';
 const navItems = [
   {
     key: 'home',
-    href: '/',
+    href: '/app',
     icon: Home,
   },
   {
     key: 'planner',
-    href: '/planner',
+    href: '/app/planner',
     icon: Calendar,
   },
   {
     key: 'pantry',
-    href: '/pantry',
+    href: '/app/pantry',
     icon: Refrigerator,
   },
   {
     key: 'shoppingList',
-    href: '/shopping-list',
+    href: '/app/shopping-list',
     icon: ShoppingBag,
   },
 ];

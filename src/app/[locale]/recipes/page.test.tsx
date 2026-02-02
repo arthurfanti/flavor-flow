@@ -1,5 +1,5 @@
 import { render, screen, waitFor } from "@testing-library/react";
-import RecipesPage from "./page";
+import RecipesPage from "../app/recipes/page";
 
 // Mock Auth
 jest.mock("@/components/AuthProvider", () => ({

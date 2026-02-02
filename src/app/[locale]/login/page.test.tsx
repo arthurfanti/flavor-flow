@@ -1,5 +1,5 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import LoginPage from './page';
+import LoginPage from '../app/login/page';
 import { createSupabaseClient } from '@/lib/supabase/client';
 import { useRouter } from '@/navigation';
 import { toast } from 'sonner';
@@ -51,7 +51,7 @@ describe('LoginPage', () => {
         password: 'password123',
       });
       expect(toast.success).toHaveBeenCalledWith("welcomeBack");
-      expect(mockPush).toHaveBeenCalledWith('/');
+      expect(mockPush).toHaveBeenCalledWith('/app');
     });
   });
 

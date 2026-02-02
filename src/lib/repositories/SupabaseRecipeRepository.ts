@@ -2,7 +2,7 @@ import { SupabaseClient } from '@supabase/supabase-js';
 import { RecipeRepository } from './RecipeRepository';
 
 export class SupabaseRecipeRepository implements RecipeRepository {
-  constructor(private supabase: SupabaseClient, private userId?: string) {}
+  constructor(private supabase: SupabaseClient, private userId?: string) { }
 
   async getRecipes(): Promise<any[]> {
     const { data, error } = await this.supabase.from('recipes').select('*');
@@ -26,7 +26,7 @@ export class SupabaseRecipeRepository implements RecipeRepository {
       .insert([dbRecipe])
       .select()
       .single();
-      
+
     if (error) {
       throw error;
     }
@@ -35,7 +35,7 @@ export class SupabaseRecipeRepository implements RecipeRepository {
 
   async getLatest(count: number, locale?: string): Promise<any[]> {
     let query = this.supabase.from('recipes').select(locale ? '*, recipe_translations(title)' : '*');
-    
+
     if (locale) {
       query = query.eq('recipe_translations.locale', locale);
     }
@@ -46,7 +46,7 @@ export class SupabaseRecipeRepository implements RecipeRepository {
 
     if (error) throw error;
 
-    return (data || []).map(recipe => {
+    return (data || []).map((recipe: any) => {
       if (locale && recipe.recipe_translations && recipe.recipe_translations.length > 0) {
         return { ...recipe, title: recipe.recipe_translations[0].title };
       }
@@ -56,7 +56,7 @@ export class SupabaseRecipeRepository implements RecipeRepository {
 
   async getAll(locale?: string): Promise<any[]> {
     let query = this.supabase.from('recipes').select(locale ? '*, recipe_translations(title)' : '*');
-    
+
     if (locale) {
       query = query.eq('recipe_translations.locale', locale);
     }
@@ -65,7 +65,7 @@ export class SupabaseRecipeRepository implements RecipeRepository {
 
     if (error) throw error;
 
-    return (data || []).map(recipe => {
+    return (data || []).map((recipe: any) => {
       if (locale && recipe.recipe_translations && recipe.recipe_translations.length > 0) {
         return { ...recipe, title: recipe.recipe_translations[0].title };
       }
@@ -84,18 +84,20 @@ export class SupabaseRecipeRepository implements RecipeRepository {
     }
 
     const { data, error } = await query.single();
-    
+
     if (error) {
       if (error.code === 'PGRST116') return null;
       throw error;
     }
 
-    if (locale && data.recipe_translations && data.recipe_translations.length > 0) {
-      const translation = data.recipe_translations[0];
-      return { ...data, ...translation, translations: data.recipe_translations };
+    const recipeData = data as any;
+
+    if (locale && recipeData.recipe_translations && recipeData.recipe_translations.length > 0) {
+      const translation = recipeData.recipe_translations[0];
+      return { ...recipeData, ...translation, translations: recipeData.recipe_translations };
     }
 
-    return { ...data, translations: data.recipe_translations || [] };
+    return { ...recipeData, translations: recipeData.recipe_translations || [] };
   }
 
   async updateRecipe(id: number, recipe: any): Promise<any> {

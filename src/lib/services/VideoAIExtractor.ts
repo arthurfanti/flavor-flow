@@ -7,7 +7,7 @@ export class VideoAIExtractor implements RecipeExtractor {
   constructor(
     private supadata: SupadataService,
     private openRouter: OpenRouterService
-  ) {}
+  ) { }
 
   private getYouTubeThumbnail(url: string): string | null {
     const regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
@@ -28,12 +28,12 @@ export class VideoAIExtractor implements RecipeExtractor {
     // 2. Fetch metadata (Supadata)
     try {
       const metadata = await this.supadata.fetchMetadata(url);
-      
+
       // Only overwrite if we didn't get a YT thumbnail or if Supadata has something better
-      if (!imageUrl || metadata.image || metadata.thumbnail) {
-        imageUrl = metadata.image || metadata.thumbnail || imageUrl;
+      if (!imageUrl || metadata.image) {
+        imageUrl = metadata.image || imageUrl;
       }
-      
+
       sourceText = metadata.description || '';
     } catch (e) {
       console.warn('Metadata extraction failed:', e);

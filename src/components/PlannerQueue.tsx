@@ -4,7 +4,7 @@ import { PlannedRecipe } from "@/lib/repositories/PlannerRepository";
 import { normalizeImageUrl } from "@/lib/utils";
 import { Trash2 } from "lucide-react";
 import { useTranslations } from "next-intl";
-import Link from "next/link";
+import { Link } from "@/navigation";
 import { MagicCard } from "./MagicCard";
 
 interface PlannerQueueProps {
@@ -79,7 +79,7 @@ export default function PlannerQueue({ recipes, onRemove }: PlannerQueueProps) {
           <div className="flex flex-col sm:flex-row h-full">
             {recipe.recipe_id ? (
               <Link
-                href={`/recipes/${recipe.recipe_id}`}
+                href={`/app/recipes/${recipe.recipe_id}`}
                 className="flex flex-col sm:flex-row flex-grow min-w-0 h-full"
               >
                 {renderContent(recipe)}

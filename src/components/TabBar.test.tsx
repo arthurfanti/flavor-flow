@@ -10,6 +10,10 @@ jest.mock('@/navigation', () => ({
   ),
 }));
 
+jest.mock('next-intl', () => ({
+  useTranslations: () => (key: string) => key,
+}));
+
 describe('TabBar', () => {
   it('renders all four navigation links with aria-labels', () => {
     mockUsePathname.mockReturnValue('/');
@@ -22,7 +26,7 @@ describe('TabBar', () => {
   });
 
   it('highlights the active link based on pathname', () => {
-    mockUsePathname.mockReturnValue('/planner');
+    mockUsePathname.mockReturnValue('/app/planner');
     render(<TabBar />);
     
     const plannerLink = screen.getByLabelText('planner');

@@ -1,5 +1,5 @@
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import Home from "./[locale]/page";
+import Home from "./[locale]/app/page";
 import { toast } from "sonner";
 import { NextIntlClientProvider } from "next-intl";
 import messages from "../messages/messages-v3-en.json";
