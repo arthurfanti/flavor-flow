@@ -9,10 +9,6 @@ import { SupabasePantryRepository } from "@/lib/repositories/SupabasePantryRepos
 import { SupabasePlannerRepository } from "@/lib/repositories/SupabasePlannerRepository";
 import { SupabaseRecipeRepository } from "@/lib/repositories/SupabaseRecipeRepository";
 import { SupabaseShoppingListRepository } from "@/lib/repositories/SupabaseShoppingListRepository";
-import { IngredientMatcher } from "@/lib/services/IngredientMatcher";
-import { OpenRouterService } from "@/lib/services/OpenRouterService";
-import { SupadataService } from "@/lib/services/SupadataService";
-import { VideoAIExtractor } from "@/lib/services/VideoAIExtractor";
 import { createSupabaseClient } from "@/lib/supabase/client";
 import { Link, useRouter } from "@/navigation";
 import { useTranslations, useLocale } from "next-intl";
@@ -28,28 +24,6 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const [aiStage, setAiStage] = useState<AIStage>("idle");
   const [recentRecipes, setRecentRecipes] = useState<any[]>([]);
-  const [configError, setConfigError] = useState<string | null>(null);
-
-  const extractor = useMemo(() => {
-    try {
-      const supadataKey = process.env.NEXT_PUBLIC_SUPADATA_API_KEY;
-      const openRouterKey = process.env.NEXT_PUBLIC_OPENROUTER_API_KEY;
-
-      if (!supadataKey || !openRouterKey) {
-        throw new Error(
-          "AI Extraction keys (Supadata/OpenRouter) are missing."
-        );
-      }
-
-      return new VideoAIExtractor(
-        new SupadataService(supadataKey),
-        new OpenRouterService(openRouterKey)
-      );
-    } catch (e: any) {
-      console.warn("AI Extractor could not be initialized:", e.message);
-      return null;
-    }
-  }, []);
 
   const repos = useMemo(() => {
     if (authLoading) return null;
@@ -68,7 +42,7 @@ export default function Home() {
         pantry: userId ? new SupabasePantryRepository(supabase, userId) : null,
       };
     } catch (e: any) {
-      setConfigError(e.message);
+      console.error(e.message);
       return null;
     }
   }, [session?.user?.id, authLoading]);
@@ -88,18 +62,18 @@ export default function Home() {
   }, [refreshRecent]);
 
   const handleExtract = async (url: string) => {
-    if (!repos || !extractor) {
-      toast.error(
-        tCommon("extractorNotInitialized")
-      );
+    if (!repos) {
+      toast.error(tCommon("unexpectedError"));
       return;
     }
     setIsLoading(true);
+    setAiStage("analyzing"); // Default stage since we lack granular progress from server action
     try {
       console.log("Flavor Flow: Initializing True AI Extraction...");
-      const extracted = await extractor.extractFromUrl(url, (stage) =>
-        setAiStage(stage)
-      );
+
+      const { extractRecipeAction } = await import("@/app/actions/ai");
+      const extracted = await extractRecipeAction(url);
+
       console.log("Flavor Flow: AI Extraction successful:", extracted.title);
 
       console.log("Flavor Flow: Saving to Supabase...");
@@ -123,20 +97,6 @@ export default function Home() {
       setAiStage("idle");
     }
   };
-
-  if (configError) {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-screen p-4 text-center">
-        <h1 className="text-2xl font-bold text-red-600 mb-4">
-          {tCommon("configurationError")}
-        </h1>
-        <p className="text-gray-700">{configError}</p>
-        <p className="text-sm text-gray-500 mt-4">
-          {tCommon("checkEnvVars")}
-        </p>
-      </div>
-    );
-  }
 
   return (
     <div className="flex flex-col items-center w-full animate-fade-in text-gray-900 relative">

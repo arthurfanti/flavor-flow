@@ -9,8 +9,6 @@ import { SupabaseProfileRepository } from "@/lib/repositories/SupabaseProfileRep
 import { SupabaseRecipeRepository } from "@/lib/repositories/SupabaseRecipeRepository";
 import { SupabaseShoppingListRepository } from "@/lib/repositories/SupabaseShoppingListRepository";
 import { IngredientMatcher } from "@/lib/services/IngredientMatcher";
-import { OpenRouterService } from "@/lib/services/OpenRouterService";
-import { TranslationService } from "@/lib/services/TranslationService";
 import { createSupabaseClient } from "@/lib/supabase/client";
 import { useRouter } from "@/navigation";
 import { useTranslations } from "next-intl";
@@ -51,11 +49,7 @@ export default function RecipeDetailPage() {
     }
   }, [session?.user?.id, authLoading]);
 
-  const translationService = useMemo(() => {
-    const key = process.env.NEXT_PUBLIC_OPENROUTER_API_KEY;
-    if (!key) return null;
-    return new TranslationService(new OpenRouterService(key));
-  }, []);
+  /* Removed translationService useMemo as logic is moved to server action */
 
   useEffect(() => {
     const fetchAndTranslate = async () => {
@@ -79,13 +73,16 @@ export default function RecipeDetailPage() {
         const sourceLocale = data.source_locale || "en";
         const existingTranslations = data.translations || [];
 
+        // Check if translation is needed
         if (
           sourceLocale !== preferredLocale &&
-          existingTranslations.length === 0 &&
-          translationService
+          existingTranslations.length === 0
         ) {
-          console.log("RecipeDetailPage: Triggering AI translation...");
-          const translated = await translationService.translateRecipe(
+          console.log("RecipeDetailPage: Triggering AI translation via Server Action...");
+
+          const { translateRecipeAction } = await import("@/app/actions/ai");
+
+          const translated = await translateRecipeAction(
             {
               title: data.title,
               ingredients: data.ingredients,
@@ -113,7 +110,7 @@ export default function RecipeDetailPage() {
     };
 
     fetchAndTranslate();
-  }, [repos, id, session?.user?.id, translationService]);
+  }, [repos, id, session?.user?.id]);
 
   const handleAddToList = async (ingredients: string[]) => {
     if (!repos?.shoppingList) return;
