@@ -27,10 +27,45 @@ export async function GET(request: Request) {
                 },
             }
         )
-        const { error } = await supabase.auth.exchangeCodeForSession(code)
-        if (!error) {
-            return NextResponse.redirect(`${origin}${next}`)
+        const { error: exchangeError } = await supabase.auth.exchangeCodeForSession(code)
+        if (!exchangeError) {
+            const { data: { user } } = await supabase.auth.getUser()
+            if (user) {
+                try {
+                    const { SupabaseProfileRepository } = await import('@/lib/repositories/SupabaseProfileRepository')
+                    const profileRepo = new SupabaseProfileRepository(supabase)
+                    let profile = await profileRepo.getProfile(user.id)
+
+                    if (!profile) {
+                        // Determine locale from "next" if possible, or default to en
+                        let initialLocale = 'en'
+                        const match = next.match(/^\/([a-z]{2}(-[A-Z]{2})?)\//)
+                        if (match) initialLocale = match[1]
+
+                        await profileRepo.upsertProfile({
+                            id: user.id,
+                            display_name: user.user_metadata.full_name || user.user_metadata.name || null,
+                            avatar_url: user.user_metadata.avatar_url || null,
+                            preferred_locale: initialLocale,
+                        })
+                        profile = await profileRepo.getProfile(user.id)
+                    }
+
+                    const preferredLocale = profile?.preferred_locale || 'en'
+                    // Clean up next to remove locale prefix if it exists to avoid double prefixing
+                    // Only match supported locales followed by a slash or end of string
+                    const cleanNext = next.replace(/^\/(en|pt|es|pt-BR)(\/|$)/, '$2') || '/app'
+                    // Ensure cleanNext starts with a slash if it's not empty and doesn't have one
+                    const finalNext = cleanNext.startsWith('/') ? cleanNext : `/${cleanNext}`
+
+                    return NextResponse.redirect(`${origin}/${preferredLocale}${finalNext}`)
+                } catch (e) {
+                    console.error("Failed to fetch/create profile in callback", e)
+                    return NextResponse.redirect(`${origin}${next}`)
+                }
+            }
         }
+        return NextResponse.redirect(`${origin}${next}`)
     }
 
     // return the user to an error page with instructions
