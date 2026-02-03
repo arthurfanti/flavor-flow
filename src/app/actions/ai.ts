@@ -4,7 +4,6 @@ import { OpenRouterService } from '@/lib/services/OpenRouterService';
 import { SupadataService } from '@/lib/services/SupadataService';
 import { VideoAIExtractor } from '@/lib/services/VideoAIExtractor';
 import { TranslationService, TranslatableRecipe } from '@/lib/services/TranslationService';
-import { AIStage } from '@/components/AILoadingOverlay';
 
 function getServices() {
     const supadataKey = process.env.SUPADATA_API_KEY;

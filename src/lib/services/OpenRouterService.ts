@@ -7,6 +7,10 @@ export class OpenRouterService {
     this.client = new OpenAI({
       baseURL: "https://openrouter.ai/api/v1",
       apiKey: apiKey,
+      defaultHeaders: {
+        "HTTP-Referer": "https://flavor-flow.app", // Required by OpenRouter
+        "X-Title": "Flavor Flow", // Optional
+      }
     });
   }
 
@@ -15,13 +19,6 @@ export class OpenRouterService {
       const completion = await this.client.chat.completions.create({
         model: model,
         messages: messages,
-        // Remove response_format JSON enforcement as it causes Bad Request with some free models
-        // response_format: jsonMode ? { type: "json_object" } : undefined,
-      }, {
-        headers: {
-          "HTTP-Referer": "https://flavor-flow.app", // Required by OpenRouter
-          "X-Title": "Flavor Flow", // Optional
-        },
       });
 
       return completion.choices[0]?.message?.content || "";

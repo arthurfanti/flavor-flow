@@ -34,7 +34,7 @@ export default function TabBar() {
   const pathname = usePathname();
 
   return (
-    <nav className="fixed bottom-6 left-1/2 -translate-x-1/2 w-[90%] max-w-md glass rounded-2xl px-6 py-3 flex justify-around items-center z-[100] shadow-2xl border border-white/10 ring-1 ring-white/5 animate-slide-up">
+    <nav className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-md glass rounded-[16px_16px_0px_0px] px-6 py-3 flex justify-around items-center z-[100] shadow-[0_0_24px_-2px_rgba(0,0,0,0.8)] border-none ring-1 ring-white/5 animate-slide-up">
       {navItems.map((item) => {
         const isActive = pathname === item.href;
         const IconComponent = item.icon;
