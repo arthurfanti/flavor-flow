@@ -46,8 +46,24 @@ export class VideoAIExtractor implements RecipeExtractor {
       if (transcript) {
         sourceText = transcript;
       }
-    } catch (e) {
-      console.warn('Transcript extraction failed, using description from metadata...');
+    } catch (e: any) {
+      console.warn('Transcript extraction failed:', e);
+      console.dir(e, { depth: null, colors: true });
+
+      // If specific error AND we don't have metadata description, retry with mode=generate
+      if (e.code === 'transcript-unavailable' && !sourceText) {
+        try {
+          console.log('Retrying transcription with mode=generate...');
+          const generatedTranscript = await this.supadata.fetchTranscript(url, { mode: 'generate' });
+          if (generatedTranscript) {
+            sourceText = generatedTranscript;
+          }
+        } catch (retryError) {
+          console.warn('Retry with generate mode also failed:', retryError);
+        }
+      } else {
+        console.warn('Transcript extraction failed, using description from metadata...');
+      }
     }
 
     if (!sourceText) {

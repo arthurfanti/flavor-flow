@@ -40,7 +40,9 @@
     "alreadyHaveAccount": "Já tem uma conta? Entrar",
     "dontHaveAccount": "Não tem uma conta? Criar uma",
     "checkEmail": "Verifique seu e-mail para o link de confirmação!",
-    "welcomeBack": "Bem-vindo de volta!"
+    "welcomeBack": "Bem-vindo de volta!",
+    "signInWithGoogle": "Entrar com Google",
+    "or": "ou"
   },
   "Home": {
     "discover": "Descobrir",

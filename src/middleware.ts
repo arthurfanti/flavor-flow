@@ -48,5 +48,6 @@ export default async function middleware(request: NextRequest) {
 
 export const config = {
   // Match all routes except static assets and API
-  matcher: ["/((?!api|_next|.*\\..*).*)"],
+  // Explicitly allowing /auth/callback to not be handled by intl if needed
+  matcher: ["/((?!api|_next|auth|.*\\..*).*)", "/", "/(en|pt|es)/:path*"],
 };

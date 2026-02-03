@@ -47,7 +47,7 @@ describe("OpenRouterService", () => {
           Authorization: `Bearer ${apiKey}`,
           "HTTP-Referer": expect.any(String),
         }),
-        body: expect.stringContaining("xiaomi/mimo-v2-flash:free"), // Mimo V2 Flash on OpenRouter
+        body: expect.stringContaining("google/gemma-3-27b-it:free"), // Mimo V2 Flash on OpenRouter
       })
     );
   });

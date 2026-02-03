@@ -1,29 +1,34 @@
+import OpenAI from "openai";
+
 export class OpenRouterService {
-  private baseUrl = "https://openrouter.ai/api/v1";
+  private client: OpenAI;
 
-  constructor(private apiKey: string) {}
+  constructor(apiKey: string) {
+    this.client = new OpenAI({
+      baseURL: "https://openrouter.ai/api/v1",
+      apiKey: apiKey,
+    });
+  }
 
-  async chat(messages: any[], model: string = "xiaomi/mimo-v2-flash:free", jsonMode: boolean = false): Promise<string> {
-    const response = await fetch(`${this.baseUrl}/chat/completions`, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${this.apiKey}`,
-        "Content-Type": "application/json",
-        "HTTP-Referer": "https://flavor-flow.app", // Required by OpenRouter
-      },
-      body: JSON.stringify({
+  async chat(messages: any[], model: string = "google/gemma-3-27b-it:free", jsonMode: boolean = false): Promise<string> {
+    try {
+      const completion = await this.client.chat.completions.create({
         model: model,
         messages: messages,
-        response_format: jsonMode ? { type: "json_object" } : undefined,
-      }),
-    });
+        // Remove response_format JSON enforcement as it causes Bad Request with some free models
+        // response_format: jsonMode ? { type: "json_object" } : undefined,
+      }, {
+        headers: {
+          "HTTP-Referer": "https://flavor-flow.app", // Required by OpenRouter
+          "X-Title": "Flavor Flow", // Optional
+        },
+      });
 
-    if (!response.ok) {
-      throw new Error(`OpenRouter API failed: ${response.statusText}`);
+      return completion.choices[0]?.message?.content || "";
+    } catch (error: any) {
+      console.error("OpenRouter API Error:", error);
+      throw new Error(`OpenRouter API failed: ${error.message}`);
     }
-
-    const data = await response.json();
-    return data.choices[0]?.message?.content || "";
   }
 
   async structureRecipe(transcript: string): Promise<any> {
@@ -37,17 +42,20 @@ export class OpenRouterService {
             - ingredients: An array of strings, including quantities (e.g., "2 large eggs").
             - instructions: An array of numbered steps.
             
-            Return ONLY the JSON. No preamble.`,
+            Return ONLY the JSON object. Do not explain. Do not use markdown formatting.`,
       },
       {
         role: "user",
         content: transcript,
       },
-    ], "xiaomi/mimo-v2-flash:free", true);
+    ], "google/gemma-3-27b-it:free", true);
 
     try {
-      return JSON.parse(content);
+      // Robust parsing: Strip markdown code blocks if present
+      const cleanedContent = content.replace(/```json/g, '').replace(/```/g, '').trim();
+      return JSON.parse(cleanedContent);
     } catch (e) {
+      console.error("Failed to parse AI response:", content);
       throw new Error("AI returned invalid JSON");
     }
   }

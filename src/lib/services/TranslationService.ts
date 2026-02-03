@@ -7,7 +7,7 @@ export interface TranslatableRecipe {
 }
 
 export class TranslationService {
-  constructor(private openRouter: OpenRouterService) {}
+  constructor(private openRouter: OpenRouterService) { }
 
   async translateRecipe(recipe: TranslatableRecipe, targetLocale: string): Promise<TranslatableRecipe> {
     try {
@@ -31,9 +31,11 @@ export class TranslationService {
           role: "user",
           content: prompt
         }
-      ], "xiaomi/mimo-v2-flash:free", true);
+      ], "google/gemma-3-27b-it:free", true);
 
-      return JSON.parse(response);
+      // Robust parsing: Strip markdown code blocks if present
+      const cleanedResponse = response.replace(/```json/g, '').replace(/```/g, '').trim();
+      return JSON.parse(cleanedResponse);
     } catch (error: any) {
       throw new Error(`Translation failed: ${error.message}`);
     }

@@ -40,7 +40,9 @@
     "alreadyHaveAccount": "Already have an account? Sign In",
     "dontHaveAccount": "Don't have an account? Create one",
     "checkEmail": "Check your email for the confirmation link!",
-    "welcomeBack": "Welcome back!"
+    "welcomeBack": "Welcome back!",
+    "signInWithGoogle": "Sign in with Google",
+    "or": "or"
   },
   "Home": {
     "discover": "Discover",
