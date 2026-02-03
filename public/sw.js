@@ -1,10 +1,10 @@
 const CACHE_NAME = 'flavor-flow-v1';
 
 self.addEventListener('install', (event) => {
+  self.skipWaiting(); // Force this SW to become the active one
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
       return cache.addAll([
-        '/',
         '/icon-192.png',
         '/icon-512.png',
         '/screenshot-mobile.png',
@@ -14,7 +14,17 @@ self.addEventListener('install', (event) => {
   );
 });
 
+self.addEventListener('activate', (event) => {
+  event.waitUntil(self.clients.claim()); // Take control of all pages immediately
+});
+
 self.addEventListener('fetch', (event) => {
+  // Navigation requests should be handled by the browser/network directly
+  // to allow for proper redirect handling (307/308) from middleware.
+  if (event.request.mode === 'navigate') {
+    return;
+  }
+
   event.respondWith(
     caches.match(event.request).then((response) => {
       // If a cached response exists, return it
@@ -22,11 +32,7 @@ self.addEventListener('fetch', (event) => {
         return response;
       }
 
-      // Clone the request as it's a stream and can only be consumed once
-      const fetchRequest = event.request.clone();
-
-      // Ensure redirects are followed to avoid "redirected response" errors
-      return fetch(fetchRequest, { redirect: 'follow' });
+      return fetch(event.request);
     })
   );
 });

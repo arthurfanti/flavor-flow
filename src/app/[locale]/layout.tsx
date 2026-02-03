@@ -12,7 +12,7 @@ export default async function RootLayout({
   params: { locale: string };
 }>) {
   const { locale } = params;
-  
+
   // Validate that the incoming `locale` parameter is valid
   if (!locales.includes(locale as any)) notFound();
 
@@ -28,7 +28,7 @@ export default async function RootLayout({
   return (
     <NextIntlClientProvider locale={locale} messages={messages}>
       <AuthProvider>
-        <MainLayout>{children}</MainLayout>
+        {children}
       </AuthProvider>
     </NextIntlClientProvider>
   );
