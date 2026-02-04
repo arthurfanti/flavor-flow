@@ -19,6 +19,11 @@
   --muted: #a0a0a0;
 }
 
+::placeholder {
+  color: var(--muted);
+  font-style: italic;
+}
+
 @layer base {
   body {
     color: var(--foreground);
@@ -57,6 +62,10 @@
     background: var(--color-glass-surface);
     backdrop-filter: blur(12px);
     /* border: 1px solid rgba(255, 255, 255, 0.1); */
+  }
+
+  .magic-input {
+    @apply bg-[rgba(0_0_0_/_0.25)] shadow-[0_0_24px_-8px_rgba(0_0_0_/_0.5)_inset];
   }
 
   .landing-liquid-glass {

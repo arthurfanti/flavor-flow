@@ -13,7 +13,7 @@ import { createSupabaseClient } from "@/lib/supabase/client";
 import { useRouter } from "@/navigation";
 import { useTranslations } from "next-intl";
 import { useParams } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { toast } from "sonner";
 
 export default function RecipeDetailPage() {
@@ -51,9 +51,11 @@ export default function RecipeDetailPage() {
 
   /* Removed translationService useMemo as logic is moved to server action */
 
+  const translationInProgress = useRef(false);
+
   useEffect(() => {
     const fetchAndTranslate = async () => {
-      if (!repos || !id) return;
+      if (!repos || !id || translationInProgress.current) return;
       try {
         let preferredLocale = "en";
         if (session?.user?.id && repos.profile) {
@@ -79,6 +81,7 @@ export default function RecipeDetailPage() {
           existingTranslations.length === 0
         ) {
           console.log("RecipeDetailPage: Triggering AI translation via Server Action...");
+          translationInProgress.current = true;
 
           const { translateRecipeAction } = await import("@/app/actions/ai");
 
@@ -106,6 +109,7 @@ export default function RecipeDetailPage() {
         setError("Failed to load recipe");
       } finally {
         setIsLoading(false);
+        translationInProgress.current = false;
       }
     };
 

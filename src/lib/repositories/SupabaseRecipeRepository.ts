@@ -19,6 +19,7 @@ export class SupabaseRecipeRepository implements RecipeRepository {
       instructions: recipe.instructions,
       source_url: recipe.source_url || recipe.sourceUrl,
       image_url: recipe.image_url || recipe.imageUrl,
+      storage_path: recipe.storage_path,
       user_id: this.userId,
     };
     const { data, error } = await this.supabase
@@ -108,6 +109,7 @@ export class SupabaseRecipeRepository implements RecipeRepository {
         ingredients: recipe.ingredients,
         instructions: recipe.instructions,
         image_url: recipe.image_url || recipe.imageUrl,
+        storage_path: recipe.storage_path,
       })
       .eq('id', id)
       .select()
@@ -126,7 +128,7 @@ export class SupabaseRecipeRepository implements RecipeRepository {
         title: translation.title,
         ingredients: translation.ingredients,
         instructions: translation.instructions,
-      });
+      }, { onConflict: 'recipe_id,locale' });
 
     if (error) throw error;
   }

@@ -1,6 +1,6 @@
 import React from 'react';
 import { ExtractedRecipe } from '@/lib/services/RecipeExtractor';
-import { normalizeImageUrl } from '@/lib/utils';
+import { normalizeImageUrl, getStorageUrl } from '@/lib/utils';
 import { useTranslations } from 'next-intl';
 
 interface RecipeListItemProps {
@@ -12,9 +12,9 @@ export default function RecipeListItem({ recipe }: RecipeListItemProps) {
   return (
     <div className="flex items-center gap-4 p-3 bg-gradient-to-r from-[#1A1A1A] to-[#202020] rounded-2xl hover:brightness-110 transition-all cursor-pointer group text-neutral-100">
       <div className="w-14 h-14 rounded-xl overflow-hidden flex-shrink-0 bg-neutral-800">
-        {recipe.image_url ? (
+        {recipe.storage_path || recipe.image_url ? (
           <img
-            src={normalizeImageUrl(recipe.image_url)}
+            src={recipe.storage_path ? getStorageUrl(recipe.storage_path) : normalizeImageUrl(recipe.image_url)}
             alt={recipe.title}
             className="w-full h-full object-cover grayscale-[10%] group-hover:grayscale-0 transition-all"
           />

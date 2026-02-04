@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { normalizeImageUrl } from '@/lib/utils';
+import { normalizeImageUrl, getStorageUrl } from '@/lib/utils';
 import { MagicCard } from './MagicCard';
 import { MagicButton } from './MagicButton';
 import { ShoppingCart, Calendar, Check, ChefHat } from 'lucide-react';
@@ -11,6 +11,7 @@ interface Recipe {
   instructions: string[];
   sourceUrl: string;
   image_url?: string;
+  storage_path?: string;
 }
 
 interface RecipePreviewProps {
@@ -51,25 +52,25 @@ export default function RecipePreview({ recipe, onAddToList, onAddToPlanner }: R
   };
 
   return (
-    <MagicCard 
-      className="w-full max-w-3xl mt-8 animate-fade-in border-white/5 overflow-hidden text-left" 
+    <MagicCard
+      className="w-full max-w-3xl mt-8 animate-fade-in border-white/5 overflow-hidden text-left"
       variant="neon"
       gradientColor="#E05D44"
     >
       {/* Hero Image Section */}
       {recipe.image_url && (
         <div className="w-full h-64 md:h-96 overflow-hidden relative group">
-          <img 
-            src={normalizeImageUrl(recipe.image_url)} 
+          <img
+            src={recipe.storage_path ? getStorageUrl(recipe.storage_path) : normalizeImageUrl(recipe.image_url)}
             alt={recipe.title}
             className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105 brightness-[0.85]"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-[#1A1A1A] via-transparent to-transparent" />
           <div className="absolute top-6 left-6">
-             <div className="glass px-4 py-2 rounded-full flex items-center gap-2">
-                <ChefHat className="h-4 w-4 text-brand-primary" />
-                <span className="text-[10px] font-bold uppercase tracking-widest text-white">{t('aiKitchen')}</span>
-             </div>
+            <div className="glass px-4 py-2 rounded-full flex items-center gap-2">
+              <ChefHat className="h-4 w-4 text-brand-primary" />
+              <span className="text-[10px] font-bold uppercase tracking-widest text-white">{t('aiKitchen')}</span>
+            </div>
           </div>
         </div>
       )}
@@ -80,7 +81,7 @@ export default function RecipePreview({ recipe, onAddToList, onAddToPlanner }: R
             <span className="text-brand-primary font-sans font-bold uppercase tracking-[0.3em] text-[10px] block">{t('premiumRecipe')}</span>
             <h2 className="text-4xl md:text-6xl font-display font-bold text-white leading-[1.1] tracking-tight">{recipe.title}</h2>
           </div>
-          
+
           <div className="flex flex-wrap gap-4">
             <MagicButton
               onClick={handleAddToList}
@@ -96,7 +97,7 @@ export default function RecipePreview({ recipe, onAddToList, onAddToPlanner }: R
                 <><ShoppingCart className="h-4 w-4" /> {t('addToList')}</>
               )}
             </MagicButton>
-            
+
             <MagicButton
               onClick={handleAddToPlanner}
               disabled={isAddingToPlanner || addedToPlanner}
@@ -113,12 +114,12 @@ export default function RecipePreview({ recipe, onAddToList, onAddToPlanner }: R
             </MagicButton>
           </div>
         </div>
-        
+
         <div className="grid lg:grid-cols-[1fr_1.8fr] gap-16">
           <div className="space-y-8">
             <div className="flex items-center gap-3 border-b border-white/5 pb-4">
-               <h3 className="text-[11px] font-sans font-bold text-neutral-500 uppercase tracking-[0.2em]">{t('ingredients')}</h3>
-               <span className="text-[10px] bg-white/5 text-neutral-400 px-2 py-0.5 rounded-full">{recipe.ingredients.length}</span>
+              <h3 className="text-[11px] font-sans font-bold text-neutral-500 uppercase tracking-[0.2em]">{t('ingredients')}</h3>
+              <span className="text-[10px] bg-white/5 text-neutral-400 px-2 py-0.5 rounded-full">{recipe.ingredients.length}</span>
             </div>
             <ul className="space-y-5">
               {recipe.ingredients.map((ingredient, index) => (
