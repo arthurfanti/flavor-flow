@@ -14,6 +14,7 @@ import { useRouter } from "@/navigation";
 import { useTranslations } from "next-intl";
 import { useParams } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { translateRecipeAction } from "@/app/actions/ai";
 import { toast } from "sonner";
 
 export default function RecipeDetailPage() {
@@ -83,8 +84,6 @@ export default function RecipeDetailPage() {
           console.log("RecipeDetailPage: Triggering AI translation via Server Action...");
           translationInProgress.current = true;
 
-          const { translateRecipeAction } = await import("@/app/actions/ai");
-
           const translated = await translateRecipeAction(
             {
               title: data.title,
@@ -93,6 +92,13 @@ export default function RecipeDetailPage() {
             },
             preferredLocale,
           );
+
+          if (!translated) {
+            console.error("RecipeDetailPage: AI translation returned undefined");
+            toast.error("Failed to translate recipe automatically.");
+            setRecipe(data);
+            return;
+          }
 
           await repos.recipe.saveTranslation(
             Number(id),

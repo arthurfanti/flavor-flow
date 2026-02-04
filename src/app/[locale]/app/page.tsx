@@ -13,6 +13,7 @@ import { createSupabaseClient } from "@/lib/supabase/client";
 import { Link, useRouter } from "@/navigation";
 import { useTranslations, useLocale } from "next-intl";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { extractRecipeAction } from "@/app/actions/ai";
 import { toast } from "sonner";
 
 export default function Home() {
@@ -71,7 +72,6 @@ export default function Home() {
     try {
       console.log("Flavor Flow: Initializing True AI Extraction...");
 
-      const { extractRecipeAction } = await import("@/app/actions/ai");
       const extracted = await extractRecipeAction(url);
 
       console.log("Flavor Flow: AI Extraction successful:", extracted.title);
