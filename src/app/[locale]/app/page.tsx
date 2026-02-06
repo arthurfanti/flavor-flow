@@ -15,6 +15,7 @@ import { useTranslations, useLocale } from "next-intl";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { extractRecipeAction } from "@/app/actions/ai";
 import { toast } from "sonner";
+import { motion, useScroll, useTransform } from "framer-motion";
 
 export default function Home() {
   const t = useTranslations("Home");
@@ -25,6 +26,10 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const [aiStage, setAiStage] = useState<AIStage>("idle");
   const [recentRecipes, setRecentRecipes] = useState<any[]>([]);
+
+  const { scrollY } = useScroll();
+  const heroOpacity = useTransform(scrollY, [0, 300], [1, 0]);
+  const heroScale = useTransform(scrollY, [0, 300], [1, 1.1]);
 
   const repos = useMemo(() => {
     if (authLoading) return null;
@@ -99,10 +104,14 @@ export default function Home() {
   };
 
   return (
-    <div className="flex flex-col items-center w-full animate-fade-in text-gray-900 relative">
+    <div className="flex flex-col items-center w-full text-gray-900 relative min-h-screen">
       <AILoadingOverlay stage={aiStage} />
 
-      <div className="w-full h-56 rounded-[2rem] overflow-hidden mb-10 shadow-2xl relative group border border-white/5">
+      {/* Hero Section: Fixed & Full-bleed */}
+      <motion.div 
+        style={{ opacity: heroOpacity, scale: heroScale, transformOrigin: 'top center' }}
+        className="fixed top-0 left-0 w-full h-[40vh] md:h-[50vh] z-0 overflow-hidden group"
+      >
         <img
           src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&q=80&w=1000"
           alt="Fresh food"
@@ -111,69 +120,76 @@ export default function Home() {
             (e.target as HTMLImageElement).style.display = "none";
           }}
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-        <div className="absolute bottom-8 left-8">
+        <div className="absolute bottom-16 left-8 right-8 max-w-2xl mx-auto w-full">
           <span className="text-brand-primary font-sans font-bold uppercase tracking-[0.2em] text-[10px] mb-2 block">
             {t("premiumKitchen")}
           </span>
-          <h1 className="text-4xl font-display font-bold text-white tracking-tight">
+          <h1 className="text-4xl md:text-6xl font-display font-bold text-white tracking-tight">
             {t("discover")}
           </h1>
         </div>
-      </div>
+      </motion.div>
 
-      <header className="text-center mb-12 max-w-lg">
-        <p className="text-2xl text-neutral-300 font-medium leading-relaxed">
-          {t("description")}
-        </p>
-        <div className="w-12 h-1 bg-brand-primary mx-auto mt-6 rounded-full shadow-[0_0_12px_rgba(224,93,68,0.4)]" />
-      </header>
+      {/* Spacer to push content down below the fixed hero */}
+      <div className="h-[40vh] md:h-[50vh] w-full pointer-events-none" />
 
-      <MagicCard
-        className="w-full max-w-2xl inset-0 border-white/5 shadow-2xl"
-        gradientColor="#E05D44"
-        variant="neon"
-      >
-        <div className="p-6">
-          <h2 className="text-2xl font-display font-bold text-white mb-8 p-4 text-center">
-            {t("startRecipe")}
-          </h2>
-          <UrlInput onExtract={handleExtract} isLoading={isLoading} />
-
-          <div className="mt-10 px-4 py-6 border-t border-white/5">
-            <p className="text-xs text-neutral-500 text-center uppercase tracking-widest font-medium">
-              {t("socialSources")}
+      {/* Content Card: Overlapping Hero */}
+      <div className="w-full bg-[#121212] rounded-t-[2rem] -mt-12 relative z-20 flex flex-col items-center px-4 pt-12 pb-32 shadow-[0_-12px_24px_rgba(0,0,0,0.2)] border-t border-white/5 animate-fade-in">
+        <div className="w-full max-w-2xl flex flex-col items-center">
+          <header className="text-center mb-12 max-w-lg">
+            <p className="text-2xl text-neutral-300 font-medium leading-relaxed">
+              {t("description")}
             </p>
-          </div>
-        </div>
-      </MagicCard>
+            <div className="w-12 h-1 bg-brand-primary mx-auto mt-6 rounded-full shadow-[0_0_12px_rgba(224,93,68,0.4)]" />
+          </header>
 
-      {!isLoading && recentRecipes.length > 0 && (
-        <div className="w-full mt-16 animate-slide-up">
-          <div className="flex items-center justify-between mb-8 px-2">
-            <h2 className="text-sm font-sans font-bold uppercase tracking-[0.2em] text-neutral-500">
-              {t("recentExtractions")}
-            </h2>
-            <Link
-              href="/app/recipes"
-              className="text-[10px] font-sans font-bold uppercase tracking-widest text-brand-primary hover:text-brand-primary/80 transition-colors"
-            >
-              {t("viewAll")}
-            </Link>
-          </div>
-          <div className="flex flex-col gap-4">
-            {recentRecipes.map((r) => (
-              <div
-                key={r.id}
-                className="cursor-pointer active:scale-[0.98] transition-transform"
-                onClick={() => router.push(`/app/recipes/${r.id}`)}
-              >
-                <RecipeListItem recipe={r} />
+          <MagicCard
+            className="w-full max-w-2xl inset-0 border-white/5 shadow-2xl"
+            gradientColor="#E05D44"
+            variant="neon"
+          >
+            <div className="p-6">
+              <h2 className="text-2xl font-display font-bold text-white mb-8 p-4 text-center">
+                {t("startRecipe")}
+              </h2>
+              <UrlInput onExtract={handleExtract} isLoading={isLoading} />
+
+              <div className="mt-10 px-4 py-6 border-t border-white/5">
+                <p className="text-xs text-neutral-500 text-center uppercase tracking-widest font-medium">
+                  {t("socialSources")}
+                </p>
               </div>
-            ))}
-          </div>
+            </div>
+          </MagicCard>
+
+          {!isLoading && recentRecipes.length > 0 && (
+            <div className="w-full mt-16 animate-slide-up">
+              <div className="flex items-center justify-between mb-8 px-2">
+                <h2 className="text-sm font-sans font-bold uppercase tracking-[0.2em] text-neutral-500">
+                  {t("recentExtractions")}
+                </h2>
+                <Link
+                  href="/app/recipes"
+                  className="text-[10px] font-sans font-bold uppercase tracking-widest text-brand-primary hover:text-brand-primary/80 transition-colors"
+                >
+                  {t("viewAll")}
+                </Link>
+              </div>
+              <div className="flex flex-col gap-4">
+                {recentRecipes.map((r) => (
+                  <div
+                    key={r.id}
+                    className="cursor-pointer active:scale-[0.98] transition-transform"
+                    onClick={() => router.push(`/app/recipes/${r.id}`)}
+                  >
+                    <RecipeListItem recipe={r} />
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
-      )}
+      </div>
     </div>
   );
 }

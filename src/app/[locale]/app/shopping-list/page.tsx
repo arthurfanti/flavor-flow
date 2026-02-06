@@ -7,6 +7,7 @@ import { createSupabaseClient } from "@/lib/supabase/client";
 import { useRouter } from "@/navigation";
 import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 
 export default function ShoppingListPage() {
   const t = useTranslations("ShoppingList");
@@ -16,6 +17,10 @@ export default function ShoppingListPage() {
   const [items, setItems] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [configError, setConfigError] = useState<string | null>(null);
+
+  const { scrollY } = useScroll();
+  const heroOpacity = useTransform(scrollY, [0, 300], [1, 0]);
+  const heroScale = useTransform(scrollY, [0, 300], [1, 1.1]);
 
   const shoppingListRepo = useMemo(() => {
     if (authLoading || !session?.user?.id) return null;
@@ -95,44 +100,56 @@ export default function ShoppingListPage() {
   }
 
   return (
-    <div className="flex flex-col w-full animate-fade-in pb-20 text-gray-900">
-      <div className="w-full h-56 rounded-[2rem] overflow-hidden mb-10 shadow-lg relative group bg-gradient-to-br from-brand-yellow/20 to-orange-100">
+    <div className="flex flex-col items-center w-full text-gray-900 relative min-h-screen">
+      {/* Hero Section: Fixed & Full-bleed */}
+      <motion.div 
+        style={{ opacity: heroOpacity, scale: heroScale, transformOrigin: 'top center' }}
+        className="fixed top-0 left-0 w-full h-[40vh] md:h-[50vh] z-0 overflow-hidden group"
+      >
         <img
           src="https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&q=80&w=1000"
           alt="Grocery shopping"
-          className="w-full h-full object-cover group-hover:scale-105 transition-all duration-1000 ease-out"
+          className="w-full h-full object-cover brightness-[0.7]"
           onError={(e) => {
             (e.target as HTMLImageElement).style.display = "none";
           }}
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
-        <div className="absolute bottom-8 left-8">
-          <span className="text-brand-yellow font-sans font-bold uppercase tracking-[0.2em] text-[10px] mb-2 block">
+        <div className="absolute inset-0 bg-gradient-to-t from-[#121212] via-transparent to-transparent" />
+        <div className="absolute bottom-16 left-8 right-8 max-w-2xl mx-auto w-full">
+          <span className="text-brand-primary font-sans font-bold uppercase tracking-[0.2em] text-[10px] mb-2 block">
             {t("subtitle")}
           </span>
-          <h1 className="text-4xl font-bold text-white tracking-tight">
+          <h1 className="text-4xl md:text-6xl font-display font-bold text-white tracking-tight">
             {t("title")}
           </h1>
         </div>
-      </div>
+      </motion.div>
 
-      <header className="mb-10 text-center">
-        <p className="text-xl text-gray-500 font-medium italic leading-relaxed max-w-sm mx-auto">
-          {t("description")}
-        </p>
-      </header>
+      {/* Spacer to push content down below the fixed hero */}
+      <div className="h-[40vh] md:h-[50vh] w-full pointer-events-none" />
 
-      {isLoading ? (
-        <div className="w-full py-20 flex justify-center">
-          <div className="animate-spin h-8 w-8 border-4 border-brand-yellow border-t-transparent rounded-full" />
+      {/* Content Card: Overlapping Hero */}
+      <div className="w-full bg-[#121212] rounded-t-[2rem] -mt-12 relative z-20 flex flex-col items-center px-4 pt-12 pb-32 shadow-[0_-12px_24px_rgba(0,0,0,0.2)] border-t border-white/5 animate-fade-in">
+        <div className="w-full max-w-2xl flex flex-col items-center">
+          <header className="mb-10 text-center">
+            <p className="text-xl text-neutral-300 font-medium italic leading-relaxed max-w-sm mx-auto">
+              {t("description")}
+            </p>
+          </header>
+
+          {isLoading ? (
+            <div className="w-full py-20 flex justify-center">
+              <div className="animate-spin h-8 w-8 border-4 border-brand-primary border-t-transparent rounded-full" />
+            </div>
+          ) : (
+            <ShoppingList
+              items={items}
+              onToggle={handleToggleItem}
+              onRemove={handleRemoveItem}
+            />
+          )}
         </div>
-      ) : (
-        <ShoppingList
-          items={items}
-          onToggle={handleToggleItem}
-          onRemove={handleRemoveItem}
-        />
-      )}
+      </div>
     </div>
   );
 }
