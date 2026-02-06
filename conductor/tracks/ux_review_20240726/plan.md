@@ -19,24 +19,30 @@ This plan outlines the steps to implement the UI/UX improvements specified in `s
     - [x] Confirm `#121212` has replaced `#0F0F0F` as the primary dark background. (Already completed)
 - [x] Task: Conductor - User Manual Verification 'Setup & Initial Assessment' (Protocol in workflow.md)
 
-### Phase 2: Core Layout Implementation
+### Phase 2: Core Layout Implementation [checkpoint: 562077fc]
 
-- [ ] Task: Remove existing topbar and associated components
-    - [ ] Identify and remove rendering of the current topbar component.
-    - [ ] Ensure no regressions on pages that might have used the topbar.
-- [ ] Task: Implement full-width, no-border-radius Hero Section
-    - [ ] Identify the main container for the recipe image.
-    - [ ] Adjust CSS to ensure the recipe image extends to the absolute top of the page.
-    - [ ] Ensure the Hero Section spans full width and has no border-radius.
-- [ ] Task: Design and implement the content card with rounded top borders
-    - [ ] Create a new React component for the content card or modify an existing one.
-    - [ ] Apply CSS to ensure rounded borders only on the top edge.
-    - [ ] Position the card to visually overlap a small part of the Hero Section, making the image visible behind its rounded corners.
-- [ ] Task: Integrate logo-free overlay elements within the Hero Section
-    - [ ] Identify any elements that should overlay the Hero image (excluding the logo).
-    - [ ] Position these elements appropriately.
-    - [ ] Apply a subtle gradient to the top of the Hero image if necessary to ensure legibility of overlaid elements.
-- [ ] Task: Conductor - User Manual Verification 'Core Layout Implementation' (Protocol in workflow.md)
+- [x] Task: Remove existing topbar and associated components
+    - [x] Identify and remove rendering of the current topbar component.
+    - [x] Ensure no regressions on pages that might have used the topbar.
+- [x] Task: Implement full-width, no-border-radius Hero Section
+    - [x] Identify the main container for the recipe image.
+    - [x] Adjust CSS to ensure the recipe image extends to the absolute top of the page.
+    - [x] Ensure the Hero Section spans full width and has no border-radius.
+- [x] Task: Design and implement the content card with rounded top borders
+    - [x] Create a new React component for the content card or modify an existing one.
+    - [x] Apply CSS to ensure rounded borders only on the top edge.
+    - [x] Position the card to visually overlap a small part of the Hero Section, making the image visible behind its rounded corners.
+- [x] Task: Integrate logo-free overlay elements within the Hero Section
+    - [x] Identify any elements that should overlay the Hero image (excluding the logo).
+    - [x] Position these elements appropriately.
+    - [x] Apply a subtle gradient to the top of the Hero image if necessary to ensure legibility of overlaid elements.
+- [x] Task: Fix Layout & Add Parallax Effects (Feedback Iteration)
+    - [x] Implement fixed/sticky positioning for Hero image to allow content to scroll over it.
+    - [x] Ensure proper z-index and negative margin for the content card to achieve visual overlap.
+    - [x] Implement scroll-based opacity fading for the Hero image.
+- [x] Task: Apply Hero Parallax Effects to Home Page (Consistency)
+    - [x] Update `src/app/[locale]/app/page.tsx` to match `RecipePreview` hero animations (fixed position, opacity/scale on scroll).
+- [x] Task: Conductor - User Manual Verification 'Core Layout Implementation' (Protocol in workflow.md)
 
 ### Phase 3: Bottom Navbar & Navigation Logic
 
