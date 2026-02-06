@@ -1,12 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import MainLayout from './MainLayout';
-import { useScrollVelocity } from '@/lib/hooks/useScrollVelocity';
 
-// Mock dependencies
-jest.mock('@/lib/hooks/useScrollVelocity', () => ({
-  useScrollVelocity: jest.fn(),
-}));
-
+// Mock @/navigation
 jest.mock('@/navigation', () => ({
   usePathname: jest.fn(() => '/'),
   Link: ({ children, href, className, 'aria-label': ariaLabel }: any) => (
@@ -14,39 +9,25 @@ jest.mock('@/navigation', () => ({
   ),
 }));
 
-// Mock next-intl
-const mockTCommon = jest.fn((key: string) => `common_${key}`);
-const mockTNavigation = jest.fn((key: string) => `nav_${key}`);
+// Mock TabBar
+jest.mock('./TabBar', () => {
+  return function MockTabBar() {
+    return <div data-testid="tab-bar" />;
+  };
+});
 
-jest.mock('next-intl', () => ({
-  useTranslations: (namespace: string) => {
-    if (namespace === 'Common') return mockTCommon;
-    if (namespace === 'Navigation') return mockTNavigation;
-    return (key: string) => key;
-  },
-}));
-
-describe('MainLayout Localization', () => {
-  beforeEach(() => {
-    (useScrollVelocity as jest.Mock).mockReturnValue({
-      isFixed: false,
-      isVisible: true,
-    });
-  });
-
-  it('renders localized title and profile label', () => {
+describe('MainLayout', () => {
+  it('renders children and TabBar without header elements', () => {
     render(
       <MainLayout>
-        <div>Content</div>
+        <div data-testid="test-content">Content</div>
       </MainLayout>
     );
     
-    // Check for translated title (from Common.title)
-    expect(screen.getAllByText('common_title').length).toBeGreaterThan(0);
+    expect(screen.getByTestId('test-content')).toBeInTheDocument();
+    expect(screen.getByTestId('tab-bar')).toBeInTheDocument();
     
-    // Check for translated profile link aria-label (from Navigation.profile)
-    // The profile icon is repeated in the fixed header so we use getAllByLabelText
-    const profileLinks = screen.getAllByLabelText('nav_profile');
-    expect(profileLinks.length).toBeGreaterThan(0);
+    const header = document.querySelector('header');
+    expect(header).toBeNull();
   });
 });

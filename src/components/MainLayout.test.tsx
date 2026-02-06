@@ -1,11 +1,5 @@
 import { render, screen } from '@testing-library/react';
 import MainLayout from './MainLayout';
-import { useScrollVelocity } from '@/lib/hooks/useScrollVelocity';
-
-// Mock the hook
-jest.mock('@/lib/hooks/useScrollVelocity', () => ({
-  useScrollVelocity: jest.fn(),
-}));
 
 // Mock @/navigation
 jest.mock('@/navigation', () => ({
@@ -15,36 +9,33 @@ jest.mock('@/navigation', () => ({
   ),
 }));
 
-describe('MainLayout Header Logic', () => {
-  beforeEach(() => {
-    (useScrollVelocity as jest.Mock).mockReturnValue({
-      isFixed: false,
-      isVisible: true,
-    });
+// Mock TabBar
+jest.mock('./TabBar', () => {
+  return function MockTabBar() {
+    return <div data-testid="tab-bar" />;
+  };
+});
+
+describe('MainLayout', () => {
+  it('renders children and TabBar', () => {
+    render(
+      <MainLayout>
+        <div data-testid="test-content">Content</div>
+      </MainLayout>
+    );
+    
+    expect(screen.getByTestId('test-content')).toBeInTheDocument();
+    expect(screen.getByTestId('tab-bar')).toBeInTheDocument();
   });
 
-  it('renders header naturally by default', () => {
+  it('does not render a header element', () => {
     const { container } = render(
       <MainLayout>
         <div>Content</div>
       </MainLayout>
     );
+    
     const header = container.querySelector('header');
-    expect(header).toHaveClass('relative'); // Existing default
-    expect(header).not.toHaveClass('fixed');
-  });
-
-  it('applies fixed classes when isFixed is true', () => {
-    (useScrollVelocity as jest.Mock).mockReturnValue({
-      isFixed: true,
-      isVisible: true,
-    });
-    const { container } = render(
-      <MainLayout>
-        <div>Content</div>
-      </MainLayout>
-    );
-    const header = container.querySelector('header');
-    expect(header).toHaveClass('fixed');
+    expect(header).toBeNull();
   });
 });
