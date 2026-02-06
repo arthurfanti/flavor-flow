@@ -5,7 +5,7 @@
 - **Sophisticated yet Accessible:** While the tone is welcoming, it remains professional and refined, catering to adults who value a well-organized kitchen.
 
 ## Visual Identity
-- **Premium Dark Mode Aesthetic:** A high-contrast, immersive environment using deep blacks (#0F0F0F) and dark surfaces (#1A1A1A) paired with vibrant "Premium Kitchen" accents (Terracotta #E05D44, Sage #8A9A5B).
+- **Premium Dark Mode Aesthetic:** A high-contrast, immersive environment using very dark graphite gray (#121212) and dark surfaces (#1A1A1A) paired with vibrant "Premium Kitchen" accents (Terracotta #E05D44, Sage #8A9A5B).
 - **Magic Glow & Glass:** Strategic use of glass morphism (blur), neon gradient borders, and mouse-following lighting effects to guide focus and provide feedback.
 - **Adult Aesthetic:** The design avoids overly playful or "cartoonish" elements, opting instead for high-quality imagery, clean lines, and a professional layout.
 
