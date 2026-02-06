@@ -44,11 +44,11 @@ This plan outlines the steps to implement the UI/UX improvements specified in `s
     - [x] Update `src/app/[locale]/app/page.tsx` to match `RecipePreview` hero animations (fixed position, opacity/scale on scroll).
 - [x] Task: Conductor - User Manual Verification 'Core Layout Implementation' (Protocol in workflow.md)
 
-### Phase 3: Bottom Navbar & Navigation Logic
+### Phase 3: Bottom Navbar & Navigation Logic [checkpoint: 5ee8f8ea]
 
-- [ ] Task: Identify or create a bottom navigation component
-    - [ ] Check for `src/components/TabBar.tsx` as a potential candidate for modification.
-    - [ ] If no suitable component exists, scaffold a new `BottomNavbar.tsx` component.
+- [x] Task: Identify or create a bottom navigation component
+    - [x] Check for `src/components/TabBar.tsx` as a potential candidate for modification.
+    - [x] If no suitable component exists, scaffold a new `BottomNavbar.tsx` component.
 - [x] Task: Move user profile button to the bottom navigation bar
     - [x] Identify the existing user profile button component.
     - [x] Integrate it into the chosen bottom navigation component.
@@ -60,7 +60,7 @@ This plan outlines the steps to implement the UI/UX improvements specified in `s
 - [x] Task: Style the bottom navbar with solid background and visual distinction
     - [x] Apply `background-color: #121212`.
     - [x] Add a subtle shadow or a `1px` darker border on the top edge for visual distinction.
-- [~] Task: Conductor - User Manual Verification 'Bottom Navbar & Navigation Logic' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Bottom Navbar & Navigation Logic' (Protocol in workflow.md)
 
 ### Phase 4: UI Refinements & Accessibility
 
