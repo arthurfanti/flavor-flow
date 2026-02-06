@@ -14,8 +14,23 @@ jest.mock('next-intl', () => ({
   useTranslations: () => (key: string) => key,
 }));
 
+// Mock useTabBarScroll
+jest.mock('@/lib/hooks/useTabBarScroll', () => ({
+  useTabBarScroll: () => ({ isVisible: true }),
+}));
+
+// Mock framer-motion
+jest.mock('framer-motion', () => ({
+  motion: {
+    nav: ({ children, className, initial, animate, exit, transition }: any) => (
+      <nav className={className}>{children}</nav>
+    ),
+  },
+  AnimatePresence: ({ children }: any) => <>{children}</>,
+}));
+
 describe('TabBar', () => {
-  it('renders all four navigation links with aria-labels', () => {
+  it('renders all five navigation links with aria-labels', () => {
     mockUsePathname.mockReturnValue('/');
     render(<TabBar />);
     
@@ -23,6 +38,7 @@ describe('TabBar', () => {
     expect(screen.getByLabelText('planner')).toBeInTheDocument();
     expect(screen.getByLabelText('pantry')).toBeInTheDocument();
     expect(screen.getByLabelText('shoppingList')).toBeInTheDocument();
+    expect(screen.getByLabelText('profile')).toBeInTheDocument();
   });
 
   it('highlights the active link based on pathname', () => {
@@ -33,11 +49,13 @@ describe('TabBar', () => {
     expect(plannerLink).toHaveClass('text-brand-primary'); 
   });
 
-  it('is a floating navigation bar', () => {
+  it('is a full-width fixed navigation bar at the bottom', () => {
     const { container } = render(<TabBar />);
     const nav = container.querySelector('nav');
     expect(nav).toHaveClass('fixed');
-    expect(nav).toHaveClass('bottom-6');
+    expect(nav).toHaveClass('bottom-0');
+    expect(nav).toHaveClass('left-0');
+    expect(nav).toHaveClass('right-0');
   });
 
   it('renders Lucide icons for each item', () => {
@@ -45,6 +63,6 @@ describe('TabBar', () => {
     
     // Check for SVGs (Lucide icons render as SVGs)
     const svgs = container.querySelectorAll('svg');
-    expect(svgs.length).toBe(4);
+    expect(svgs.length).toBe(5);
   });
 });

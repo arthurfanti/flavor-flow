@@ -49,18 +49,18 @@ This plan outlines the steps to implement the UI/UX improvements specified in `s
 - [ ] Task: Identify or create a bottom navigation component
     - [ ] Check for `src/components/TabBar.tsx` as a potential candidate for modification.
     - [ ] If no suitable component exists, scaffold a new `BottomNavbar.tsx` component.
-- [ ] Task: Move user profile button to the bottom navigation bar
-    - [ ] Identify the existing user profile button component.
-    - [ ] Integrate it into the chosen bottom navigation component.
-- [ ] Task: Implement dynamic show/hide logic for the bottom navbar
-    - [ ] Write unit tests for scroll-based show/hide behavior (Red Phase).
-    - [ ] Implement event listeners for scroll and scroll speed detection.
-    - [ ] Apply CSS transitions for smooth sliding animation (Green Phase).
-    - [ ] Refactor logic for efficiency and readability.
-- [ ] Task: Style the bottom navbar with solid background and visual distinction
-    - [ ] Apply `background-color: #121212`.
-    - [ ] Add a subtle shadow or a `1px` darker border on the top edge for visual distinction.
-- [ ] Task: Conductor - User Manual Verification 'Bottom Navbar & Navigation Logic' (Protocol in workflow.md)
+- [x] Task: Move user profile button to the bottom navigation bar
+    - [x] Identify the existing user profile button component.
+    - [x] Integrate it into the chosen bottom navigation component.
+- [x] Task: Implement dynamic show/hide logic for the bottom navbar
+    - [x] Write unit tests for scroll-based show/hide behavior (Red Phase).
+    - [x] Implement event listeners for scroll and scroll speed detection.
+    - [x] Apply CSS transitions for smooth sliding animation (Green Phase).
+    - [x] Refactor logic for efficiency and readability.
+- [x] Task: Style the bottom navbar with solid background and visual distinction
+    - [x] Apply `background-color: #121212`.
+    - [x] Add a subtle shadow or a `1px` darker border on the top edge for visual distinction.
+- [~] Task: Conductor - User Manual Verification 'Bottom Navbar & Navigation Logic' (Protocol in workflow.md)
 
 ### Phase 4: UI Refinements & Accessibility
 
