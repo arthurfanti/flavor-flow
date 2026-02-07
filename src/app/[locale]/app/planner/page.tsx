@@ -8,7 +8,7 @@ import { PlannedRecipe } from '@/lib/repositories/PlannerRepository';
 import { useAuth } from '@/components/AuthProvider';
 import { useRouter } from '@/navigation';
 import { useTranslations, useLocale } from 'next-intl';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 
 export default function PlannerPage() {
   const t = useTranslations('Planner');
@@ -21,8 +21,14 @@ export default function PlannerPage() {
   const [configError, setConfigError] = useState<string | null>(null);
 
   const { scrollY } = useScroll();
-  const heroOpacity = useTransform(scrollY, [0, 300], [1, 0]);
-  const heroScale = useTransform(scrollY, [0, 300], [1, 1.1]);
+  const smoothScrollY = useSpring(scrollY, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001
+  });
+
+  const heroOpacity = useTransform(smoothScrollY, [0, 300], [1, 0.4]);
+  const heroScale = useTransform(smoothScrollY, [0, 300], [1, 1.1]);
 
   const plannerRepo = useMemo(() => {
     if (authLoading || !session?.user?.id) return null;

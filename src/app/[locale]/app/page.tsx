@@ -10,12 +10,12 @@ import { SupabasePlannerRepository } from "@/lib/repositories/SupabasePlannerRep
 import { SupabaseRecipeRepository } from "@/lib/repositories/SupabaseRecipeRepository";
 import { SupabaseShoppingListRepository } from "@/lib/repositories/SupabaseShoppingListRepository";
 import { createSupabaseClient } from "@/lib/supabase/client";
-import { Link, useRouter } from "@/navigation";
+import { useRouter } from "@/navigation";
 import { useTranslations, useLocale } from "next-intl";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { extractRecipeAction } from "@/app/actions/ai";
 import { toast } from "sonner";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 
 export default function Home() {
   const t = useTranslations("Home");
@@ -28,8 +28,14 @@ export default function Home() {
   const [recentRecipes, setRecentRecipes] = useState<any[]>([]);
 
   const { scrollY } = useScroll();
-  const heroOpacity = useTransform(scrollY, [0, 300], [1, 0]);
-  const heroScale = useTransform(scrollY, [0, 300], [1, 1.1]);
+  const smoothScrollY = useSpring(scrollY, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001
+  });
+
+  const heroOpacity = useTransform(smoothScrollY, [0, 300], [1, 0.4]);
+  const heroScale = useTransform(smoothScrollY, [0, 300], [1, 1.1]);
 
   const repos = useMemo(() => {
     if (authLoading) return null;

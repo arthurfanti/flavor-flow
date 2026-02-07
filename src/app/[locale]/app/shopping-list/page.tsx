@@ -7,7 +7,7 @@ import { createSupabaseClient } from "@/lib/supabase/client";
 import { useRouter } from "@/navigation";
 import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 
 export default function ShoppingListPage() {
   const t = useTranslations("ShoppingList");
@@ -19,8 +19,14 @@ export default function ShoppingListPage() {
   const [configError, setConfigError] = useState<string | null>(null);
 
   const { scrollY } = useScroll();
-  const heroOpacity = useTransform(scrollY, [0, 300], [1, 0]);
-  const heroScale = useTransform(scrollY, [0, 300], [1, 1.1]);
+  const smoothScrollY = useSpring(scrollY, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001
+  });
+
+  const heroOpacity = useTransform(smoothScrollY, [0, 300], [1, 0.4]);
+  const heroScale = useTransform(smoothScrollY, [0, 300], [1, 1.1]);
 
   const shoppingListRepo = useMemo(() => {
     if (authLoading || !session?.user?.id) return null;

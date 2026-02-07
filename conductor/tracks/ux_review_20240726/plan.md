@@ -64,23 +64,23 @@ This plan outlines the steps to implement the UI/UX improvements specified in `s
 
 ### Phase 4: UI Refinements & Accessibility
 
-- [ ] Task: Refactor action buttons for hierarchy and design consistency
-    - [ ] Write unit tests for button styling and state (e.g., primary/secondary variations).
-    - [ ] Adjust CSS for consistent height and alignment.
-    - [ ] Implement visual differentiation based on primary/secondary roles.
-    - [ ] Address long text scenarios (stacking or icon-only).
-- [ ] Task: Improve contrast for tags and text elements
-    - [ ] Identify specific elements (e.g., "RECEITA PREMIUM") with low contrast.
-    - [ ] Write unit tests to verify contrast ratios if possible, or visually inspect.
-    - [ ] Modify CSS to use vibrant accents or solid backgrounds as needed to meet WCAG.
-- [ ] Task: Adjust typography and spacing
-    - [ ] Write unit tests for typography (e.g., specific font sizes and line heights).
-    - [ ] Reduce font size of primary titles by 15-20%.
-    - [ ] Refine whitespace between related UI elements to create logical blocks.
-- [ ] Task: Ensure scroll indication for ingredients
-    - [ ] Write integration tests to verify partial visibility of ingredients.
-    - [ ] Adjust the positioning of the content card and ingredients section to ensure the first line is partially visible above the bottom navbar.
-- [ ] Task: Conductor - User Manual Verification 'UI Refinements & Accessibility' (Protocol in workflow.md)
+- [x] Task: Refactor action buttons for hierarchy and design consistency
+    - [x] Write unit tests for button styling and state (e.g., primary/secondary variations).
+    - [x] Adjust CSS for consistent height and alignment.
+    - [x] Implement visual differentiation based on primary/secondary roles.
+    - [x] Address long text scenarios (stacking or icon-only).
+- [x] Task: Improve contrast for tags and text elements
+    - [x] Identify specific elements (e.g., "RECEITA PREMIUM" tag) with low contrast.
+    - [x] Write unit tests to verify contrast ratios if possible, or visually inspect.
+    - [x] Modify CSS to use vibrant accents or solid backgrounds as needed to meet WCAG.
+- [x] Task: Adjust typography and spacing
+    - [x] Write unit tests for typography (e.g., specific font sizes and line heights).
+    - [x] Reduce font size of primary titles by 15-20%.
+    - [x] Refine whitespace between related UI elements to create logical blocks.
+- [x] Task: Ensure scroll indication for ingredients
+    - [x] Write integration tests to verify partial visibility of ingredients.
+    - [x] Adjust the positioning of the content card and ingredients section to ensure the first line is partially visible above the bottom navbar.
+- [x] Task: Conductor - User Manual Verification 'UI Refinements & Accessibility' (Protocol in workflow.md)
 
 ### Phase 5: Final Review & Integration
 

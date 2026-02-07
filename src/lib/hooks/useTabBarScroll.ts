@@ -14,7 +14,7 @@ export function useTabBarScroll() {
     const currentScroll = scrollY.get();
     
     // Hide on fast scroll down
-    if (v > TAB_BAR_VELOCITY_THRESHOLD && currentScroll > 50) {
+    if (v > TAB_BAR_VELOCITY_THRESHOLD && currentScroll > 100) {
       setIsVisible(false);
     } 
     // Show on fast scroll up
@@ -22,11 +22,12 @@ export function useTabBarScroll() {
       setIsVisible(true);
     }
     
-    // Always show at the bottom or near the top
-    const isAtBottom = typeof window !== 'undefined' && 
-      (window.innerHeight + window.scrollY) >= document.body.offsetHeight - 50;
+    // Always show near top or bottom
+    const windowHeight = typeof window !== 'undefined' ? window.innerHeight : 0;
+    const documentHeight = typeof document !== 'undefined' ? document.documentElement.scrollHeight : 0;
+    const isAtBottom = currentScroll + windowHeight >= documentHeight - 100;
     
-    if (isAtBottom || currentScroll < 50) {
+    if (isAtBottom || currentScroll < 100) {
       setIsVisible(true);
     }
   });
