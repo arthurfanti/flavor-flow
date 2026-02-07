@@ -1,6 +1,16 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import RecipePreview from './RecipePreview';
 
+// Mock framer-motion
+jest.mock('framer-motion', () => ({
+  motion: {
+    div: ({ children, className, style }: any) => <div className={className} style={style}>{children}</div>,
+    button: ({ children, className, onClick }: any) => <button className={className} onClick={onClick}>{children}</button>,
+  },
+  useScroll: () => ({ scrollY: { get: () => 0, onChange: jest.fn() } }),
+  useTransform: () => 1,
+}));
+
 const mockRecipe = {
   title: 'Test Recipe',
   ingredients: ['1 cup flour', '2 eggs'],
