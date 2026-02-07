@@ -56,6 +56,9 @@ describe('SupabaseRecipeRepository', () => {
     const mockInsert = jest.fn().mockReturnValue({ select: mockSelect });
 
     (mockSupabase.from as jest.Mock).mockReturnValue({
+      select: jest.fn().mockReturnThis(),
+      eq: jest.fn().mockReturnThis(),
+      single: jest.fn().mockResolvedValue({ data: null, error: { code: 'PGRST116' } }),
       insert: mockInsert,
     });
 
@@ -63,13 +66,15 @@ describe('SupabaseRecipeRepository', () => {
     await repo.addRecipe(newRecipe);
     
     expect(mockSupabase.from).toHaveBeenCalledWith('recipes');
-    expect(mockInsert).toHaveBeenCalledWith([{
-      title: 'Test',
-      ingredients: [],
-      instructions: [],
-      source_url: 'http://example.com',
-      image_url: 'img.jpg'
-    }]);
+    expect(mockInsert).toHaveBeenCalledWith([
+      expect.objectContaining({
+        title: 'Test',
+        ingredients: [],
+        instructions: [],
+        source_url: 'http://example.com',
+        image_url: 'img.jpg',
+      }),
+    ]);
     expect(mockSelect).toHaveBeenCalled();
     expect(mockSingle).toHaveBeenCalled();
   });
@@ -83,10 +88,54 @@ describe('SupabaseRecipeRepository', () => {
     const mockInsert = jest.fn().mockReturnValue({ select: mockSelect });
 
     (mockSupabase.from as jest.Mock).mockReturnValue({
+      select: jest.fn().mockReturnThis(),
+      eq: jest.fn().mockReturnThis(),
+      single: jest.fn().mockResolvedValue({ data: null, error: { code: 'PGRST116' } }),
       insert: mockInsert,
     });
 
     await expect(repo.addRecipe({ title: 'Test' })).rejects.toThrow('Supabase error');
+  });
+
+  it('findBySourceUrl should query by normalized source_url', async () => {
+    const repo = new SupabaseRecipeRepository(mockSupabase);
+    const mockSingle = jest.fn().mockResolvedValue({ data: { id: 1 }, error: null });
+    const mockEq = jest.fn().mockReturnValue({ single: mockSingle });
+    const mockSelect = jest.fn().mockReturnValue({ eq: mockEq });
+
+    (mockSupabase.from as jest.Mock).mockReturnValue({
+      select: mockSelect,
+    });
+
+    const result = await repo.findBySourceUrl('https://Example.com/test/');
+    expect(result).toEqual({ id: 1 });
+    expect(mockSupabase.from).toHaveBeenCalledWith('recipes');
+    expect(mockSelect).toHaveBeenCalledWith('*');
+    expect(mockEq).toHaveBeenCalledWith('source_url', 'https://example.com/test');
+  });
+
+  it('addRecipe should return existing recipe on duplicate source_url', async () => {
+    const repo = new SupabaseRecipeRepository(mockSupabase);
+    const duplicateError = { code: '23505', message: 'duplicate key value' };
+
+    const mockInsertSingle = jest.fn().mockResolvedValue({ data: null, error: duplicateError });
+    const mockInsertSelect = jest.fn().mockReturnValue({ single: mockInsertSingle });
+    const mockInsert = jest.fn().mockReturnValue({ select: mockInsertSelect });
+
+    const mockFindSingle = jest
+      .fn()
+      .mockResolvedValueOnce({ data: null, error: { code: 'PGRST116' } })
+      .mockResolvedValueOnce({ data: { id: 7 }, error: null });
+    const mockFindEq = jest.fn().mockReturnValue({ single: mockFindSingle });
+    const mockFindSelect = jest.fn().mockReturnValue({ eq: mockFindEq });
+
+    (mockSupabase.from as jest.Mock).mockReturnValue({
+      select: mockFindSelect,
+      insert: mockInsert,
+    });
+
+    const result = await repo.addRecipe({ title: 'Dup', sourceUrl: 'https://example.com' });
+    expect(result).toEqual({ id: 7 });
   });
 
   it('getLatest should call supabase select, order and limit', async () => {

@@ -1,5 +1,6 @@
 import { SupabaseClient } from '@supabase/supabase-js';
 import { RecipeRepository } from './RecipeRepository';
+import { normalizeSourceUrl } from '../utils';
 
 export class SupabaseRecipeRepository implements RecipeRepository {
   constructor(private supabase: SupabaseClient, private userId?: string) { }
@@ -12,12 +13,43 @@ export class SupabaseRecipeRepository implements RecipeRepository {
     return data || [];
   }
 
+  async findBySourceUrl(url: string): Promise<any | null> {
+    const raw = (url || '').trim();
+    const normalized = normalizeSourceUrl(raw);
+    const candidates = [normalized, raw].filter((value, index, self) => {
+      return value && self.indexOf(value) === index;
+    });
+
+    for (const candidate of candidates) {
+      const { data, error } = await this.supabase
+        .from('recipes')
+        .select('*')
+        .eq('source_url', candidate)
+        .single();
+
+      if (error) {
+        if (error.code === 'PGRST116') continue;
+        throw error;
+      }
+
+      if (data) return data;
+    }
+
+    return null;
+  }
+
   async addRecipe(recipe: any): Promise<any> {
+    const sourceUrlInput = recipe.source_url || recipe.sourceUrl;
+    const normalizedSourceUrl = normalizeSourceUrl(sourceUrlInput);
+    if (sourceUrlInput) {
+      const existing = await this.findBySourceUrl(sourceUrlInput);
+      if (existing) return existing;
+    }
     const dbRecipe = {
       title: recipe.title,
       ingredients: recipe.ingredients,
       instructions: recipe.instructions,
-      source_url: recipe.source_url || recipe.sourceUrl,
+      source_url: normalizedSourceUrl || null,
       image_url: recipe.image_url || recipe.imageUrl,
       storage_path: recipe.storage_path,
       user_id: this.userId,
@@ -29,6 +61,15 @@ export class SupabaseRecipeRepository implements RecipeRepository {
       .single();
 
     if (error) {
+      if (
+        (error as any).code === '23505' ||
+        (typeof error.message === 'string' && error.message.includes('duplicate key'))
+      ) {
+        if (sourceUrlInput || normalizedSourceUrl) {
+          const existing = await this.findBySourceUrl(sourceUrlInput || normalizedSourceUrl);
+          if (existing) return existing;
+        }
+      }
       throw error;
     }
     return data;

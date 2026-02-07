@@ -1,5 +1,5 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import LoginPage from '../app/login/page';
+import LoginPage from './page';
 import { createSupabaseClient } from '@/lib/supabase/client';
 import { useRouter } from '@/navigation';
 import { toast } from 'sonner';
@@ -18,8 +18,12 @@ jest.mock('sonner', () => ({
 describe('LoginPage', () => {
   const mockSupabase = {
     auth: {
+      getSession: jest.fn().mockResolvedValue({ data: { session: null } }),
+      getUser: jest.fn().mockResolvedValue({ data: { user: null } }),
       signInWithPassword: jest.fn(),
       signUp: jest.fn(),
+      signInWithIdToken: jest.fn().mockResolvedValue({ data: {}, error: null }),
+      signInWithOAuth: jest.fn().mockResolvedValue({ error: null }),
     },
   };
   const mockPush = jest.fn();
@@ -34,7 +38,10 @@ describe('LoginPage', () => {
     render(<LoginPage />);
     expect(screen.getByLabelText('email')).toBeInTheDocument();
     expect(screen.getByLabelText('password')).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'signIn' })).toBeInTheDocument();
+    const signInButton = screen
+      .getAllByRole('button', { name: /signIn/i })
+      .find((button) => button.textContent?.includes('arrow_forward'));
+    expect(signInButton).toBeInTheDocument();
   });
 
   it('calls signInWithPassword on form submit', async () => {
@@ -43,7 +50,10 @@ describe('LoginPage', () => {
 
     fireEvent.change(screen.getByLabelText('email'), { target: { value: 'test@example.com' } });
     fireEvent.change(screen.getByLabelText('password'), { target: { value: 'password123' } });
-    fireEvent.click(screen.getByRole('button', { name: 'signIn' }));
+    const signInButton = screen
+      .getAllByRole('button', { name: /signIn/i })
+      .find((button) => button.textContent?.includes('arrow_forward'));
+    fireEvent.click(signInButton!);
 
     await waitFor(() => {
       expect(mockSupabase.auth.signInWithPassword).toHaveBeenCalledWith({
@@ -64,7 +74,10 @@ describe('LoginPage', () => {
 
     fireEvent.change(screen.getByLabelText('email'), { target: { value: 'test@example.com' } });
     fireEvent.change(screen.getByLabelText('password'), { target: { value: 'wrong' } });
-    fireEvent.click(screen.getByRole('button', { name: 'signIn' }));
+    const signInButton = screen
+      .getAllByRole('button', { name: /signIn/i })
+      .find((button) => button.textContent?.includes('arrow_forward'));
+    fireEvent.click(signInButton!);
 
     await waitFor(() => {
       expect(screen.getByText('Invalid credentials')).toBeInTheDocument();
@@ -80,7 +93,10 @@ describe('LoginPage', () => {
 
     fireEvent.change(screen.getByLabelText('email'), { target: { value: 'new@example.com' } });
     fireEvent.change(screen.getByLabelText('password'), { target: { value: 'password123' } });
-    fireEvent.click(screen.getByRole('button', { name: 'signUp' }));
+    const signUpButton = screen
+      .getAllByRole('button', { name: /signUp/i })
+      .find((button) => button.textContent?.includes('arrow_forward'));
+    fireEvent.click(signUpButton!);
 
     await waitFor(() => {
       expect(mockSupabase.auth.signUp).toHaveBeenCalledWith({

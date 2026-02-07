@@ -1,6 +1,10 @@
 import { MockRecipeRepository } from './MockRecipeRepository';
 
 describe('MockRecipeRepository', () => {
+  beforeEach(() => {
+    MockRecipeRepository.clearForTests();
+  });
+
   it('should return mock recipes', async () => {
     const repo = new MockRecipeRepository();
     const recipes = await repo.getRecipes();
@@ -26,5 +30,25 @@ describe('MockRecipeRepository', () => {
     const repo = new MockRecipeRepository();
     const all = await repo.getAll();
     expect(all.length).toBeGreaterThan(0);
+  });
+
+  it('should find recipe by source URL', async () => {
+    MockRecipeRepository.seedForTests([
+      { id: 1, title: 'Seeded', source_url: 'https://example.com/test' },
+    ]);
+    const repo = new MockRecipeRepository();
+    const found = await repo.findBySourceUrl('https://Example.com/test/');
+    expect(found?.id).toBe(1);
+  });
+
+  it('should return existing recipe on duplicate source URL', async () => {
+    MockRecipeRepository.seedForTests([
+      { id: 1, title: 'Seeded', source_url: 'https://example.com/test' },
+    ]);
+    const repo = new MockRecipeRepository();
+    const first = await repo.addRecipe({ title: 'Dup', sourceUrl: 'https://example.com/test/' });
+    const all = await repo.getRecipes();
+    expect(first.id).toBe(1);
+    expect(all.length).toBe(1);
   });
 });

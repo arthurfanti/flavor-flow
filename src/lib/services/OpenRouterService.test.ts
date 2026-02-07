@@ -1,17 +1,25 @@
 import { OpenRouterService } from "./OpenRouterService";
 
-// Mock fetch type
-type FetchMock = jest.MockedFunction<typeof fetch>;
+const mockCreate = jest.fn();
+
+jest.mock("openai", () => ({
+  __esModule: true,
+  default: jest.fn().mockImplementation(() => ({
+    chat: {
+      completions: {
+        create: mockCreate,
+      },
+    },
+  })),
+}));
 
 describe("OpenRouterService", () => {
   const apiKey = "test-router-key";
   let service: OpenRouterService;
-  let fetchMock: FetchMock;
 
   beforeEach(() => {
     service = new OpenRouterService(apiKey);
-    fetchMock = jest.fn() as FetchMock;
-    global.fetch = fetchMock;
+    mockCreate.mockReset();
   });
 
   it("should structure transcript into recipe JSON", async () => {
@@ -29,34 +37,23 @@ describe("OpenRouterService", () => {
       ],
     };
 
-    fetchMock.mockResolvedValue({
-      ok: true,
-      json: () => Promise.resolve(mockOutput),
-    } as Response);
+    mockCreate.mockResolvedValue(mockOutput);
 
     const result = await service.structureRecipe("Some raw transcript text");
 
     expect(result.title).toBe("AI Pasta");
     expect(result.ingredients).toContain("100g Pasta");
     expect(result.instructions).toContain("Boil pasta");
-    expect(global.fetch).toHaveBeenCalledWith(
-      "https://openrouter.ai/api/v1/chat/completions",
+    expect(mockCreate).toHaveBeenCalledWith(
       expect.objectContaining({
-        method: "POST",
-        headers: expect.objectContaining({
-          Authorization: `Bearer ${apiKey}`,
-          "HTTP-Referer": expect.any(String),
-        }),
-        body: expect.stringContaining("google/gemma-3-27b-it:free"), // Mimo V2 Flash on OpenRouter
+        model: "google/gemma-3-27b-it:free",
+        messages: expect.any(Array),
       })
     );
   });
 
   it("should throw error when OpenRouter fails", async () => {
-    fetchMock.mockResolvedValue({
-      ok: false,
-      status: 401,
-    } as Response);
+    mockCreate.mockRejectedValue(new Error("Unauthorized"));
 
     await expect(service.structureRecipe("text")).rejects.toThrow(
       "OpenRouter API failed"

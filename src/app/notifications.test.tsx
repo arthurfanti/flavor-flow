@@ -3,6 +3,7 @@ import Home from "./[locale]/app/page";
 import { toast } from "sonner";
 import { NextIntlClientProvider } from "next-intl";
 import messages from "../messages/messages-v3-en.json";
+import { extractRecipeAction } from "@/app/actions/ai";
 
 // Mock @/navigation
 const mockPush = jest.fn();
@@ -27,6 +28,10 @@ jest.mock("sonner", () => ({
     error: jest.fn(),
     success: jest.fn(),
   },
+}));
+
+jest.mock("@/app/actions/ai", () => ({
+  extractRecipeAction: jest.fn(),
 }));
 
 // Mock Supabase and Repositories
@@ -54,6 +59,7 @@ jest.mock("../lib/repositories/SupabaseRecipeRepository", () => ({
     getLatest: jest.fn().mockResolvedValue([]),
     getAll: jest.fn().mockResolvedValue([]),
     addRecipe: jest.fn().mockImplementation((r) => Promise.resolve({ id: 123, ...r })),
+    findBySourceUrl: jest.fn().mockResolvedValue(null),
   })),
 }));
 
@@ -100,11 +106,7 @@ describe("Home Notifications", () => {
   });
 
   it("calls toast.error when extraction fails", async () => {
-    const { VideoAIExtractor } = require("../lib/services/VideoAIExtractor");
-    const mockExtract = jest.fn().mockRejectedValue(new Error("Failed to fetch"));
-    VideoAIExtractor.mockImplementation(() => ({
-      extractFromUrl: mockExtract,
-    }));
+    (extractRecipeAction as jest.Mock).mockRejectedValue(new Error("Failed to fetch"));
 
     renderHome();
     
@@ -115,16 +117,19 @@ describe("Home Notifications", () => {
     fireEvent.click(button);
 
     await waitFor(() => {
-      expect(toast.error).toHaveBeenCalledWith(expect.stringContaining("extractionErrorPrefix"));
+      expect(toast.error).toHaveBeenCalledWith(
+        expect.stringContaining("extractionErrorPrefix"),
+      );
     });
   });
 
   it("calls toast.success on successful extraction", async () => {
-    const { VideoAIExtractor } = require("../lib/services/VideoAIExtractor");
-    const mockExtract = jest.fn().mockResolvedValue({ title: 'Mock Recipe', ingredients: [], instructions: [] });
-    VideoAIExtractor.mockImplementation(() => ({
-      extractFromUrl: mockExtract,
-    }));
+    (extractRecipeAction as jest.Mock).mockResolvedValue({
+      title: 'Mock Recipe',
+      ingredients: [],
+      instructions: [],
+      sourceUrl: 'https://example.com/success',
+    });
 
     renderHome();
     
@@ -135,7 +140,7 @@ describe("Home Notifications", () => {
     fireEvent.click(button);
 
     await waitFor(() => {
-      expect(toast.success).toHaveBeenCalledWith(expect.stringContaining("extractionSuccess"));
+      expect(toast.success).toHaveBeenCalledWith("extractionSuccess");
     });
   });
 });

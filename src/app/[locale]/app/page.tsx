@@ -10,7 +10,7 @@ import { SupabasePlannerRepository } from "@/lib/repositories/SupabasePlannerRep
 import { SupabaseRecipeRepository } from "@/lib/repositories/SupabaseRecipeRepository";
 import { SupabaseShoppingListRepository } from "@/lib/repositories/SupabaseShoppingListRepository";
 import { createSupabaseClient } from "@/lib/supabase/client";
-import { useRouter } from "@/navigation";
+import { useRouter, Link } from "@/navigation";
 import { useTranslations, useLocale } from "next-intl";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { extractRecipeAction } from "@/app/actions/ai";
@@ -82,6 +82,13 @@ export default function Home() {
     setAiStage("analyzing"); // Default stage since we lack granular progress from server action
     try {
       console.log("Flavor Flow: Initializing True AI Extraction...");
+
+      const existingRecipe = await repos.recipe.findBySourceUrl(url);
+      if (existingRecipe) {
+        toast.success(t("alreadySaved"));
+        router.push(`/app/recipes/${existingRecipe.id}`);
+        return;
+      }
 
       const extracted = await extractRecipeAction(url);
 

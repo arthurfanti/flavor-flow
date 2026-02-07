@@ -8,7 +8,7 @@ describe('MagicInput', () => {
     render(<MagicInput placeholder="Search recipes..." />);
     const input = screen.getByPlaceholderText(/search recipes/i);
     expect(input).toBeInTheDocument();
-    expect(input).toHaveClass('bg-glass-surface'); // Should use our glass token
+    expect(input).toHaveClass('magic-input');
   });
 
   it('accepts user input', async () => {

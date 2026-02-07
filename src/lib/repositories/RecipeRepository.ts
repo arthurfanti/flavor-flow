@@ -1,5 +1,6 @@
 export interface RecipeRepository {
   getRecipes(): Promise<any[]>;
+  findBySourceUrl(url: string): Promise<any | null>;
   addRecipe(recipe: any): Promise<any>;
   getLatest(count: number): Promise<any[]>;
   getAll(): Promise<any[]>;

@@ -1,4 +1,5 @@
 import { RecipeRepository } from './RecipeRepository';
+import { normalizeSourceUrl } from '../utils';
 
 export class MockRecipeRepository implements RecipeRepository {
   constructor(private _supabase?: any, private _userId?: string) {}
@@ -11,8 +12,33 @@ export class MockRecipeRepository implements RecipeRepository {
     return MockRecipeRepository.recipes;
   }
 
+  async findBySourceUrl(url: string): Promise<any | null> {
+    const raw = (url || '').trim();
+    const normalized = normalizeSourceUrl(raw);
+    const candidates = [normalized, raw].filter((value, index, self) => {
+      return value && self.indexOf(value) === index;
+    });
+    if (candidates.length === 0) return null;
+    return (
+      MockRecipeRepository.recipes.find((r) => {
+        const candidate = normalizeSourceUrl(r.source_url || r.sourceUrl || '');
+        return candidates.includes(candidate) || candidates.includes((r.source_url || r.sourceUrl || '').trim());
+      }) || null
+    );
+  }
+
   async addRecipe(recipe: any): Promise<any> {
-    const newRecipe = { id: MockRecipeRepository.recipes.length + 1, ...recipe };
+    const sourceUrlInput = recipe.source_url || recipe.sourceUrl;
+    const normalizedSourceUrl = normalizeSourceUrl(sourceUrlInput);
+    if (sourceUrlInput) {
+      const existing = await this.findBySourceUrl(sourceUrlInput);
+      if (existing) return existing;
+    }
+    const newRecipe = {
+      id: MockRecipeRepository.recipes.length + 1,
+      ...recipe,
+      source_url: normalizedSourceUrl || recipe.source_url || recipe.sourceUrl,
+    };
     MockRecipeRepository.recipes.push(newRecipe);
     return newRecipe;
   }
@@ -46,5 +72,9 @@ export class MockRecipeRepository implements RecipeRepository {
       { id: 1, title: 'Mock Recipe 1', ingredients: ['Ingredient A'], instructions: ['Step 1'] },
       { id: 2, title: 'Mock Recipe 2', ingredients: ['Ingredient B'], instructions: ['Step 1'] },
     ];
+  }
+
+  static seedForTests(recipes: any[]) {
+    MockRecipeRepository.recipes = recipes;
   }
 }

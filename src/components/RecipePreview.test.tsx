@@ -9,6 +9,7 @@ jest.mock('framer-motion', () => ({
   },
   useScroll: () => ({ scrollY: { get: () => 0, onChange: jest.fn() } }),
   useTransform: () => 1,
+  useSpring: (value: any) => value,
 }));
 
 const mockRecipe = {

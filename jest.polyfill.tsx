@@ -1,3 +1,5 @@
+import React from 'react';
+
 // Mock next-intl/navigation
 jest.mock('next-intl/navigation', () => {
   const useRouter = jest.fn(() => ({
@@ -6,7 +8,8 @@ jest.mock('next-intl/navigation', () => {
     prefetch: jest.fn(),
   }));
   const usePathname = jest.fn(() => '/');
-  const Link = ({ children, href, ...props }: any) => <a href={href} {...props}>{children}</a>;
+  const Link = ({ children, href, ...props }: any) =>
+    React.createElement('a', { href, ...props }, children);
   const redirect = jest.fn();
 
   return {
@@ -37,7 +40,8 @@ jest.mock('next-intl', () => ({
     dateTime: jest.fn(),
     number: jest.fn(),
   }),
-  NextIntlClientProvider: ({ children }: any) => <>{children}</>,
+  NextIntlClientProvider: ({ children }: any) =>
+    React.createElement(React.Fragment, null, children),
 }));
 
 jest.mock('next-intl/server', () => ({

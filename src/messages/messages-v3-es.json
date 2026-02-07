@@ -54,6 +54,7 @@
     "premiumKitchen": "Cocina Premium",
     "socialSources": "YouTube • Instagram • TikTok",
     "extractionSuccess": "¡Receta extraída y guardada!",
+    "alreadySaved": "Receta ya guardada. Abriéndola ahora.",
     "extractionErrorPrefix": "Error de extracción: {message}"
   },
   "Planner": {

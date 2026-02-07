@@ -8,6 +8,21 @@ export function normalizeImageUrl(url: string | undefined | null): string {
   return `/${url}`;
 }
 
+export function normalizeSourceUrl(url: string | undefined | null): string {
+  if (!url) return '';
+  const trimmed = url.trim();
+  if (!trimmed) return '';
+  try {
+    const parsed = new URL(trimmed);
+    const host = parsed.host.toLowerCase();
+    const path = parsed.pathname.replace(/\/+$/, '');
+    const base = `${parsed.protocol}//${host}${path}`;
+    return `${base}${parsed.search}${parsed.hash}`;
+  } catch {
+    return trimmed.replace(/\/+$/, '');
+  }
+}
+
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }

@@ -1,12 +1,26 @@
 import { SupadataService } from './SupadataService';
 
+const mockTranscript = jest.fn();
+
+jest.mock('@supadata/js', () => {
+  class SupadataError extends Error {
+    error?: string;
+  }
+  return {
+    Supadata: jest.fn().mockImplementation(() => ({
+      transcript: mockTranscript,
+    })),
+    SupadataError,
+  };
+});
+
 describe('SupadataService', () => {
   const apiKey = 'test-api-key';
   let service: SupadataService;
 
   beforeEach(() => {
     service = new SupadataService(apiKey);
-    global.fetch = jest.fn();
+    mockTranscript.mockReset();
   });
 
   it('should fetch transcript successfully from YouTube URL', async () => {
@@ -16,29 +30,21 @@ describe('SupadataService', () => {
         { text: 'Second part.' }
       ]
     };
-    (global.fetch as jest.Mock).mockResolvedValue({
-      ok: true,
-      json: () => Promise.resolve(mockResponse),
-    });
+    mockTranscript.mockResolvedValue(mockResponse);
 
     const transcript = await service.fetchTranscript('https://youtube.com/watch?v=test');
     
     expect(transcript).toBe('First part. Second part.');
-    expect(global.fetch).toHaveBeenCalledWith(
-      expect.stringContaining('supadata.ai'),
-      expect.objectContaining({
-        headers: expect.objectContaining({
-          'x-api-key': apiKey,
-        }),
-      })
-    );
+    expect(mockTranscript).toHaveBeenCalledWith({
+      url: 'https://youtube.com/watch?v=test',
+      text: true,
+      mode: undefined,
+    });
   });
 
   it('should throw an error when API fails', async () => {
-    (global.fetch as jest.Mock).mockResolvedValue({
-      ok: false,
-      status: 500,
-    });
+    const { SupadataError } = require('@supadata/js');
+    mockTranscript.mockRejectedValue(new SupadataError('Failed to fetch transcript from Supadata'));
 
     await expect(service.fetchTranscript('https://youtube.com/watch?v=fail'))
       .rejects.toThrow('Failed to fetch transcript from Supadata');

@@ -17,6 +17,8 @@ import PlannerPage from "./[locale]/app/planner/page";
 import RecipeDetailPage from "./[locale]/app/recipes/[id]/page";
 import RecipesPage from "./[locale]/app/recipes/page";
 import ShoppingListPage from "./[locale]/app/shopping-list/page";
+import { extractRecipeAction } from "@/app/actions/ai";
+import { toast } from "sonner";
 
 // Mock next/navigation
 jest.mock("next/navigation", () => ({
@@ -52,6 +54,15 @@ jest.mock("sonner", () => ({
     error: jest.fn(),
     success: jest.fn(),
   },
+}));
+
+jest.mock("@/app/actions/ai", () => ({
+  extractRecipeAction: jest.fn(async (url: string) => ({
+    title: "Mock Recipe 1",
+    ingredients: ["Ingredient A"],
+    instructions: ["Step 1"],
+    sourceUrl: url,
+  })),
 }));
 
 // Swap Supabase Repos with Mock Repos for E2E testing logic
@@ -114,18 +125,6 @@ jest.mock("../lib/supabase/client", () => ({
   createSupabaseClient: jest.fn(() => ({})),
 }));
 
-// Mock VideoAIExtractor
-jest.mock("../lib/services/VideoAIExtractor", () => ({
-  VideoAIExtractor: jest.fn().mockImplementation(() => ({
-    extractFromUrl: jest.fn().mockResolvedValue({
-      title: "Mock Recipe 1",
-      ingredients: ["Ingredient A"],
-      instructions: ["Step 1"],
-      sourceUrl: "https://example.com",
-    }),
-  })),
-}));
-
 const renderLocalized = (ui: React.ReactElement) => {
   return render(
     <NextIntlClientProvider locale="en" messages={messages}>
@@ -164,7 +163,7 @@ describe("End-to-End Workflow", () => {
       name: /Extract Recipe/i,
     });
 
-    fireEvent.change(urlInput, { target: { value: "https://example.com" } });
+    fireEvent.change(urlInput, { target: { value: "https://example.com/new" } });
     fireEvent.click(extractButton);
 
     // Verify navigation after extraction (MockRecipeRepository clearForTests has 2 initial recipes, so new one is ID 3)
@@ -207,5 +206,34 @@ describe("End-to-End Workflow", () => {
     expect(
       await screen.findByText("Ingredient A", {}, { timeout: 3000 }),
     ).toBeInTheDocument();
+  });
+
+  it("should reuse existing recipe when URL already exists", async () => {
+    const existingRecipeId = 42;
+    MockRecipeRepository.seedForTests([
+      {
+        id: existingRecipeId,
+        title: "Existing Recipe",
+        ingredients: ["Ingredient A"],
+        instructions: ["Step 1"],
+        source_url: "https://example.com/dupe",
+      },
+    ]);
+
+    renderLocalized(<AppHome />);
+
+    const urlInput = screen.getByPlaceholderText(/Paste video URL/i);
+    const extractButton = screen.getByRole("button", {
+      name: /Extract Recipe/i,
+    });
+
+    fireEvent.change(urlInput, { target: { value: "https://example.com/dupe/" } });
+    fireEvent.click(extractButton);
+
+    await waitFor(() =>
+      expect(mockPush).toHaveBeenCalledWith(`/app/recipes/${existingRecipeId}`),
+    );
+    expect(toast.success).toHaveBeenCalledWith("alreadySaved");
+    expect(extractRecipeAction).not.toHaveBeenCalled();
   });
 });

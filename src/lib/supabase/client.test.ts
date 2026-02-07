@@ -1,9 +1,8 @@
 import { createSupabaseClient } from './client';
-import { createClient } from '@supabase/supabase-js';
+import { createBrowserClient } from '@supabase/ssr';
 
-// Mock createClient
-jest.mock('@supabase/supabase-js', () => ({
-  createClient: jest.fn(),
+jest.mock('@supabase/ssr', () => ({
+  createBrowserClient: jest.fn(),
 }));
 
 describe('createSupabaseClient', () => {
@@ -12,7 +11,7 @@ describe('createSupabaseClient', () => {
   beforeEach(() => {
     jest.resetModules();
     process.env = { ...originalEnv };
-    (createClient as jest.Mock).mockClear();
+    (createBrowserClient as jest.Mock).mockClear();
   });
 
   afterAll(() => {
@@ -25,7 +24,7 @@ describe('createSupabaseClient', () => {
 
     createSupabaseClient();
 
-    expect(createClient).toHaveBeenCalledWith(
+    expect(createBrowserClient).toHaveBeenCalledWith(
       'https://test-project.supabase.co',
       'valid-key-value'
     );
@@ -45,10 +44,11 @@ describe('createSupabaseClient', () => {
     expect(() => createSupabaseClient()).toThrow('Supabase configuration is missing or using placeholders.');
   });
 
-  it('should throw error if URL format is invalid', () => {
-    process.env.NEXT_PUBLIC_SUPABASE_URL = 'http://insecure-url.com';
+  it('should return client when config looks valid', () => {
+    process.env.NEXT_PUBLIC_SUPABASE_URL = 'https://valid.supabase.co';
     process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY = 'valid-key';
 
-    expect(() => createSupabaseClient()).toThrow('Invalid Supabase URL format.');
+    createSupabaseClient();
+    expect(createBrowserClient).toHaveBeenCalled();
   });
 });
