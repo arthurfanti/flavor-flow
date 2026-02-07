@@ -62,7 +62,7 @@ This plan outlines the steps to implement the UI/UX improvements specified in `s
     - [x] Add a subtle shadow or a `1px` darker border on the top edge for visual distinction.
 - [x] Task: Conductor - User Manual Verification 'Bottom Navbar & Navigation Logic' (Protocol in workflow.md)
 
-### Phase 4: UI Refinements & Accessibility
+### Phase 4: UI Refinements & Accessibility [checkpoint: d1d040c4]
 
 - [x] Task: Refactor action buttons for hierarchy and design consistency
     - [x] Write unit tests for button styling and state (e.g., primary/secondary variations).
