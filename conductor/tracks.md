@@ -4,5 +4,5 @@ This file tracks all major tracks for the project. Each track has its own detail
 
 ---
 
-- [~] **Track: Flavor Flow UX review**
+- [x] **Track: Flavor Flow UX review**
 *Link: [./tracks/ux_review_20240726/](./tracks/ux_review_20240726/)*
