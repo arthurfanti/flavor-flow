@@ -31,7 +31,7 @@ export default function Home() {
   const smoothScrollY = useSpring(scrollY, {
     stiffness: 100,
     damping: 30,
-    restDelta: 0.001
+    restDelta: 0.001,
   });
 
   const heroOpacity = useTransform(smoothScrollY, [0, 300], [1, 0.4]);
@@ -44,7 +44,7 @@ export default function Home() {
       const userId = session?.user?.id;
 
       return {
-        recipe: new SupabaseRecipeRepository(supabase, userId),
+        recipe: new SupabaseRecipeRepository(supabase),
         shoppingList: userId
           ? new SupabaseShoppingListRepository(supabase, userId)
           : null,
@@ -83,10 +83,11 @@ export default function Home() {
     try {
       console.log("Flavor Flow: Initializing True AI Extraction...");
 
-      const existingRecipe = await repos.recipe.findBySourceUrl(url);
-      if (existingRecipe) {
+      const existingRecipeId = await repos.recipe.checkRecipeExistsByUrl(url);
+      if (existingRecipeId) {
+        await repos.recipe.linkRecipeToUser(existingRecipeId);
         toast.success(t("alreadySaved"));
-        router.push(`/app/recipes/${existingRecipe.id}`);
+        router.push(`/app/recipes/${existingRecipeId}`);
         return;
       }
 
@@ -103,7 +104,7 @@ export default function Home() {
     } catch (error: any) {
       console.error(
         "Flavor Flow Error Object:",
-        JSON.stringify(error, Object.getOwnPropertyNames(error))
+        JSON.stringify(error, Object.getOwnPropertyNames(error)),
       );
       const msg =
         error.message === "Failed to fetch"
@@ -121,8 +122,12 @@ export default function Home() {
       <AILoadingOverlay stage={aiStage} />
 
       {/* Hero Section: Fixed & Full-bleed */}
-      <motion.div 
-        style={{ opacity: heroOpacity, scale: heroScale, transformOrigin: 'top center' }}
+      <motion.div
+        style={{
+          opacity: heroOpacity,
+          scale: heroScale,
+          transformOrigin: "top center",
+        }}
         className="fixed top-0 left-0 w-full h-[40vh] md:h-[50vh] z-0 overflow-hidden group"
       >
         <img

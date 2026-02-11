@@ -1,11 +1,24 @@
-import { RecipeRepository } from './RecipeRepository';
-import { normalizeSourceUrl } from '../utils';
+import { RecipeRepository } from "./RecipeRepository";
+import { normalizeSourceUrl } from "../utils";
 
 export class MockRecipeRepository implements RecipeRepository {
-  constructor(private _supabase?: any, private _userId?: string) {}
+  constructor(
+    private _supabase?: any,
+    private _userId?: string,
+  ) {}
   private static recipes: any[] = [
-    { id: 1, title: 'Mock Recipe 1', ingredients: ['Ingredient A'], instructions: ['Step 1'] },
-    { id: 2, title: 'Mock Recipe 2', ingredients: ['Ingredient B'], instructions: ['Step 1'] },
+    {
+      id: 1,
+      title: "Mock Recipe 1",
+      ingredients: ["Ingredient A"],
+      instructions: ["Step 1"],
+    },
+    {
+      id: 2,
+      title: "Mock Recipe 2",
+      ingredients: ["Ingredient B"],
+      instructions: ["Step 1"],
+    },
   ];
 
   async getRecipes(): Promise<any[]> {
@@ -13,7 +26,7 @@ export class MockRecipeRepository implements RecipeRepository {
   }
 
   async findBySourceUrl(url: string): Promise<any | null> {
-    const raw = (url || '').trim();
+    const raw = (url || "").trim();
     const normalized = normalizeSourceUrl(raw);
     const candidates = [normalized, raw].filter((value, index, self) => {
       return value && self.indexOf(value) === index;
@@ -21,8 +34,11 @@ export class MockRecipeRepository implements RecipeRepository {
     if (candidates.length === 0) return null;
     return (
       MockRecipeRepository.recipes.find((r) => {
-        const candidate = normalizeSourceUrl(r.source_url || r.sourceUrl || '');
-        return candidates.includes(candidate) || candidates.includes((r.source_url || r.sourceUrl || '').trim());
+        const candidate = normalizeSourceUrl(r.source_url || r.sourceUrl || "");
+        return (
+          candidates.includes(candidate) ||
+          candidates.includes((r.source_url || r.sourceUrl || "").trim())
+        );
       }) || null
     );
   }
@@ -48,29 +64,56 @@ export class MockRecipeRepository implements RecipeRepository {
   }
 
   async getAll(): Promise<any[]> {
-    return [...MockRecipeRepository.recipes].sort((a, b) => a.title.localeCompare(b.title));
+    return [...MockRecipeRepository.recipes].sort((a, b) =>
+      a.title.localeCompare(b.title),
+    );
   }
 
   async getById(id: string, locale?: string): Promise<any | null> {
-    return MockRecipeRepository.recipes.find(r => r.id.toString() === id) || null;
+    return (
+      MockRecipeRepository.recipes.find((r) => r.id.toString() === id) || null
+    );
   }
 
   async updateRecipe(id: number, recipe: any): Promise<any> {
-    const index = MockRecipeRepository.recipes.findIndex(r => r.id === id);
-    if (index === -1) throw new Error('Recipe not found');
+    const index = MockRecipeRepository.recipes.findIndex((r) => r.id === id);
+    if (index === -1) throw new Error("Recipe not found");
     const updated = { ...MockRecipeRepository.recipes[index], ...recipe };
     MockRecipeRepository.recipes[index] = updated;
     return updated;
   }
 
-  async saveTranslation(recipeId: number, locale: string, translation: any): Promise<void> {
+  async saveTranslation(
+    recipeId: number,
+    locale: string,
+    translation: any,
+  ): Promise<void> {
     // Mock save
+  }
+
+  async linkRecipeToUser(recipeId: string | number): Promise<void> {
+    // Mock link
+  }
+
+  async checkRecipeExistsByUrl(url: string): Promise<number | null> {
+    const existing = await this.findBySourceUrl(url);
+    return existing ? existing.id : null;
   }
 
   static clearForTests() {
     MockRecipeRepository.recipes = [
-      { id: 1, title: 'Mock Recipe 1', ingredients: ['Ingredient A'], instructions: ['Step 1'] },
-      { id: 2, title: 'Mock Recipe 2', ingredients: ['Ingredient B'], instructions: ['Step 1'] },
+      {
+        id: 1,
+        title: "Mock Recipe 1",
+        ingredients: ["Ingredient A"],
+        instructions: ["Step 1"],
+      },
+      {
+        id: 2,
+        title: "Mock Recipe 2",
+        ingredients: ["Ingredient B"],
+        instructions: ["Step 1"],
+      },
     ];
   }
 

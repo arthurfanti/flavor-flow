@@ -34,7 +34,7 @@ export default function RecipeDetailPage() {
       const supabase = createSupabaseClient();
       const userId = session?.user?.id;
       return {
-        recipe: new SupabaseRecipeRepository(supabase, userId),
+        recipe: new SupabaseRecipeRepository(supabase),
         shoppingList: userId
           ? new SupabaseShoppingListRepository(supabase, userId)
           : null,
@@ -81,7 +81,9 @@ export default function RecipeDetailPage() {
           sourceLocale !== preferredLocale &&
           existingTranslations.length === 0
         ) {
-          console.log("RecipeDetailPage: Triggering AI translation via Server Action...");
+          console.log(
+            "RecipeDetailPage: Triggering AI translation via Server Action...",
+          );
           translationInProgress.current = true;
 
           const translated = await translateRecipeAction(
@@ -94,7 +96,9 @@ export default function RecipeDetailPage() {
           );
 
           if (!translated) {
-            console.error("RecipeDetailPage: AI translation returned undefined");
+            console.error(
+              "RecipeDetailPage: AI translation returned undefined",
+            );
             toast.error("Failed to translate recipe automatically.");
             setRecipe(data);
             return;

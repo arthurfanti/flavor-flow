@@ -21,7 +21,7 @@ export default function RecipesPage() {
     if (authLoading) return null;
     try {
       const supabase = createSupabaseClient();
-      return new SupabaseRecipeRepository(supabase, session?.user?.id);
+      return new SupabaseRecipeRepository(supabase);
     } catch (e: any) {
       setConfigError(e.message);
       return null;
