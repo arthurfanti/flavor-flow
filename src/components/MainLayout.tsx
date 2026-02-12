@@ -11,9 +11,13 @@ interface MainLayoutProps {
 
 export default function MainLayout({ children }: MainLayoutProps) {
   const { loading } = useAuth();
+  const [showSplash, setShowSplash] = React.useState(true);
+
   return (
     <div className="min-h-screen w-full relative flex flex-col bg-background !text-foreground">
-      {loading && <SplashScreen minDuration={2500} />}
+      {showSplash && (
+        <SplashScreen minDuration={1600} onReady={() => setShowSplash(false)} />
+      )}
       <main className="flex-grow w-full">{children}</main>
 
       <TabBar />

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
+import AnimatedLogo from "./AnimatedLogo";
 
 export type AIStage = "idle" | "transcribing" | "analyzing" | "finalizing";
 
@@ -62,16 +63,8 @@ export default function AILoadingOverlay({
       )}
     >
       <div className="flex flex-col items-center w-full max-w-sm px-8">
-        {/* Bouncing Logo */}
-        <h1
-          className="text-8xl font-serif font-black text-white tracking-tighter leading-none select-none mb-12"
-          style={{
-            fontFamily: "'Bodoni Moda', serif",
-            animation: "float 2s ease-in-out infinite",
-          }}
-        >
-          FF.
-        </h1>
+        {/* Animated Logo */}
+        <AnimatedLogo size="xl" className="mb-12" />
 
         {/* Progress Bar Container */}
         <div className="w-full h-1 bg-white/10 rounded-full overflow-hidden mb-6">

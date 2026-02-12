@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
+import AnimatedLogo from "./AnimatedLogo";
 
 interface SplashScreenProps {
   onReady?: () => void;
@@ -10,7 +11,7 @@ interface SplashScreenProps {
 
 export default function SplashScreen({
   onReady,
-  minDuration = 2000,
+  minDuration = 1600,
 }: SplashScreenProps) {
   const [isVisible, setIsVisible] = useState(true);
   const [shouldRender, setShouldRender] = useState(true);
@@ -18,10 +19,12 @@ export default function SplashScreen({
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsVisible(false);
-      if (onReady) onReady();
 
       // Remove from DOM after fade out transition
-      setTimeout(() => setShouldRender(false), 500);
+      setTimeout(() => {
+        setShouldRender(false);
+        if (onReady) onReady();
+      }, 500); // Wait for transition-opacity duration-500
     }, minDuration);
 
     return () => clearTimeout(timer);
@@ -37,15 +40,7 @@ export default function SplashScreen({
       )}
     >
       <div className="flex flex-col items-center">
-        <h1
-          className="text-[8rem] font-serif font-black text-white tracking-tighter leading-none select-none"
-          style={{
-            fontFamily: "'Bodoni Moda', serif",
-            animation: "float 3s ease-in-out infinite",
-          }}
-        >
-          FF.
-        </h1>
+        <AnimatedLogo size="xl" />
       </div>
     </div>
   );

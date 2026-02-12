@@ -197,12 +197,6 @@ export default function ShoppingListPage() {
       {/* Content Card: Overlapping Hero */}
       <div className="w-full bg-[#121212] rounded-t-[2rem] -mt-12 relative z-20 flex flex-col items-center px-4 pt-12 pb-32 shadow-[0_-12px_24px_rgba(0,0,0,0.2)] border-t border-white/5 animate-fade-in">
         <div className="w-full max-w-2xl flex flex-col items-center">
-          <header className="mb-10 text-center">
-            <p className="text-xl text-neutral-300 font-medium italic leading-relaxed max-w-sm mx-auto">
-              {t("description")}
-            </p>
-          </header>
-
           {isLoading ? (
             <div className="w-full max-w-2xl mt-8 space-y-4">
               <Skeleton variant="card" className="h-32" />
