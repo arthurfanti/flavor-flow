@@ -11,4 +11,7 @@ export interface ShoppingListRepository {
   addItems(items: Partial<ShoppingListItem>[]): Promise<void>;
   toggleItem(id: number, bought: boolean): Promise<void>;
   removeItem(id: number): Promise<void>;
+  removeItemsByRecipeId(recipeId: number): Promise<void>;
+  clearBoughtItems(): Promise<void>;
+  clearAll(): Promise<void>;
 }

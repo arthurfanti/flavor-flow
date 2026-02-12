@@ -2,7 +2,7 @@
 
 import AILoadingOverlay, { AIStage } from "@/components/AILoadingOverlay";
 import { useAuth } from "@/components/AuthProvider";
-import { MagicCard } from "@/components/MagicCard";
+import { Skeleton } from "@/components/Skeleton";
 import RecipeListItem from "@/components/RecipeListItem";
 import UrlInput from "@/components/UrlInput";
 import { SupabasePantryRepository } from "@/lib/repositories/SupabasePantryRepository";
@@ -79,7 +79,7 @@ export default function Home() {
       return;
     }
     setIsLoading(true);
-    setAiStage("analyzing"); // Default stage since we lack granular progress from server action
+    setAiStage("analyzing");
     try {
       console.log("Flavor Flow: Initializing True AI Extraction...");
 
@@ -119,7 +119,7 @@ export default function Home() {
 
   return (
     <div className="flex flex-col items-center w-full text-gray-900 relative min-h-screen">
-      <AILoadingOverlay stage={aiStage} />
+      <AILoadingOverlay stage={aiStage} isLoading={isLoading} />
 
       {/* Hero Section: Fixed & Full-bleed */}
       <motion.div
@@ -138,6 +138,7 @@ export default function Home() {
             (e.target as HTMLImageElement).style.display = "none";
           }}
         />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#121212] via-transparent to-transparent" />
         <div className="absolute bottom-16 left-8 right-8 max-w-2xl mx-auto w-full">
           <span className="text-brand-primary font-sans font-bold uppercase tracking-[0.2em] text-[10px] mb-2 block">
             {t("premiumKitchen")}
@@ -160,13 +161,9 @@ export default function Home() {
             </p>
             <div className="w-12 h-1 bg-brand-primary mx-auto mt-6 rounded-full shadow-[0_0_12px_rgba(224,93,68,0.4)]" />
           </header>
-
-          <MagicCard
-            className="w-full max-w-2xl inset-0 border-white/5 shadow-2xl"
-            gradientColor="#E05D44"
-            variant="neon"
-          >
-            <div className="p-6">
+          <div className="w-full max-w-2xl inset-0 border border-white/5 shadow-2xl rounded-2xl bg-[#1A1A1A] relative overflow-hidden group">
+            <div className="absolute inset-0 bg-gradient-to-br from-brand-primary/10 via-transparent to-transparent opacity-50" />
+            <div className="relative z-10 p-6">
               <h2 className="text-2xl font-display font-bold text-white mb-8 p-4 text-center">
                 {t("startRecipe")}
               </h2>
@@ -178,33 +175,44 @@ export default function Home() {
                 </p>
               </div>
             </div>
-          </MagicCard>
+          </div>
 
-          {!isLoading && recentRecipes.length > 0 && (
-            <div className="w-full mt-16 animate-slide-up">
-              <div className="flex items-center justify-between mb-8 px-2">
-                <h2 className="text-sm font-sans font-bold uppercase tracking-[0.2em] text-neutral-500">
-                  {t("recentExtractions")}
-                </h2>
-                <Link
-                  href="/app/recipes"
-                  className="text-[10px] font-sans font-bold uppercase tracking-widest text-brand-primary hover:text-brand-primary/80 transition-colors"
-                >
-                  {t("viewAll")}
-                </Link>
-              </div>
+          {isLoading || (recentRecipes.length === 0 && authLoading) ? (
+            <div className="w-full mt-16 space-y-4">
+              <Skeleton variant="text" className="w-48 h-4 mb-8" />
               <div className="flex flex-col gap-4">
-                {recentRecipes.map((r) => (
-                  <div
-                    key={r.id}
-                    className="cursor-pointer active:scale-[0.98] transition-transform"
-                    onClick={() => router.push(`/app/recipes/${r.id}`)}
-                  >
-                    <RecipeListItem recipe={r} />
-                  </div>
-                ))}
+                <Skeleton variant="card" className="h-24" />
+                <Skeleton variant="card" className="h-24" />
+                <Skeleton variant="card" className="h-24" />
               </div>
             </div>
+          ) : (
+            recentRecipes.length > 0 && (
+              <div className="w-full mt-16 animate-slide-up">
+                <div className="flex items-center justify-between mb-8 px-2">
+                  <h2 className="text-sm font-sans font-bold uppercase tracking-[0.2em] text-neutral-500">
+                    {t("recentExtractions")}
+                  </h2>
+                  <Link
+                    href="/app/recipes"
+                    className="text-[10px] font-sans font-bold uppercase tracking-widest text-brand-primary hover:text-brand-primary/80 transition-colors"
+                  >
+                    {t("viewAll")}
+                  </Link>
+                </div>
+                <div className="flex flex-col gap-4">
+                  {recentRecipes.map((r) => (
+                    <Link
+                      key={r.id}
+                      href={`/app/recipes/${r.id}`}
+                      className="block active:scale-[0.98] transition-transform"
+                    >
+                      <RecipeListItem recipe={r} />
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )
           )}
         </div>
       </div>

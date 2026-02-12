@@ -1,18 +1,19 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
-import { createSupabaseClient } from '@/lib/supabase/client';
-import { SupabasePlannerRepository } from '@/lib/repositories/SupabasePlannerRepository';
-import PlannerQueue from '@/components/PlannerQueue';
-import { PlannedRecipe } from '@/lib/repositories/PlannerRepository';
-import { useAuth } from '@/components/AuthProvider';
-import { useRouter } from '@/navigation';
-import { useTranslations, useLocale } from 'next-intl';
-import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
+import React, { useState, useEffect, useMemo, useCallback } from "react";
+import { createSupabaseClient } from "@/lib/supabase/client";
+import { SupabasePlannerRepository } from "@/lib/repositories/SupabasePlannerRepository";
+import { SupabaseShoppingListRepository } from "@/lib/repositories/SupabaseShoppingListRepository";
+import PlannerQueue from "@/components/PlannerQueue";
+import { PlannedRecipe } from "@/lib/repositories/PlannerRepository";
+import { useAuth } from "@/components/AuthProvider";
+import { useRouter } from "@/navigation";
+import { useTranslations, useLocale } from "next-intl";
+import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 
 export default function PlannerPage() {
-  const t = useTranslations('Planner');
-  const tCommon = useTranslations('Common');
+  const t = useTranslations("Planner");
+  const tCommon = useTranslations("Common");
   const locale = useLocale();
   const router = useRouter();
   const { session, loading: authLoading } = useAuth();
@@ -24,17 +25,23 @@ export default function PlannerPage() {
   const smoothScrollY = useSpring(scrollY, {
     stiffness: 100,
     damping: 30,
-    restDelta: 0.001
+    restDelta: 0.001,
   });
 
   const heroOpacity = useTransform(smoothScrollY, [0, 300], [1, 0.4]);
   const heroScale = useTransform(smoothScrollY, [0, 300], [1, 1.1]);
 
-  const plannerRepo = useMemo(() => {
+  const repos = useMemo(() => {
     if (authLoading || !session?.user?.id) return null;
     try {
       const supabase = createSupabaseClient();
-      return new SupabasePlannerRepository(supabase, session.user.id);
+      return {
+        planner: new SupabasePlannerRepository(supabase, session.user.id),
+        shoppingList: new SupabaseShoppingListRepository(
+          supabase,
+          session.user.id,
+        ),
+      };
     } catch (e: any) {
       setConfigError(e.message);
       return null;
@@ -42,24 +49,24 @@ export default function PlannerPage() {
   }, [session?.user?.id, authLoading]);
 
   const refreshQueue = useCallback(async () => {
-    if (!plannerRepo) return;
+    if (!repos?.planner) return;
     setIsLoading(true);
     try {
-      const data = await plannerRepo.getQueue(locale);
+      const data = await repos.planner.getQueue(locale);
       setRecipes(data);
-      localStorage.setItem('plannedRecipes', JSON.stringify(data));
+      localStorage.setItem("plannedRecipes", JSON.stringify(data));
     } catch (error) {
-      console.error('Failed to fetch planned recipes:', error);
-      const cached = localStorage.getItem('plannedRecipes');
+      console.error("Failed to fetch planned recipes:", error);
+      const cached = localStorage.getItem("plannedRecipes");
       if (cached) setRecipes(JSON.parse(cached));
     } finally {
       setIsLoading(false);
     }
-  }, [plannerRepo, locale]);
+  }, [repos?.planner, locale]);
 
   useEffect(() => {
     if (!authLoading && !session) {
-      router.push('/app/login');
+      router.push("/app/login");
     }
   }, [session, authLoading, router]);
 
@@ -68,12 +75,19 @@ export default function PlannerPage() {
   }, [refreshQueue]);
 
   const handleRemove = async (id: number) => {
-    if (!plannerRepo) return;
+    if (!repos?.planner) return;
     try {
-      setRecipes(prev => prev.filter(r => r.id !== id));
-      await plannerRepo.removeFromQueue(id);
+      const recipeToRemove = recipes.find((r) => r.id === id);
+      setRecipes((prev) => prev.filter((r) => r.id !== id));
+      await repos.planner.removeFromQueue(id);
+
+      if (recipeToRemove?.recipe_id && repos.shoppingList) {
+        await repos.shoppingList.removeItemsByRecipeId(
+          recipeToRemove.recipe_id,
+        );
+      }
     } catch (error) {
-      console.error('Failed to remove recipe:', error);
+      console.error("Failed to remove recipe:", error);
       await refreshQueue();
     }
   };
@@ -81,9 +95,11 @@ export default function PlannerPage() {
   if (configError) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen p-4 text-center">
-        <h1 className="text-2xl font-bold text-red-600 mb-4">{tCommon('configurationError')}</h1>
+        <h1 className="text-2xl font-bold text-red-600 mb-4">
+          {tCommon("configurationError")}
+        </h1>
         <p className="text-gray-700">{configError}</p>
-        <p className="text-sm text-gray-500 mt-4">{tCommon('checkEnvVars')}</p>
+        <p className="text-sm text-gray-500 mt-4">{tCommon("checkEnvVars")}</p>
       </div>
     );
   }
@@ -91,23 +107,29 @@ export default function PlannerPage() {
   return (
     <div className="flex flex-col items-center w-full text-gray-900 relative min-h-screen">
       {/* Hero Section: Fixed & Full-bleed */}
-      <motion.div 
-        style={{ opacity: heroOpacity, scale: heroScale, transformOrigin: 'top center' }}
+      <motion.div
+        style={{
+          opacity: heroOpacity,
+          scale: heroScale,
+          transformOrigin: "top center",
+        }}
         className="fixed top-0 left-0 w-full h-[40vh] md:h-[50vh] z-0 overflow-hidden group"
       >
-        <img 
-          src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&q=80&w=1000" 
+        <img
+          src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&q=80&w=1000"
           alt="Healthy meal planning"
           className="w-full h-full object-cover brightness-[0.7]"
           onError={(e) => {
-            (e.target as HTMLImageElement).style.display = 'none';
+            (e.target as HTMLImageElement).style.display = "none";
           }}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-[#121212] via-transparent to-transparent" />
         <div className="absolute bottom-16 left-8 right-8 max-w-2xl mx-auto w-full">
-          <span className="text-brand-primary font-sans font-bold uppercase tracking-[0.2em] text-[10px] mb-2 block">{t('subtitle')}</span>
+          <span className="text-brand-primary font-sans font-bold uppercase tracking-[0.2em] text-[10px] mb-2 block">
+            {t("subtitle")}
+          </span>
           <h1 className="text-4xl md:text-6xl font-display font-bold text-white tracking-tight">
-            {t('title')}
+            {t("title")}
           </h1>
         </div>
       </motion.div>
@@ -120,7 +142,7 @@ export default function PlannerPage() {
         <div className="w-full max-w-2xl flex flex-col items-center">
           <header className="mb-10 text-center">
             <p className="text-xl text-neutral-300 font-medium italic leading-relaxed max-w-sm mx-auto">
-              {t('description')}
+              {t("description")}
             </p>
           </header>
 

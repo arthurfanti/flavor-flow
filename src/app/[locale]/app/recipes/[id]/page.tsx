@@ -164,6 +164,7 @@ export default function RecipeDetailPage() {
           missingIngredients.map((ing: string) => ({
             name: ing,
             bought: false,
+            recipe_id: targetRecipe.id,
           })),
         );
       }

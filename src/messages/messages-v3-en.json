@@ -18,6 +18,7 @@
     "loadProfileError": "Failed to load profile",
     "saveProfileSuccess": "Profile saved successfully",
     "saveProfileError": "Failed to save profile",
+    "addedToPantry": "{item} added to pantry!",
     "ingredientsCount": "{count} Ingredients"
   },
   "Navigation": {
@@ -104,6 +105,11 @@
     "shoppingList": "Shopping List",
     "markBought": "Mark {name} as bought",
     "markNotBought": "Mark {name} as not bought",
+    "addedToPantry": "{item} added to pantry!",
+    "clearBought": "Clear Bought",
+    "clearSuccess": "Bought items cleared!",
+    "clearAll": "Clear List",
+    "clearAllSuccess": "Shopping list cleared!",
     "removeItem": "Remove item"
   },
   "RecipeDetail": {

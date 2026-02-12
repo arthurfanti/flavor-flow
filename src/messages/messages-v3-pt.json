@@ -18,6 +18,7 @@
     "loadProfileError": "Falha ao carregar perfil",
     "saveProfileSuccess": "Perfil salvo com sucesso",
     "saveProfileError": "Falha ao salvar perfil",
+    "addedToPantry": "{item} adicionado à despensa!",
     "ingredientsCount": "{count} Ingredientes"
   },
   "Navigation": {
@@ -104,6 +105,11 @@
     "shoppingList": "Lista de Compras",
     "markBought": "Marcar {name} como comprado",
     "markNotBought": "Marcar {name} como não comprado",
+    "addedToPantry": "{item} adicionado à despensa!",
+    "clearBought": "Limpar Comprados",
+    "clearSuccess": "Itens comprados removidos!",
+    "clearAll": "Limpar Tudo",
+    "clearAllSuccess": "Lista de compras limpa!",
     "removeItem": "Remover item"
   },
   "RecipeDetail": {

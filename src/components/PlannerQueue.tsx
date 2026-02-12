@@ -5,7 +5,6 @@ import { normalizeImageUrl } from "@/lib/utils";
 import { Trash2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/navigation";
-import { MagicCard } from "./MagicCard";
 
 interface PlannerQueueProps {
   recipes: PlannedRecipe[];
@@ -17,15 +16,9 @@ export default function PlannerQueue({ recipes, onRemove }: PlannerQueueProps) {
 
   if (recipes.length === 0) {
     return (
-      <MagicCard
-        gradientColor="#E05D44"
-        variant="neon"
-        className="w-full py-12 text-center"
-      >
-        <p className="text-neutral-500 font-medium italic">
-          {t('empty')}
-        </p>
-      </MagicCard>
+      <div className="w-full py-12 text-center border border-white/5 rounded-2xl bg-gradient-to-br from-[#1A1A1A] to-[#202020]">
+        <p className="text-neutral-500 font-medium italic">{t("empty")}</p>
+      </div>
     );
   }
 
@@ -57,7 +50,7 @@ export default function PlannerQueue({ recipes, onRemove }: PlannerQueueProps) {
 
       <div className="flex-grow p-6 flex flex-col justify-center overflow-hidden">
         <span className="text-[10px] font-sans font-bold uppercase tracking-[0.2em] text-brand-primary mb-2 block">
-          {t('plannedMeal')}
+          {t("plannedMeal")}
         </span>
         <h3 className="text-2xl font-display font-bold text-white leading-tight line-clamp-2 group-hover:text-brand-primary transition-colors">
           {recipe.title}
@@ -69,12 +62,10 @@ export default function PlannerQueue({ recipes, onRemove }: PlannerQueueProps) {
   return (
     <div className="w-full space-y-6 pb-12">
       {recipes.map((recipe, idx) => (
-        <MagicCard
+        <div
           key={recipe.id}
-          className="animate-fade-in group relative border-white/5 sm:h-40 overflow-hidden"
+          className="animate-fade-in group relative border border-white/5 sm:h-40 overflow-hidden rounded-2xl bg-gradient-to-br from-[#1A1A1A] to-[#202020] shadow-lg"
           style={{ animationDelay: `${idx * 100}ms` }}
-          gradientColor="#E05D44"
-          variant="neon"
         >
           <div className="flex flex-col sm:flex-row h-full">
             {recipe.recipe_id ? (
@@ -94,13 +85,13 @@ export default function PlannerQueue({ recipes, onRemove }: PlannerQueueProps) {
               <button
                 onClick={() => onRemove(recipe.id!)}
                 className="w-12 h-12 rounded-2xl text-neutral-500 hover:text-red-400 hover:bg-red-400/10 flex items-center justify-center transition-all active:scale-90"
-                aria-label={t('remove')}
+                aria-label={t("remove")}
               >
                 <Trash2 className="h-5 w-5" />
               </button>
             </div>
           </div>
-        </MagicCard>
+        </div>
       ))}
     </div>
   );

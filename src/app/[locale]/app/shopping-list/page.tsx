@@ -2,11 +2,14 @@
 
 import { useAuth } from "@/components/AuthProvider";
 import ShoppingList from "@/components/ShoppingList";
+import { Skeleton } from "@/components/Skeleton";
+import { SupabasePantryRepository } from "@/lib/repositories/SupabasePantryRepository";
 import { SupabaseShoppingListRepository } from "@/lib/repositories/SupabaseShoppingListRepository";
 import { createSupabaseClient } from "@/lib/supabase/client";
 import { useRouter } from "@/navigation";
 import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { toast } from "sonner";
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 
 export default function ShoppingListPage() {
@@ -22,17 +25,23 @@ export default function ShoppingListPage() {
   const smoothScrollY = useSpring(scrollY, {
     stiffness: 100,
     damping: 30,
-    restDelta: 0.001
+    restDelta: 0.001,
   });
 
   const heroOpacity = useTransform(smoothScrollY, [0, 300], [1, 0.4]);
   const heroScale = useTransform(smoothScrollY, [0, 300], [1, 1.1]);
 
-  const shoppingListRepo = useMemo(() => {
+  const repos = useMemo(() => {
     if (authLoading || !session?.user?.id) return null;
     try {
       const supabase = createSupabaseClient();
-      return new SupabaseShoppingListRepository(supabase, session.user.id);
+      return {
+        shoppingList: new SupabaseShoppingListRepository(
+          supabase,
+          session.user.id,
+        ),
+        pantry: new SupabasePantryRepository(supabase, session.user.id),
+      };
     } catch (e: any) {
       setConfigError(e.message);
       return null;
@@ -40,10 +49,10 @@ export default function ShoppingListPage() {
   }, [session?.user?.id, authLoading]);
 
   const refreshItems = useCallback(async () => {
-    if (!shoppingListRepo) return;
+    if (!repos?.shoppingList) return;
     setIsLoading(true);
     try {
-      const data = await shoppingListRepo.getItems();
+      const data = await repos.shoppingList.getItems();
       setItems(data);
       localStorage.setItem("shoppingList", JSON.stringify(data));
     } catch (error) {
@@ -53,7 +62,7 @@ export default function ShoppingListPage() {
     } finally {
       setIsLoading(false);
     }
-  }, [shoppingListRepo]);
+  }, [repos]);
 
   useEffect(() => {
     if (!authLoading && !session) {
@@ -66,14 +75,34 @@ export default function ShoppingListPage() {
   }, [refreshItems]);
 
   const handleToggleItem = async (id: number, bought: boolean) => {
-    if (!shoppingListRepo) return;
+    if (!repos?.shoppingList) return;
     try {
-      const newItems = items.map((item) =>
-        item.id === id ? { ...item, bought } : item,
-      );
+      // Optimistic update with sorting (bought items at bottom)
+      const newItems = items
+        .map((item) => (item.id === id ? { ...item, bought } : item))
+        .sort((a, b) => Number(a.bought) - Number(b.bought));
       setItems(newItems);
       localStorage.setItem("shoppingList", JSON.stringify(newItems));
-      await shoppingListRepo.toggleItem(id, bought);
+
+      // DB Update
+      await repos.shoppingList.toggleItem(id, bought);
+
+      // Auto-add to pantry if bought
+      if (bought && repos.pantry) {
+        const item = items.find((i) => i.id === id);
+        if (item) {
+          try {
+            await repos.pantry.addItem({
+              name: item.name,
+              is_low_stock: false,
+              category: "Other",
+            });
+            toast.success(t("addedToPantry", { item: item.name }));
+          } catch (pantryError) {
+            console.error("Failed to auto-add to pantry:", pantryError);
+          }
+        }
+      }
     } catch (error) {
       console.error("Failed to toggle item:", error);
       await refreshItems();
@@ -81,14 +110,41 @@ export default function ShoppingListPage() {
   };
 
   const handleRemoveItem = async (id: number) => {
-    if (!shoppingListRepo) return;
+    if (!repos?.shoppingList) return;
     try {
       const newItems = items.filter((item) => item.id !== id);
       setItems(newItems);
       localStorage.setItem("shoppingList", JSON.stringify(newItems));
-      await shoppingListRepo.removeItem(id);
+      await repos.shoppingList.removeItem(id);
     } catch (error) {
       console.error("Failed to remove item:", error);
+      await refreshItems();
+    }
+  };
+
+  const handleClearBought = async () => {
+    if (!repos?.shoppingList) return;
+    try {
+      const newItems = items.filter((item) => !item.bought);
+      setItems(newItems);
+      localStorage.setItem("shoppingList", JSON.stringify(newItems));
+      await repos.shoppingList.clearBoughtItems();
+      toast.success(t("clearSuccess"));
+    } catch (error) {
+      console.error("Failed to clear bought items:", error);
+      await refreshItems();
+    }
+  };
+
+  const handleClearAll = async () => {
+    if (!repos?.shoppingList) return;
+    try {
+      setItems([]);
+      localStorage.setItem("shoppingList", JSON.stringify([]));
+      await repos.shoppingList.clearAll();
+      toast.success(t("clearAllSuccess"));
+    } catch (error) {
+      console.error("Failed to clear all items:", error);
       await refreshItems();
     }
   };
@@ -108,8 +164,12 @@ export default function ShoppingListPage() {
   return (
     <div className="flex flex-col items-center w-full text-gray-900 relative min-h-screen">
       {/* Hero Section: Fixed & Full-bleed */}
-      <motion.div 
-        style={{ opacity: heroOpacity, scale: heroScale, transformOrigin: 'top center' }}
+      <motion.div
+        style={{
+          opacity: heroOpacity,
+          scale: heroScale,
+          transformOrigin: "top center",
+        }}
         className="fixed top-0 left-0 w-full h-[40vh] md:h-[50vh] z-0 overflow-hidden group"
       >
         <img
@@ -144,14 +204,21 @@ export default function ShoppingListPage() {
           </header>
 
           {isLoading ? (
-            <div className="w-full py-20 flex justify-center">
-              <div className="animate-spin h-8 w-8 border-4 border-brand-primary border-t-transparent rounded-full" />
+            <div className="w-full max-w-2xl mt-8 space-y-4">
+              <Skeleton variant="card" className="h-32" />
+              <div className="space-y-2">
+                {[1, 2, 3].map((i) => (
+                  <Skeleton key={i} variant="list-item" />
+                ))}
+              </div>
             </div>
           ) : (
             <ShoppingList
               items={items}
               onToggle={handleToggleItem}
               onRemove={handleRemoveItem}
+              onClearBought={handleClearBought}
+              onClearAll={handleClearAll}
             />
           )}
         </div>
