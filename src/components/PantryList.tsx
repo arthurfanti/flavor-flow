@@ -5,7 +5,6 @@ import {
   PantryItem,
   PantryCategory,
 } from "@/lib/repositories/PantryRepository";
-import { MagicCard } from "./MagicCard";
 import { Trash2, AlertTriangle, CheckCircle2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 

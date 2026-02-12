@@ -82,56 +82,20 @@ export class SupabaseRecipeRepository implements RecipeRepository {
     const sourceUrlInput = recipe.source_url || recipe.sourceUrl;
     const normalizedSourceUrl = normalizeSourceUrl(sourceUrlInput);
 
-    // Check for existing recipe via RPC (bypasses RLS for dedup)
-    if (sourceUrlInput) {
-      const existingId = await this.checkRecipeExistsByUrl(sourceUrlInput);
-      if (existingId) {
-        // Link to current user and return the existing recipe
-        await this.linkRecipeToUser(existingId);
-        const existing = await this.findBySourceUrl(sourceUrlInput);
-        if (existing) return existing;
-      }
-    }
-
-    const dbRecipe = {
-      title: recipe.title,
-      ingredients: recipe.ingredients,
-      instructions: recipe.instructions,
-      source_url: normalizedSourceUrl || null,
-      image_url: recipe.image_url || recipe.imageUrl,
-      storage_path: recipe.storage_path,
-    };
-    const { data, error } = await this.supabase
-      .from("recipes")
-      .insert([dbRecipe])
-      .select()
-      .single();
+    // Use RPC to create recipe and link to user in one transaction (handles deduplication and RLS)
+    const { data, error } = await this.supabase.rpc("create_recipe", {
+      p_title: recipe.title,
+      p_ingredients: recipe.ingredients || [],
+      p_instructions: recipe.instructions || [],
+      p_source_url: normalizedSourceUrl || null,
+      p_image_url: recipe.image_url || recipe.imageUrl,
+      p_storage_path: recipe.storage_path,
+      p_source_locale: recipe.source_locale || "en",
+    });
 
     if (error) {
-      if (
-        (error as any).code === "23505" ||
-        (typeof error.message === "string" &&
-          error.message.includes("duplicate key"))
-      ) {
-        if (sourceUrlInput || normalizedSourceUrl) {
-          const existingId = await this.checkRecipeExistsByUrl(
-            sourceUrlInput || normalizedSourceUrl,
-          );
-          if (existingId) {
-            await this.linkRecipeToUser(existingId);
-            const existing = await this.findBySourceUrl(
-              sourceUrlInput || normalizedSourceUrl,
-            );
-            if (existing) return existing;
-          }
-        }
-      }
+      console.error("Error creating recipe via RPC:", error);
       throw error;
-    }
-
-    // Link the newly created recipe to the current user
-    if (data) {
-      await this.linkRecipeToUser(data.id);
     }
 
     return data;
