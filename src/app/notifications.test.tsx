@@ -17,7 +17,7 @@ jest.mock("@/navigation", () => ({
 // Mock Auth
 jest.mock("@/components/AuthProvider", () => ({
   useAuth: jest.fn(() => ({
-    session: { user: { id: 'user-123' } },
+    session: { user: { id: "user-123" } },
     loading: false,
   })),
 }));
@@ -58,8 +58,12 @@ jest.mock("../lib/repositories/SupabaseRecipeRepository", () => ({
   SupabaseRecipeRepository: jest.fn().mockImplementation(() => ({
     getLatest: jest.fn().mockResolvedValue([]),
     getAll: jest.fn().mockResolvedValue([]),
-    addRecipe: jest.fn().mockImplementation((r) => Promise.resolve({ id: 123, ...r })),
+    addRecipe: jest
+      .fn()
+      .mockImplementation((r) => Promise.resolve({ id: 123, ...r })),
     findBySourceUrl: jest.fn().mockResolvedValue(null),
+    checkRecipeExistsByUrl: jest.fn().mockResolvedValue(null),
+    linkRecipeToUser: jest.fn().mockResolvedValue(null),
   })),
 }));
 
@@ -85,7 +89,7 @@ const renderHome = () => {
   return render(
     <NextIntlClientProvider locale="en" messages={messages}>
       <Home />
-    </NextIntlClientProvider>
+    </NextIntlClientProvider>,
   );
 };
 
@@ -94,10 +98,10 @@ describe("Home Notifications", () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    process.env = { 
-      ...originalEnv, 
-      NEXT_PUBLIC_SUPADATA_API_KEY: 'valid-key',
-      NEXT_PUBLIC_OPENROUTER_API_KEY: 'valid-key'
+    process.env = {
+      ...originalEnv,
+      NEXT_PUBLIC_SUPADATA_API_KEY: "valid-key",
+      NEXT_PUBLIC_OPENROUTER_API_KEY: "valid-key",
     };
   });
 
@@ -106,14 +110,16 @@ describe("Home Notifications", () => {
   });
 
   it("calls toast.error when extraction fails", async () => {
-    (extractRecipeAction as jest.Mock).mockRejectedValue(new Error("Failed to fetch"));
+    (extractRecipeAction as jest.Mock).mockRejectedValue(
+      new Error("Failed to fetch"),
+    );
 
     renderHome();
-    
-    const input = screen.getByPlaceholderText(/Paste video URL/i);
-    const button = screen.getByRole('button', { name: /Extract Recipe/i });
 
-    fireEvent.change(input, { target: { value: 'https://example.com/fail' } });
+    const input = screen.getByPlaceholderText(/Paste video URL/i);
+    const button = screen.getByRole("button", { name: /Extract Recipe/i });
+
+    fireEvent.change(input, { target: { value: "https://example.com/fail" } });
     fireEvent.click(button);
 
     await waitFor(() => {
@@ -125,18 +131,20 @@ describe("Home Notifications", () => {
 
   it("calls toast.success on successful extraction", async () => {
     (extractRecipeAction as jest.Mock).mockResolvedValue({
-      title: 'Mock Recipe',
+      title: "Mock Recipe",
       ingredients: [],
       instructions: [],
-      sourceUrl: 'https://example.com/success',
+      sourceUrl: "https://example.com/success",
     });
 
     renderHome();
-    
-    const input = screen.getByPlaceholderText(/Paste video URL/i);
-    const button = screen.getByRole('button', { name: /Extract Recipe/i });
 
-    fireEvent.change(input, { target: { value: 'https://example.com/success' } });
+    const input = screen.getByPlaceholderText(/Paste video URL/i);
+    const button = screen.getByRole("button", { name: /Extract Recipe/i });
+
+    fireEvent.change(input, {
+      target: { value: "https://example.com/success" },
+    });
     fireEvent.click(button);
 
     await waitFor(() => {

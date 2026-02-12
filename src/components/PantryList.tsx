@@ -7,6 +7,8 @@ import {
 } from "@/lib/repositories/PantryRepository";
 import { Trash2, AlertTriangle, CheckCircle2 } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { MagicCard } from "@/components/MagicCard";
+import { cn } from "@/lib/utils";
 
 interface PantryListProps {
   items: PantryItem[];
@@ -64,10 +66,7 @@ export default function PantryList({
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {catItems.map((item) => (
-              <div
-                key={item.id}
-                className="p-5 border border-white/5 hover:border-brand-primary/20 transition-colors group rounded-2xl bg-gradient-to-br from-[#1A1A1A] to-[#202020]"
-              >
+              <MagicCard key={item.id} className="p-5">
                 <div className="flex items-center justify-between">
                   <div className="flex flex-col gap-1">
                     <span className="text-lg font-medium text-white group-hover:text-brand-primary transition-colors">
@@ -113,15 +112,11 @@ export default function PantryList({
                     </button>
                   </div>
                 </div>
-              </div>
+              </MagicCard>
             ))}
           </div>
         </section>
       ))}
     </div>
   );
-}
-
-function cn(...inputs: any[]) {
-  return inputs.filter(Boolean).join(" ");
 }

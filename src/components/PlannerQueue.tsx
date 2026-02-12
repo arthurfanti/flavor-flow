@@ -5,6 +5,7 @@ import { normalizeImageUrl } from "@/lib/utils";
 import { Trash2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/navigation";
+import { MagicCard } from "@/components/MagicCard";
 
 interface PlannerQueueProps {
   recipes: PlannedRecipe[];
@@ -62,9 +63,9 @@ export default function PlannerQueue({ recipes, onRemove }: PlannerQueueProps) {
   return (
     <div className="w-full space-y-6 pb-12">
       {recipes.map((recipe, idx) => (
-        <div
+        <MagicCard
           key={recipe.id}
-          className="animate-fade-in group relative border border-white/5 sm:h-40 overflow-hidden rounded-2xl bg-gradient-to-br from-[#1A1A1A] to-[#202020] shadow-lg"
+          className="animate-fade-in group relative sm:h-40 overflow-hidden shadow-lg"
           style={{ animationDelay: `${idx * 100}ms` }}
         >
           <div className="flex flex-col sm:flex-row h-full">
@@ -91,7 +92,7 @@ export default function PlannerQueue({ recipes, onRemove }: PlannerQueueProps) {
               </button>
             </div>
           </div>
-        </div>
+        </MagicCard>
       ))}
     </div>
   );

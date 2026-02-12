@@ -8,6 +8,7 @@ import {
 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { MagicButton } from "./MagicButton";
+import { MagicCard } from "@/components/MagicCard";
 import { cn } from "@/lib/utils";
 
 interface ShoppingListItem {
@@ -46,8 +47,7 @@ export default function ShoppingList({
   }
 
   return (
-    <div className="w-full max-w-2xl p-6 md:p-10 mt-8 border border-white/5 rounded-[2rem] bg-[#121212] relative overflow-hidden shadow-2xl">
-      <div className="absolute inset-0 bg-gradient-to-br from-[#1A1A1A] via-[#151515] to-[#121212] opacity-80" />
+    <MagicCard className="w-full max-w-2xl p-6 md:p-10 mt-8 shadow-2xl">
       <div className="relative z-10">
         <div className="flex flex-col gap-8 mb-12">
           <div className="space-y-3">
@@ -134,6 +134,6 @@ export default function ShoppingList({
           ))}
         </ul>
       </div>
-    </div>
+    </MagicCard>
   );
 }

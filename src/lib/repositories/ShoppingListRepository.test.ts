@@ -1,7 +1,7 @@
-import { SupabaseClient } from '@supabase/supabase-js';
-import { SupabaseShoppingListRepository } from './SupabaseShoppingListRepository';
+import { SupabaseClient } from "@supabase/supabase-js";
+import { SupabaseShoppingListRepository } from "./SupabaseShoppingListRepository";
 
-describe('SupabaseShoppingListRepository', () => {
+describe("SupabaseShoppingListRepository", () => {
   let mockSupabase: jest.Mocked<SupabaseClient>;
 
   beforeEach(() => {
@@ -16,47 +16,53 @@ describe('SupabaseShoppingListRepository', () => {
     } as unknown as jest.Mocked<SupabaseClient>;
   });
 
-  it('should be defined', () => {
-    const repo = new SupabaseShoppingListRepository(mockSupabase, 'user-123');
+  it("should be defined", () => {
+    const repo = new SupabaseShoppingListRepository(mockSupabase, "user-123");
     expect(repo).toBeDefined();
   });
 
-  it('getItems should call supabase select with user_id filter', async () => {
-    const repo = new SupabaseShoppingListRepository(mockSupabase, 'user-123');
-    const mockOrder = jest.fn().mockResolvedValue({ data: [], error: null });
-    const mockEq = jest.fn().mockReturnValue({ order: mockOrder });
+  it("getItems should call supabase select with user_id filter", async () => {
+    const repo = new SupabaseShoppingListRepository(mockSupabase, "user-123");
+    const mockSecondOrder = jest
+      .fn()
+      .mockResolvedValue({ data: [], error: null });
+    const mockFirstOrder = jest
+      .fn()
+      .mockReturnValue({ order: mockSecondOrder });
+    const mockEq = jest.fn().mockReturnValue({ order: mockFirstOrder });
     const mockSelect = jest.fn().mockReturnValue({ eq: mockEq });
-    
+
     (mockSupabase.from as jest.Mock).mockReturnValue({
       select: mockSelect,
     });
 
     await repo.getItems();
-    expect(mockSupabase.from).toHaveBeenCalledWith('shopping_list');
-    expect(mockSelect).toHaveBeenCalledWith('*');
-    expect(mockEq).toHaveBeenCalledWith('user_id', 'user-123');
-    expect(mockOrder).toHaveBeenCalledWith('id', { ascending: true });
+    expect(mockSupabase.from).toHaveBeenCalledWith("shopping_list");
+    expect(mockSelect).toHaveBeenCalledWith("*");
+    expect(mockEq).toHaveBeenCalledWith("user_id", "user-123");
+    expect(mockFirstOrder).toHaveBeenCalledWith("bought", { ascending: true });
+    expect(mockSecondOrder).toHaveBeenCalledWith("id", { ascending: true });
   });
 
-  it('addItem should call supabase insert with user_id', async () => {
-    const repo = new SupabaseShoppingListRepository(mockSupabase, 'user-123');
+  it("addItem should call supabase insert with user_id", async () => {
+    const repo = new SupabaseShoppingListRepository(mockSupabase, "user-123");
     (mockSupabase.from as jest.Mock).mockReturnValue({
       insert: jest.fn().mockResolvedValue({ error: null }),
     });
 
-    await repo.addItem({ name: 'Apples' });
-    expect(mockSupabase.from).toHaveBeenCalledWith('shopping_list');
-    expect(mockSupabase.from('shopping_list').insert).toHaveBeenCalledWith([
-      expect.objectContaining({ user_id: 'user-123' })
+    await repo.addItem({ name: "Apples" });
+    expect(mockSupabase.from).toHaveBeenCalledWith("shopping_list");
+    expect(mockSupabase.from("shopping_list").insert).toHaveBeenCalledWith([
+      expect.objectContaining({ user_id: "user-123" }),
     ]);
   });
 
-  it('toggleItem should call supabase update with user_id filter', async () => {
-    const repo = new SupabaseShoppingListRepository(mockSupabase, 'user-123');
+  it("toggleItem should call supabase update with user_id filter", async () => {
+    const repo = new SupabaseShoppingListRepository(mockSupabase, "user-123");
     const mockUpdate = jest.fn().mockReturnThis();
     const mockEqId = jest.fn().mockReturnThis();
     const mockEqUser = jest.fn().mockResolvedValue({ error: null });
-    
+
     (mockSupabase.from as jest.Mock).mockReturnValue({
       update: mockUpdate,
     });
@@ -65,16 +71,16 @@ describe('SupabaseShoppingListRepository', () => {
 
     await repo.toggleItem(1, true);
     expect(mockUpdate).toHaveBeenCalledWith({ bought: true });
-    expect(mockEqId).toHaveBeenCalledWith('id', 1);
-    expect(mockEqUser).toHaveBeenCalledWith('user_id', 'user-123');
+    expect(mockEqId).toHaveBeenCalledWith("id", 1);
+    expect(mockEqUser).toHaveBeenCalledWith("user_id", "user-123");
   });
 
-  it('removeItem should call supabase delete with user_id filter', async () => {
-    const repo = new SupabaseShoppingListRepository(mockSupabase, 'user-123');
+  it("removeItem should call supabase delete with user_id filter", async () => {
+    const repo = new SupabaseShoppingListRepository(mockSupabase, "user-123");
     const mockDelete = jest.fn().mockReturnThis();
     const mockEqId = jest.fn().mockReturnThis();
     const mockEqUser = jest.fn().mockResolvedValue({ error: null });
-    
+
     (mockSupabase.from as jest.Mock).mockReturnValue({
       delete: mockDelete,
     });
@@ -83,7 +89,7 @@ describe('SupabaseShoppingListRepository', () => {
 
     await repo.removeItem(1);
     expect(mockDelete).toHaveBeenCalled();
-    expect(mockEqId).toHaveBeenCalledWith('id', 1);
-    expect(mockEqUser).toHaveBeenCalledWith('user_id', 'user-123');
+    expect(mockEqId).toHaveBeenCalledWith("id", 1);
+    expect(mockEqUser).toHaveBeenCalledWith("user_id", "user-123");
   });
 });

@@ -1,10 +1,16 @@
-import { ShoppingListItem, ShoppingListRepository } from './ShoppingListRepository';
+import {
+  ShoppingListItem,
+  ShoppingListRepository,
+} from "./ShoppingListRepository";
 
 export class MockShoppingListRepository implements ShoppingListRepository {
-  constructor(private _supabase?: any, private _userId?: string) {}
+  constructor(
+    private _supabase?: any,
+    private _userId?: string,
+  ) {}
   private static items: ShoppingListItem[] = [
-    { id: 1, name: 'Mock Apple', bought: false },
-    { id: 2, name: 'Mock Banana', bought: true },
+    { id: 1, name: "Mock Apple", bought: false },
+    { id: 2, name: "Mock Banana", bought: true },
   ];
 
   async getItems(): Promise<ShoppingListItem[]> {
@@ -14,7 +20,7 @@ export class MockShoppingListRepository implements ShoppingListRepository {
   async addItem(item: Partial<ShoppingListItem>): Promise<void> {
     const newItem: ShoppingListItem = {
       id: Date.now() + Math.random(),
-      name: item.name || 'Unknown',
+      name: item.name || "Unknown",
       bought: item.bought || false,
       recipe_id: item.recipe_id,
     };
@@ -22,10 +28,10 @@ export class MockShoppingListRepository implements ShoppingListRepository {
   }
 
   async addItems(items: Partial<ShoppingListItem>[]): Promise<void> {
-    items.forEach(item => {
+    items.forEach((item) => {
       const newItem: ShoppingListItem = {
         id: Date.now() + Math.random(),
-        name: item.name || 'Unknown',
+        name: item.name || "Unknown",
         bought: item.bought || false,
         recipe_id: item.recipe_id,
       };
@@ -41,13 +47,31 @@ export class MockShoppingListRepository implements ShoppingListRepository {
   }
 
   async removeItem(id: number): Promise<void> {
-    MockShoppingListRepository.items = MockShoppingListRepository.items.filter((i) => i.id !== id);
+    MockShoppingListRepository.items = MockShoppingListRepository.items.filter(
+      (i) => i.id !== id,
+    );
+  }
+
+  async removeItemsByRecipeId(recipeId: number): Promise<void> {
+    MockShoppingListRepository.items = MockShoppingListRepository.items.filter(
+      (i) => i.recipe_id !== recipeId,
+    );
+  }
+
+  async clearBoughtItems(): Promise<void> {
+    MockShoppingListRepository.items = MockShoppingListRepository.items.filter(
+      (i) => !i.bought,
+    );
+  }
+
+  async clearAll(): Promise<void> {
+    MockShoppingListRepository.items = [];
   }
 
   static clearForTests() {
     MockShoppingListRepository.items = [
-      { id: 1, name: 'Mock Apple', bought: false },
-      { id: 2, name: 'Mock Banana', bought: true },
+      { id: 1, name: "Mock Apple", bought: false },
+      { id: 2, name: "Mock Banana", bought: true },
     ];
   }
 }

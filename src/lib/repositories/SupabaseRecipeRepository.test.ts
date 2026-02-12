@@ -53,43 +53,14 @@ describe("SupabaseRecipeRepository", () => {
     const repo = new SupabaseRecipeRepository(mockSupabase);
 
     // Mock RPC for checkRecipeExistsByUrl - no existing recipe
-    (mockSupabase.rpc as jest.Mock).mockResolvedValue({
-      data: [],
-      error: null,
-    });
-
-    // Mock for insert flow
-    const mockLinkSingle = jest
-      .fn()
-      .mockResolvedValue({ data: { id: "link-id" }, error: null });
-    const mockLinkSelect = jest
-      .fn()
-      .mockReturnValue({ single: mockLinkSingle });
-    const mockLinkInsert = jest
-      .fn()
-      .mockReturnValue({ select: mockLinkSelect });
-
-    const mockSingle = jest
-      .fn()
-      .mockResolvedValue({ data: { id: 1, title: "Test" }, error: null });
-    const mockSelect = jest.fn().mockReturnValue({ single: mockSingle });
-    const mockInsert = jest
-      .fn()
-      .mockReturnValueOnce({ select: mockSelect }) // recipes insert
-      .mockReturnValueOnce({ select: mockLinkSelect }); // user_recipes insert
-
-    (mockSupabase.from as jest.Mock).mockImplementation((table: string) => {
-      if (table === "user_recipes") {
-        return { insert: mockLinkInsert };
+    (mockSupabase.rpc as jest.Mock).mockImplementation((method) => {
+      if (method === "check_recipe_exists_by_url") {
+        return Promise.resolve({ data: [], error: null });
       }
-      return {
-        select: jest.fn().mockReturnThis(),
-        eq: jest.fn().mockReturnThis(),
-        single: jest
-          .fn()
-          .mockResolvedValue({ data: null, error: { code: "PGRST116" } }),
-        insert: mockInsert,
-      };
+      if (method === "create_recipe") {
+        return Promise.resolve({ data: { id: 1, title: "Test" }, error: null });
+      }
+      return Promise.resolve({ data: null, error: null });
     });
 
     const newRecipe = {
@@ -101,46 +72,31 @@ describe("SupabaseRecipeRepository", () => {
     };
     await repo.addRecipe(newRecipe);
 
-    // Verify insert was called WITHOUT user_id
-    const insertCall = mockInsert.mock.calls[0][0];
-    expect(insertCall[0]).not.toHaveProperty("user_id");
-    expect(insertCall[0]).toEqual(
-      expect.objectContaining({
-        title: "Test",
-        ingredients: [],
-        instructions: [],
-        source_url: "http://example.com",
-        image_url: "img.jpg",
-      }),
-    );
-
-    // Verify user_recipes link was created
-    expect(mockSupabase.from).toHaveBeenCalledWith("user_recipes");
+    // Verify RPC was called
+    expect(mockSupabase.rpc).toHaveBeenCalledWith("create_recipe", {
+      p_title: "Test",
+      p_ingredients: [],
+      p_instructions: [],
+      p_source_url: "http://example.com",
+      p_image_url: "img.jpg",
+      p_storage_path: undefined,
+      p_source_locale: "en",
+    });
   });
 
   it("addRecipe should throw error if supabase fails", async () => {
     const repo = new SupabaseRecipeRepository(mockSupabase);
     const mockError = new Error("Supabase error");
 
-    // Mock RPC for checkRecipeExistsByUrl - no existing recipe
-    (mockSupabase.rpc as jest.Mock).mockResolvedValue({
-      data: [],
-      error: null,
-    });
-
-    const mockSingle = jest
-      .fn()
-      .mockResolvedValue({ data: null, error: mockError });
-    const mockSelect = jest.fn().mockReturnValue({ single: mockSingle });
-    const mockInsert = jest.fn().mockReturnValue({ select: mockSelect });
-
-    (mockSupabase.from as jest.Mock).mockReturnValue({
-      select: jest.fn().mockReturnThis(),
-      eq: jest.fn().mockReturnThis(),
-      single: jest
-        .fn()
-        .mockResolvedValue({ data: null, error: { code: "PGRST116" } }),
-      insert: mockInsert,
+    // Mock RPC
+    (mockSupabase.rpc as jest.Mock).mockImplementation((method) => {
+      if (method === "check_recipe_exists_by_url") {
+        return Promise.resolve({ data: [], error: null });
+      }
+      if (method === "create_recipe") {
+        return Promise.resolve({ data: null, error: mockError });
+      }
+      return Promise.resolve({ data: null, error: null });
     });
 
     await expect(repo.addRecipe({ title: "Test" })).rejects.toThrow(

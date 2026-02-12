@@ -27,12 +27,12 @@ export function MagicCard({
 
   return (
     <div
-      data-testid="magic-card-root"
+      data-testid="magic-card"
       onMouseMove={onMouseMove}
       className={cn(
         "group relative flex size-full flex-col overflow-hidden rounded-xl bg-neutral-900 border border-transparent transition-all duration-300",
         variant === "neon" && "shadow-[0_0_20px_-12px_rgba(224,93,68,0.5)]",
-        className
+        className,
       )}
       {...props}
     >
