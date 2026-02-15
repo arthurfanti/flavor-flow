@@ -10,6 +10,7 @@ import { MagicButton } from "@/components/MagicButton";
 import { User, Languages, Save } from "lucide-react";
 import { toast } from "sonner";
 import { useTranslations } from "next-intl";
+import { setPreferredLocaleCookie } from "@/app/actions/locale";
 
 export default function ProfilePage() {
   const t = useTranslations("Profile");
@@ -67,6 +68,7 @@ export default function ProfilePage() {
         display_name: displayName,
         preferred_locale: locale,
       });
+      await setPreferredLocaleCookie(locale);
       toast.success(tc("saveProfileSuccess"));
     } catch (error) {
       console.error("Failed to save profile:", error);

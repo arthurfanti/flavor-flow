@@ -1,11 +1,11 @@
 import { createServerClient, type CookieOptions } from '@supabase/ssr'
 import { cookies } from 'next/headers'
 import { NextResponse } from 'next/server'
+import { PREFERRED_LOCALE_COOKIE, parseLocale } from '@/lib/utils/locale-cookie'
 
 export async function GET(request: Request) {
     const { searchParams, origin } = new URL(request.url)
     const code = searchParams.get('code')
-    // if "next" is in search params, use it as the redirection URL
     const next = searchParams.get('next') ?? '/app'
 
     if (code) {
@@ -37,7 +37,6 @@ export async function GET(request: Request) {
                     let profile = await profileRepo.getProfile(user.id)
 
                     if (!profile) {
-                        // Determine locale from "next" if possible, or default to en
                         let initialLocale = 'en'
                         const match = next.match(/^\/([a-z]{2}(-[A-Z]{2})?)\//)
                         if (match) initialLocale = match[1]
@@ -52,13 +51,17 @@ export async function GET(request: Request) {
                     }
 
                     const preferredLocale = profile?.preferred_locale || 'en'
-                    // Clean up next to remove locale prefix if it exists to avoid double prefixing
-                    // Only match supported locales followed by a slash or end of string
                     const cleanNext = next.replace(/^\/(en|pt|es|pt-BR)(\/|$)/, '$2') || '/app'
-                    // Ensure cleanNext starts with a slash if it's not empty and doesn't have one
                     const finalNext = cleanNext.startsWith('/') ? cleanNext : `/${cleanNext}`
 
-                    return NextResponse.redirect(`${origin}/${preferredLocale}${finalNext}`)
+                    const response = NextResponse.redirect(`${origin}/${preferredLocale}${finalNext}`)
+                    response.cookies.set(PREFERRED_LOCALE_COOKIE, preferredLocale, {
+                        path: '/',
+                        maxAge: 60 * 60 * 24 * 365,
+                        sameSite: 'lax',
+                        secure: process.env.NODE_ENV === 'production',
+                    })
+                    return response
                 } catch (e) {
                     console.error("Failed to fetch/create profile in callback", e)
                     return NextResponse.redirect(`${origin}${next}`)
@@ -68,6 +71,5 @@ export async function GET(request: Request) {
         return NextResponse.redirect(`${origin}${next}`)
     }
 
-    // return the user to an error page with instructions
     return NextResponse.redirect(`${origin}/auth/auth-code-error`)
 }

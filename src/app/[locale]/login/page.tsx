@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { createSupabaseClient } from "@/lib/supabase/client";
 import { useTranslations, useLocale } from "next-intl";
 import Icon from "@/components/Icon";
+import { setPreferredLocaleCookie } from "@/app/actions/locale";
 
 export default function LoginPage() {
   const t = useTranslations("Auth");
@@ -59,6 +60,7 @@ export default function LoginPage() {
                   }
 
                   const preferredLocale = profile?.preferred_locale || 'en';
+                  await setPreferredLocaleCookie(preferredLocale);
                   router.push("/app", { locale: preferredLocale });
                 } catch (e) {
                   console.error("Failed to fetch/create profile in One Tap", e);
@@ -170,6 +172,7 @@ export default function LoginPage() {
 
               const preferredLocale = profile?.preferred_locale || 'en';
 
+              await setPreferredLocaleCookie(preferredLocale);
               router.push("/app", { locale: preferredLocale });
             } catch (e) {
               console.error("Failed to fetch profile settings, falling back to default", e);
