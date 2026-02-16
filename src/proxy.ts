@@ -61,7 +61,7 @@ async function getPreferredLocale(
   return null;
 }
 
-export default async function middleware(request: NextRequest) {
+export default async function proxy(request: NextRequest) {
   const response = intlMiddleware(request);
   const supabase = updateSession(request, response);
   const { data: { user } } = await supabase.auth.getUser();
