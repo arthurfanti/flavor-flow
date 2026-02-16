@@ -1,5 +1,6 @@
 import LandingPage from "@/components/landing/LandingPage";
 
-export default function Home({ params }: { params: { locale: string } }) {
+export default async function Home(props: { params: Promise<{ locale: string }> }) {
+  await props.params;
   return <LandingPage />;
 }

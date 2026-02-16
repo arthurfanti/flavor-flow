@@ -4,13 +4,18 @@ import { locales } from "@/i18n/request";
 import { notFound } from "next/navigation";
 import { NextIntlClientProvider } from 'next-intl';
 
-export default async function RootLayout({
-  children,
-  params
-}: Readonly<{
-  children: React.ReactNode;
-  params: { locale: string };
-}>) {
+export default async function RootLayout(
+  props: Readonly<{
+    children: React.ReactNode;
+    params: { locale: string };
+  }>
+) {
+  const params = await props.params;
+
+  const {
+    children
+  } = props;
+
   const { locale } = params;
 
   // Validate that the incoming `locale` parameter is valid

@@ -30,12 +30,14 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
-  const locale = headers().get("x-next-intl-locale") ?? "en";
+export default async function RootLayout(
+  {
+    children,
+  }: Readonly<{
+    children: React.ReactNode;
+  }>
+) {
+  const locale = (await headers()).get("x-next-intl-locale") ?? "en";
 
   return (
     <html
