@@ -30,7 +30,7 @@ export async function extractRecipeAction(url: string) {
         // Upload thumbnail to Supabase if it exists
         if (recipe.image_url) {
             try {
-                const supabase = createSupabaseServerClient();
+                const supabase = await createSupabaseServerClient();
                 const storageService = new ImageStorageService(supabase);
                 const uploadResult = await storageService.uploadFromUrl(recipe.image_url);
 

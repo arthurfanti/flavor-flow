@@ -27,6 +27,7 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",
+    "@next/eslint-plugin-next": "^16.1.6",
     "@tailwindcss/postcss": "^4.1.18",
     "@testing-library/jest-dom": "latest",
     "@testing-library/react": "latest",
@@ -38,12 +39,14 @@
     "autoprefixer": "latest",
     "eslint": "^9",
     "eslint-config-next": "16.1.6",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^7.0.1",
     "jest": "latest",
     "jest-environment-jsdom": "latest",
     "postcss": "latest",
     "tailwindcss": "latest",
     "ts-jest": "^29.4.6",
     "typescript": "latest",
-    "typescript-eslint": "^8.51.0"
+    "typescript-eslint": "^8.55.0"
   }
 }
