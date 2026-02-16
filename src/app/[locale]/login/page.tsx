@@ -1,12 +1,26 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import { useRouter } from "@/navigation";
 import { toast } from "sonner";
 import { createSupabaseClient } from "@/lib/supabase/client";
 import { useTranslations, useLocale } from "next-intl";
 import Icon from "@/components/Icon";
 import { setPreferredLocaleCookie } from "@/app/actions/locale";
+
+// Helper to generate a random nonce
+function generateNonce(): string {
+  const array = new Uint8Array(32);
+  crypto.getRandomValues(array);
+  return Array.from(array, (byte) =>
+    byte.toString(16).padStart(2, "0")
+  ).join("");
+}
+
+// Global state to prevent multiple FedCM requests
+let isFedCMRequestPending = false;
+let isGoogleInitialized = false;
+let currentNonce: string | null = null;
 
 export default function LoginPage() {
   const t = useTranslations("Auth");
@@ -18,91 +32,137 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const supabase = createSupabaseClient();
+  const oneTapInitialized = useRef(false);
+
+  const handleCredentialResponse = useCallback(async (response: { credential: string }) => {
+    if (isFedCMRequestPending) return;
+    isFedCMRequestPending = true;
+
+    try {
+      const nonce = currentNonce ?? undefined;
+      const { error } = await supabase.auth.signInWithIdToken({
+        provider: 'google',
+        token: response.credential,
+        nonce,
+      });
+
+      if (error) throw error;
+
+      toast.success(t("welcomeBack"));
+
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        try {
+          const { SupabaseProfileRepository } = await import('@/lib/repositories/SupabaseProfileRepository');
+          const profileRepo = new SupabaseProfileRepository(supabase);
+          let profile = await profileRepo.getProfile(user.id);
+
+          if (!profile) {
+            await profileRepo.upsertProfile({
+              id: user.id,
+              display_name: user.user_metadata.full_name || user.user_metadata.name || null,
+              avatar_url: user.user_metadata.avatar_url || null,
+              preferred_locale: locale,
+            });
+            profile = await profileRepo.getProfile(user.id);
+          }
+
+          const preferredLocale = profile?.preferred_locale || 'en';
+          await setPreferredLocaleCookie(preferredLocale);
+          router.push("/app", { locale: preferredLocale });
+        } catch (e) {
+          console.error("Failed to fetch/create profile in One Tap", e);
+          router.push("/app");
+        }
+      } else {
+        router.push("/app");
+      }
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : String(err);
+      console.error("One Tap error:", err);
+      if (!message.includes('nonce') && !message.includes('credentials')) {
+        toast.error("Failed to sign in with Google One Tap");
+      }
+    } finally {
+      isFedCMRequestPending = false;
+    }
+  }, [supabase, t, router, locale]);
 
   useEffect(() => {
+    // Prevent double initialization in React StrictMode
+    if (oneTapInitialized.current) return;
+    oneTapInitialized.current = true;
+
     const initializeOneTap = async () => {
       const { data: { session } } = await supabase.auth.getSession();
       if (session) return;
 
-      // Type definition for Google Identity Services
-      // @ts-ignore
-      window.onGoogleLibraryLoad = () => {
-        // @ts-ignore
+      // Skip if already initialized or FedCM request pending
+      if (isGoogleInitialized || isFedCMRequestPending) return;
+
+      // Generate nonce for this session
+      currentNonce = generateNonce();
+
+      const initGoogleOneTap = () => {
+        if (isGoogleInitialized) return;
+        isGoogleInitialized = true;
+
+        // @ts-expect-error Google accounts type not defined
         google.accounts.id.initialize({
           client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
-          callback: async (response: any) => {
-            try {
-              const { data, error } = await supabase.auth.signInWithIdToken({
-                provider: 'google',
-                token: response.credential,
-              });
-
-              if (error) throw error;
-
-              toast.success(t("welcomeBack"));
-
-              // Fetch user profile to get preferred locale
-              const { data: { user } } = await supabase.auth.getUser();
-              if (user) {
-                try {
-                  const { SupabaseProfileRepository } = await import('@/lib/repositories/SupabaseProfileRepository');
-                  const profileRepo = new SupabaseProfileRepository(supabase);
-                  let profile = await profileRepo.getProfile(user.id);
-
-                  if (!profile) {
-                    await profileRepo.upsertProfile({
-                      id: user.id,
-                      display_name: user.user_metadata.full_name || user.user_metadata.name || null,
-                      avatar_url: user.user_metadata.avatar_url || null,
-                      preferred_locale: locale,
-                    });
-                    profile = await profileRepo.getProfile(user.id);
-                  }
-
-                  const preferredLocale = profile?.preferred_locale || 'en';
-                  await setPreferredLocaleCookie(preferredLocale);
-                  router.push("/app", { locale: preferredLocale });
-                } catch (e) {
-                  console.error("Failed to fetch/create profile in One Tap", e);
-                  router.push("/app");
-                }
-              } else {
-                router.push("/app");
-              }
-            } catch (err: any) {
-              console.error("One Tap error:", err);
-              toast.error("Failed to sign in with Google One Tap");
-            }
-          },
-          auto_select: true, // Optional: attempts to sign in automatically
+          nonce: currentNonce ?? undefined,
+          callback: handleCredentialResponse,
+          auto_select: true,
           itp_support: true,
+          // Disable FedCM to avoid the "only one request" error
+          use_fedcm_for_prompt: false,
         });
 
-        // @ts-ignore
-        google.accounts.id.prompt(); // Display the One Tap UI
+        // Only prompt once
+        try {
+          // @ts-expect-error Google accounts type not defined
+          google.accounts.id.prompt((notification: { isNotDisplayed: () => boolean; getNotDisplayedReason: () => string }) => {
+            if (notification.isNotDisplayed()) {
+              console.log("One Tap not displayed:", notification.getNotDisplayedReason());
+            }
+          });
+        } catch (e) {
+          console.log("One Tap prompt error:", e);
+        }
       };
 
-      // Load the Google script
+      // Check if script already exists
+      const existingScript = document.getElementById("google-one-tap-script");
+      if (existingScript) {
+        // @ts-expect-error Google accounts type not defined
+        if (typeof google !== 'undefined' && google.accounts) {
+          initGoogleOneTap();
+        }
+        return;
+      }
+
+      // Load the script
       const script = document.createElement("script");
       script.src = "https://accounts.google.com/gsi/client";
       script.async = true;
       script.defer = true;
+      script.id = "google-one-tap-script";
       script.onload = () => {
-        // @ts-ignore
+        // @ts-expect-error Google accounts type not defined
         if (typeof google !== 'undefined' && google.accounts) {
-          // @ts-ignore
-          window.onGoogleLibraryLoad();
+          initGoogleOneTap();
         }
       };
       document.head.appendChild(script);
-
-      return () => {
-        document.head.removeChild(script);
-      };
     };
 
     initializeOneTap();
-  }, [supabase.auth, t, router]);
+
+    return () => {
+      // Reset on unmount
+      isFedCMRequestPending = false;
+    };
+  }, [supabase.auth, handleCredentialResponse]);
 
   const handleGoogleSignIn = async () => {
     try {
