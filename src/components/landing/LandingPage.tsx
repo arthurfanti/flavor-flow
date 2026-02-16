@@ -6,6 +6,7 @@ import {
   usePWAInstall,
   type PWAInstallHandle,
 } from "@/components/PWAInstall";
+import { useRouter } from "@/navigation";
 
 export default function LandingPage() {
   const pwaRef = useRef<PWAInstallHandle>(null);
@@ -13,6 +14,7 @@ export default function LandingPage() {
     usePWAInstall(pwaRef);
   const [isIOS, setIsIOS] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     setMounted(true);
@@ -22,12 +24,24 @@ export default function LandingPage() {
     setIsIOS(appleDevice);
   }, []);
 
+  // Redirect to /app when running in standalone mode (installed PWA)
+  useEffect(() => {
+    if (mounted && isUnderStandaloneMode) {
+      router.replace("/app");
+    }
+  }, [mounted, isUnderStandaloneMode, router]);
+
   const handleInstallClick = () => {
     showDialog();
   };
 
   const showInstallButton = mounted && (isInstallAvailable || isIOS);
   const isInstalled = mounted && isUnderStandaloneMode;
+
+  // Don't render the landing page content if we're redirecting
+  if (mounted && isUnderStandaloneMode) {
+    return null;
+  }
 
   return (
     <div className="relative bg-[#1A1816] text-white h-dvh w-dvw flex flex-col antialiased selection:bg-[#E05D44] selection:text-white overflow-hidden">
