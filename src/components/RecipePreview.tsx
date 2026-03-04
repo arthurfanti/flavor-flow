@@ -1,4 +1,5 @@
 import React, { useState, useRef } from "react";
+import { ViewTransition } from "react";
 import { normalizeImageUrl, getStorageUrl } from "@/lib/utils";
 import { MagicButton } from "./MagicButton";
 import { ShoppingCart, Calendar, Check, ChefHat } from "lucide-react";
@@ -16,12 +17,14 @@ interface Recipe {
 
 interface RecipePreviewProps {
   recipe: Recipe | null;
+  recipeId?: string;
   onAddToList: (ingredients: string[]) => void;
   onAddToPlanner: (recipe: Recipe) => void;
 }
 
 export default function RecipePreview({
   recipe,
+  recipeId,
   onAddToList,
   onAddToPlanner,
 }: RecipePreviewProps) {
@@ -77,15 +80,19 @@ export default function RecipePreview({
           }}
           className="fixed top-0 left-0 w-full h-[50vh] z-0 overflow-hidden"
         >
-          <img
-            src={
-              recipe.storage_path
-                ? getStorageUrl(recipe.storage_path)
-                : normalizeImageUrl(recipe.image_url)
-            }
-            alt={recipe.title}
-            className="w-full h-full object-cover brightness-[0.85]"
-          />
+          <ViewTransition
+            name={recipeId ? `recipe-hero-${recipeId}` : undefined}
+          >
+            <img
+              src={
+                recipe.storage_path
+                  ? getStorageUrl(recipe.storage_path)
+                  : normalizeImageUrl(recipe.image_url)
+              }
+              alt={recipe.title}
+              className="w-full h-full object-cover brightness-[0.85]"
+            />
+          </ViewTransition>
           <div className="absolute top-8 left-8 z-10">
             <div className="glass px-4 py-2 rounded-full flex items-center gap-2">
               <ChefHat className="h-4 w-4 text-brand-primary" />

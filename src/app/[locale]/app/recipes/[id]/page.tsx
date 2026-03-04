@@ -3,6 +3,8 @@
 import { useAuth } from "@/components/AuthProvider";
 import RecipeEditor from "@/components/RecipeEditor";
 import RecipePreview from "@/components/RecipePreview";
+import { Skeleton } from "@/components/Skeleton";
+import { getRecipePreview } from "@/components/RecipeTransitionLink";
 import { SupabasePantryRepository } from "@/lib/repositories/SupabasePantryRepository";
 import { SupabasePlannerRepository } from "@/lib/repositories/SupabasePlannerRepository";
 import { SupabaseProfileRepository } from "@/lib/repositories/SupabaseProfileRepository";
@@ -14,8 +16,10 @@ import { useRouter } from "@/navigation";
 import { useTranslations } from "next-intl";
 import { useParams } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { ViewTransition } from "react";
 import { translateRecipeAction } from "@/app/actions/ai";
 import { toast } from "sonner";
+import { ChefHat } from "lucide-react";
 
 export default function RecipeDetailPage() {
   const t = useTranslations("RecipeDetail");
@@ -27,6 +31,10 @@ export default function RecipeDetailPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // Read preview data from sessionStorage (set by RecipeTransitionLink)
+  const previewRef = useRef(getRecipePreview());
+  const preview = previewRef.current;
 
   const repos = useMemo(() => {
     if (authLoading) return null;
@@ -190,16 +198,90 @@ export default function RecipeDetailPage() {
     }
   };
 
-  if (isLoading)
-    return (
-      <div className="flex justify-center py-20">
-        <div className="animate-spin h-8 w-8 border-4 border-brand-yellow border-t-transparent rounded-full" />
-      </div>
-    );
   if (error)
     return (
       <div className="p-8 text-center text-red-500 font-medium">{error}</div>
     );
+
+  // Loading state: show hero image from preview + skeleton content
+  if (isLoading) {
+    return (
+      <div className="flex flex-col items-center w-full pb-20">
+        <div className="w-full flex flex-col items-center">
+          {/* Hero Image — available immediately from the preview */}
+          {preview?.imageUrl && (
+            <div className="fixed top-0 left-0 w-full h-[50vh] z-0 overflow-hidden">
+              <ViewTransition name={`recipe-hero-${id}`}>
+                <img
+                  src={preview.imageUrl}
+                  alt={preview.title || ""}
+                  className="w-full h-full object-cover brightness-[0.85]"
+                />
+              </ViewTransition>
+              <div className="absolute top-8 left-8 z-10">
+                <div className="glass px-4 py-2 rounded-full flex items-center gap-2">
+                  <ChefHat className="h-4 w-4 text-brand-primary" />
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-white">
+                    {t("aiKitchen")}
+                  </span>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Spacer */}
+          <div
+            className={
+              preview?.imageUrl
+                ? "h-[45vh] w-full pointer-events-none"
+                : "h-8 w-full"
+            }
+          />
+
+          {/* Skeleton Content */}
+          <div className="w-full bg-[#121212] rounded-t-[2rem] relative z-10 px-6 md:px-12 pt-12 pb-32 shadow-[0_-12px_24px_rgba(0,0,0,0.2)] border-t border-white/5">
+            <div className="w-full max-w-2xl mx-auto">
+              <div className="flex flex-col gap-8 mb-12">
+                <div className="space-y-4">
+                  <Skeleton variant="text" className="w-24 h-5" />
+                  <Skeleton variant="text" className="w-3/4 h-10" />
+                  <Skeleton variant="text" className="w-1/2 h-10" />
+                </div>
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <Skeleton variant="card" className="h-14 flex-1 rounded-xl" />
+                  <Skeleton variant="card" className="h-14 flex-1 rounded-xl" />
+                </div>
+              </div>
+              <div className="grid lg:grid-cols-[1fr_1.8fr] gap-16">
+                <div className="space-y-6">
+                  <Skeleton variant="text" className="w-32 h-4" />
+                  {[...Array(6)].map((_, i) => (
+                    <Skeleton key={i} variant="text" className="w-full h-5" />
+                  ))}
+                </div>
+                <div className="space-y-8">
+                  <Skeleton variant="text" className="w-32 h-4" />
+                  {[...Array(4)].map((_, i) => (
+                    <div key={i} className="flex gap-8">
+                      <Skeleton
+                        variant="text"
+                        className="w-8 h-8 rounded-full flex-shrink-0"
+                      />
+                      <div className="flex-1 space-y-2">
+                        <Skeleton variant="text" className="w-full h-5" />
+                        <Skeleton variant="text" className="w-3/4 h-5" />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   if (!recipe) return null;
 
   return (
@@ -208,6 +290,7 @@ export default function RecipeDetailPage() {
         <div className="w-full max-w-3xl flex flex-col items-center">
           <RecipePreview
             recipe={recipe}
+            recipeId={id}
             onAddToList={handleAddToList}
             onAddToPlanner={handleAddToPlanner}
           />

@@ -5,7 +5,8 @@ import { useAuth } from "@/components/AuthProvider";
 import RecipeListItem from "@/components/RecipeListItem";
 import { SupabaseRecipeRepository } from "@/lib/repositories/SupabaseRecipeRepository";
 import { createSupabaseClient } from "@/lib/supabase/client";
-import { Link, useRouter } from "@/navigation";
+import { useRouter } from "@/navigation";
+import RecipeTransitionLink from "@/components/RecipeTransitionLink";
 import { useLocale, useTranslations } from "next-intl";
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import { Skeleton } from "@/components/Skeleton";
@@ -124,12 +125,12 @@ export default function RecipesPage() {
           ) : (
             <div className="grid grid-cols-1 gap-4 w-full">
               {recipes.map((recipe) => (
-                <Link
+                <RecipeTransitionLink
                   key={recipe.id || recipe.sourceUrl}
-                  href={`/app/recipes/${recipe.id}`}
+                  recipe={recipe}
                 >
-                  <RecipeListItem recipe={recipe} />
-                </Link>
+                  <RecipeListItem recipe={recipe} recipeId={recipe.id} />
+                </RecipeTransitionLink>
               ))}
             </div>
           )}

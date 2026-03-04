@@ -1,12 +1,16 @@
 // Mock next-intl/navigation
-jest.mock('next-intl/navigation', () => {
+jest.mock("next-intl/navigation", () => {
   const useRouter = jest.fn(() => ({
     push: jest.fn(),
     replace: jest.fn(),
     prefetch: jest.fn(),
   }));
-  const usePathname = jest.fn(() => '/');
-  const Link = ({ children, href, ...props }: any) => <a href={href} {...props}>{children}</a>;
+  const usePathname = jest.fn(() => "/");
+  const Link = ({ children, href, ...props }: any) => (
+    <a href={href} {...props}>
+      {children}
+    </a>
+  );
   const redirect = jest.fn();
 
   return {
@@ -30,9 +34,9 @@ jest.mock('next-intl/navigation', () => {
 });
 
 // Mock next-intl
-jest.mock('next-intl', () => ({
+jest.mock("next-intl", () => ({
   useTranslations: (namespace: string) => (key: string) => key,
-  useLocale: () => 'en',
+  useLocale: () => "en",
   useFormatter: () => ({
     dateTime: jest.fn(),
     number: jest.fn(),
@@ -40,6 +44,15 @@ jest.mock('next-intl', () => ({
   NextIntlClientProvider: ({ children }: any) => <>{children}</>,
 }));
 
-jest.mock('next-intl/server', () => ({
+jest.mock("next-intl/server", () => ({
   getRequestConfig: jest.fn(),
 }));
+
+// Mock React's ViewTransition (not available in jsdom)
+jest.mock("react", () => {
+  const actualReact = jest.requireActual("react");
+  return {
+    ...actualReact,
+    ViewTransition: ({ children }: any) => children,
+  };
+});

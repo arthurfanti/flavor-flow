@@ -11,6 +11,7 @@ import { SupabaseRecipeRepository } from "@/lib/repositories/SupabaseRecipeRepos
 import { SupabaseShoppingListRepository } from "@/lib/repositories/SupabaseShoppingListRepository";
 import { createSupabaseClient } from "@/lib/supabase/client";
 import { useRouter, Link } from "@/navigation";
+import RecipeTransitionLink from "@/components/RecipeTransitionLink";
 import { useTranslations, useLocale } from "next-intl";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { extractRecipeAction } from "@/app/actions/ai";
@@ -202,13 +203,13 @@ export default function Home() {
                 </div>
                 <div className="flex flex-col gap-4">
                   {recentRecipes.map((r) => (
-                    <Link
+                    <RecipeTransitionLink
                       key={r.id}
-                      href={`/app/recipes/${r.id}`}
+                      recipe={r}
                       className="block active:scale-[0.98] transition-transform"
                     >
-                      <RecipeListItem recipe={r} />
-                    </Link>
+                      <RecipeListItem recipe={r} recipeId={r.id} />
+                    </RecipeTransitionLink>
                   ))}
                 </div>
               </div>
